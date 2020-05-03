@@ -27,12 +27,6 @@
             right: 10px;
             top: 18px;
         }
-        .ticket-summary {
-          display: flex;
-        }
-        .ticket-open-icon {
-          margin-left: auto;
-        }
 
         /*--ハンバーガーメニュー--*/
         header {
@@ -106,7 +100,18 @@
             transform: translateX(0%);/*中身を表示（右へスライド）*/
             box-shadow: 6px 0 25px rgba(0,0,0,.15);
         }
-        .main-wrapper {
+        .ticket-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .ticket-summary {
+        }
+        .ticket-icon-list-group {
+           
+        }
+        .ticket-open-icon {
+          margin-left: auto;
         }
     </style>
 
@@ -158,32 +163,37 @@
             <ul class="list-group">
                 <li v-for="ticket in tickets">
                     <ul>
-                        <li class="list-group-item">
-                            <div class="ticket-summary">
-                                <div v-text="ticket.text"></div>
-                                <div class="ticket-open-icon" v-on:click="ticket.openFlag = !ticket.openFlag">
-                                    <ion-icon v-if="!ticket.openFlag" name="caret-forward-outline"></ion-icon>
-                                    <ion-icon v-if="ticket.openFlag" name="caret-down-outline"></ion-icon>
+                        <li class="list-group-item"> <!-- 畳まれた状態のチケット -->
+                            <div class="ticket-container"> 
+                                <div class="ticket-summary">
+                                    <span class="ticket-title" v-text="ticket.text"></span>
+                                    <span class="ticket-time" v-text="ticket.time"></span>
+                                </div>
+                                <div class="ticket-icon-list-group">
+                                    <span class="ticket-timer-icon">
+                                        <ion-icon name="alarm-outline"></ion-icon> <!-- timer start -->
+                                    </span>
+                                    <span class="ticket-open-icon" v-on:click="ticket.openFlag = !ticket.openFlag">
+                                        <ion-icon v-if="!ticket.openFlag" name="caret-forward-outline"></ion-icon> <!-- edit open -->
+                                        <ion-icon v-if="ticket.openFlag" name="caret-down-outline"></ion-icon> <!-- edit close -->
+                                    </span>
                                 </div>
                             </div>
                         </li>
-                        <li class="list-group-item" v-if="ticket.openFlag">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-xs-10">
-                                        <div class="">
-                                            <span>@{{ ticket.id }}</span><span>@{{ ticket.parentId }}</span>
-                                        </div>
-                                        <span class="text" v-if="!edit" v-text="ticket.text" v-on:click="edit = true"></span>
-                                        <span class="edit-icon" v-on:click="edit = true">edit</span>
-                                        <input v-if="edit" type="text" v-model="ticket.text" v-on:blur="edit = false"  v-auto-focus>
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <button class="btn btn-primary" v-on:click="createChild(ticket.id)">+</button>
-                                    </div>
-                                </div>
+                        <li class="list-group-item" v-if="ticket.openFlag"> <!-- エディット状態 -->
+                            <div class="">
+                                <span>@{{ ticket.id }}</span><span>@{{ ticket.parentId }}</span>
                             </div>
-                        </li>
+                            <span class="text" v-if="!edit" v-text="ticket.text" v-on:click="edit = true"></span>
+                            <span class="edit-icon" v-show="!edit" v-on:click="edit = true">
+                                <ion-icon name="create-outline"></ion-icon>
+                            </span>
+                            <input v-if="edit" type="text" v-model="ticket.text" v-on:blur="edit = false" v-auto-focus>
+                            <ul class="group" style="text-align: right; flex-direction: row; justify-content: space-between;">
+                                <li class="btn btn-danger" style="display: inline-block">削除</li>
+                                <li class="btn btn-info" style="display: inline-block">完了</li>
+                            </ul>
+                        </li> <!-- エディット状態 -->
                     </ul>
                 </li>
             </ul> 
@@ -212,6 +222,7 @@
               parentId: -1,
               text: 'test ticket1',
               openFlag: false,
+              time: '3.5H',
             }
           ],
           edit: false
@@ -222,7 +233,7 @@
               id: this.ticketNum,
               parentId: parentId,
               text: "new ticket",
-              openFlag: true,
+              openFlag: false,
             }
             this.tickets.push(newTicket)
           }
