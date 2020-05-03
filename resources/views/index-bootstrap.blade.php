@@ -39,6 +39,9 @@
             padding:10px;
             background: skyblue;
         }
+        header .title {
+            font-size: 3rem;
+        }
         #nav-drawer  {
             position: relative;
         }
@@ -68,6 +71,7 @@
             bottom: -16px;
         }
         #nav-close {
+            display: none;
             position: fixed;
             z-index: 99;
             top:  0;
@@ -102,6 +106,8 @@
             transform: translateX(0%);/*中身を表示（右へスライド）*/
             box-shadow: 6px 0 25px rgba(0,0,0,.15);
         }
+        .main-wrapper {
+        }
     </style>
 
 <!-- icon -->
@@ -127,12 +133,13 @@
     <!-- nav -->
             <nav id="nav-drawer">
                 <input id="nav-input" type="checkbox" class="nav-unshown">
-                <label id="nav-open" for="nav-input"><span></span></label>
+                <label id="nav-open" for="nav-input"><span></span></label><span class="title">TicketTimer</span>
                 <label id="nav-close" for="nav-input">close</label>
                 <div id="nav-content">
                     <ul class="main-nav">
                         <li><a href="#">home</a></li>
                         <li><a href="#">setting</a></li>
+                        <li><a href="#">how to use</a></li>
                         <li><a href="#">logout</a></li>
                     </ul>
                 </div>
@@ -142,13 +149,13 @@
 <!-- ticket open-ticket-bar -->
         <div class="wrapper">
             <ul class="list-group">
-                <li class="list-group-item" v-for="ticket in tickets">@{{ ticket.text }}</li>
+                <li class="list-group-item" v-for="ticket in tickets" v-if="ticket.openFlag">@{{ ticket.text }}</li>
             </ul>
         </div>
 <!-- ticket open-ticket-bar -->
-
+        <div class="main-wrapper">
 <!-- ticket contents  -->
-<!--            <ul>
+            <ul class="list-group">
                 <li v-for="ticket in tickets">
                     <ul>
                         <li class="list-group-item">
@@ -179,10 +186,11 @@
                         </li>
                     </ul>
                 </li>
-            </ul> -->
+            </ul> 
 <!-- ticket contents -->
-        <div align="center">
-            <button class="btn btn-primary" v-on:click="createBros(parentId)">+</button>
+            <div align="center">
+                <button class="btn btn-primary" v-on:click="createBros(parentId)">+</button>
+            </div>
         </div>
     </div>
 </div>
