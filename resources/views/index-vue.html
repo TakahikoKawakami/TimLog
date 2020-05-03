@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Laravel</title>
+<!-- bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<!--JS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>        
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!-- vue.js -->
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    </head>
+    <body>
+	<div id="app-counter">
+		<p>{{ count }}回クリックされました</p>
+		<button v-on:click="counter">click!</button>
+		<p v-if="count<5">あなたは会員です</p> 
+		<p v-else-if="count>5">あなたはプレミアム会員です</p> 
+		<p v-else-if="count==5">あなたは素晴らしい会員です</p> 
+	</div>
+	<script>
+		const app3 = new Vue({
+			el: '#app-counter',
+			data: {
+				count: 0
+			},
+			methods: {
+				counter: function(){
+					this.count++
+				}
+			}
+		})
+	</script>
+
+    </body>
+</html>
+
