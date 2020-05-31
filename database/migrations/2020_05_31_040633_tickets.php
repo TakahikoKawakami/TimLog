@@ -13,7 +13,18 @@ class Tickets extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('tickets', function(BluePrint $table) {
+            $table->increments('id');
+            $table->integer('user_id');
+            $table->integer('parent_id');
+            $table->string('text');
+            $table->string('memo');
+            $table->date('start_date');
+            $table->date('stop_date');
+            $table->date('deadline_date');
+            $table->integer('status');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +34,6 @@ class Tickets extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('tickets');
     }
 }

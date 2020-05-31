@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TicketService;
+
 class TicketController extends Controller
 {
     public function __construct() {
@@ -10,7 +12,15 @@ class TicketController extends Controller
 
     public function index()
     {
-        $data = ['name'=>'hello'];
-        return view('index-bootstrap')->with(["data"=>$data]);
+        $ticketService = new TicketService();
+        $tickets = $ticketService->getTickets();
+        return view('index-bootstrap')->with(["tickets"=>$tickets]);
+    }
+
+    public function apiIndex()
+    {
+        $ticketService = new TicketService();
+        $tickets = $ticketService->getTickets();
+        return json_decode($tickets);
     }
 }

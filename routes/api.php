@@ -16,6 +16,9 @@ Route::get("sample", function() {
     $data = ["name" => "test"];
     return $data;
 });
+Route::get("tickets", "TicketController@apiIndex");
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

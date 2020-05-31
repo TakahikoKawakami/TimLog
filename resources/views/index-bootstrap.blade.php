@@ -141,7 +141,8 @@
     <!-- nav -->
             <nav id="nav-drawer">
                 <input id="nav-input" type="checkbox" class="nav-unshown">
-                <label id="nav-open" for="nav-input"><span></span></label><span class="title">@{{name}}</span>
+                <label id="nav-open" for="nav-input"><span></span></label><span class="title">@{{ results.name }}</span>
+                <span v-on:click="getTickets('sample')"><button>get</button></span>
                 <label id="nav-close" for="nav-input">close</label>
                 <div id="nav-content">
                     <ul class="main-nav">
@@ -235,6 +236,9 @@
            name: 'auieo'
         }
       }
+        function buildUrl (url) {
+            return "https://ticket-timer.apps.shaba-room.work/api/" . url
+        }
       const openTicket = new Vue({
         el: "#app",
         data: {
@@ -250,9 +254,19 @@
               updateDateTime: '',
             }
           ],
-          edit: false
-       },
+          edit: false,
+          results: []
+        },
+        mounted () {
+            this.getTickets('test');
+        }
         methods: {
+            getTickets(section) {
+                let url = builderUri(section);
+                axios.get(url).then((response) => {
+                        this.results = response;
+                }).catch( error => {console.log(error);});
+            }
             createBros: function(parentId) {
                 let newTicket = {
                     id: this.ticketNum,
