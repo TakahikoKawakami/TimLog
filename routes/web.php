@@ -10,8 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', 'TicketController@index');
+/*
 Route::get('/', function () {
     return view('index-bootstrap');
-//    return view('index-vue');
-});
+});*/

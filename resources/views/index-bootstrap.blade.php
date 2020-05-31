@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Ticket Timer</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
@@ -113,6 +114,8 @@
         .ticket-open-icon {
           margin-left: auto;
         }
+        .nav-wrapper {
+        }
     </style>
 
 <!-- icon -->
@@ -138,7 +141,7 @@
     <!-- nav -->
             <nav id="nav-drawer">
                 <input id="nav-input" type="checkbox" class="nav-unshown">
-                <label id="nav-open" for="nav-input"><span></span></label><span class="title">TicketTimer</span>
+                <label id="nav-open" for="nav-input"><span></span></label><span class="title">@{{name}}</span>
                 <label id="nav-close" for="nav-input">close</label>
                 <div id="nav-content">
                     <ul class="main-nav">
@@ -152,23 +155,33 @@
 <!-- nav -->
         </header>
 <!-- ticket open-ticket-bar -->
-        <div class="wrapper">
-            <ul class="list-group">
-                <li class="list-group-item" v-for="ticket in tickets" v-if="ticket.openFlag">@{{ ticket.text }}</li>
-            </ul>
+        <div class="ticket-bar-wrapper">
+            <span>
+                <a href="#">
+                    <ion-icon name="home-outline"></ion-icon>
+                </a>
+            </span>
+            <span v-for="ticket in selectTickets">
+                <a href="#">
+                    <ion-icon name="chevron-forward-outline"></ion-icon>@{{ ticket.text }}
+                </a>
+            </span>
+            <span>
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </span>
         </div>
 <!-- ticket open-ticket-bar -->
         <div class="main-wrapper">
 <!-- ticket contents  -->
             <ul class="list-group">
-                <li v-for="ticket in tickets">
+                <li v-for="ticket in childTickets">
                     <ul>
                         <li class="list-group-item"> <!-- 畳まれた状態のチケット -->
                             <div class="ticket-container"> 
-                                <div class="ticket-summary">
+                                <a class="ticket-summary" href="#" v-on:click="addSelectTickets(ticket)">
                                     <span class="ticket-title" v-text="ticket.text"></span>
                                     <span class="ticket-time" v-text="ticket.time"></span>
-                                </div>
+                                </a>
                                 <div class="ticket-icon-list-group">
                                     <span class="ticket-timer-icon">
                                         <ion-icon name="alarm-outline"></ion-icon> <!-- timer start -->
@@ -213,30 +226,48 @@
           });
         }
       })
+      export default {
+          async mounted() {
+            const ret = await window.axios.get("/api/sample");
+            this.name = ret.data.name;
+        },
+        data() {
+           name: 'auieo'
+        }
+      }
       const openTicket = new Vue({
         el: "#app",
         data: {
-          ticketNum: 1,
-          tickets: [
+          ticketNum: 0,
+          selectTickets: [],
+          childTickets: [
             { id: 1,
               parentId: -1,
               text: 'test ticket1',
               openFlag: false,
               time: '3.5H',
+              createDateTime: '',
+              updateDateTime: '',
             }
           ],
           edit: false
        },
         methods: {
-          createBros: function(parentId) {
-            let newTicket = {
-              id: this.ticketNum,
-              parentId: parentId,
-              text: "new ticket",
-              openFlag: false,
-            }
-            this.tickets.push(newTicket)
-          }
+            createBros: function(parentId) {
+                let newTicket = {
+                    id: this.ticketNum,
+                    parentId: parentId,
+                    text: "new ticket",
+                    openFlag: false,
+                }
+                this.childTickets.push(newTicket)
+            },
+            addSelectTickets: function(ticket) {
+                this.selectTickets.push({
+                    id: ticket.id,
+                    text: ticket.text,
+                })
+            },
         }
       })
     </script>
