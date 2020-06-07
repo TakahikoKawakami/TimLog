@@ -1,19 +1,20 @@
 <?php
 
 namespace App\Services;
-use App\Repositories\TicketRepository;
+use App\Repositories\TicketRepositoryInterface;
 
 class TicketService
 {
-    public function __construct()
+    protected $ticketRepository;
+
+    public function __construct(TicketRepositoryInterface $ticketRepository)
     {
+        $this->ticketRepository = $ticketRepository;
     }
 
     public function getTickets()
     {
-        $ticketRepository = new TicketRepository();
-        return $ticketRepository->getTickets();
-
+        return $this->ticketRepository->getTickets();
     }
 }
 

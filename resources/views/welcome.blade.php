@@ -103,6 +103,10 @@
             </div>
         </div>
         <div id="app">
+            <sample-component></sample-component>
+            <sample-component></sample-component>
+        </div>
+        <div id="app2">
             <example-component></example-component>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>

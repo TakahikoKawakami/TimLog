@@ -1,0 +1,18 @@
+[04-Jun-2020 09:46:44 UTC] PHP Parse error:  syntax error, unexpected 'fillable' (T_STRING), expecting function (T_FUNCTION) or const (T_CONST) in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Model/Ticket.php on line 9
+[04-Jun-2020 10:02:36 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Providers/AppServiceProvider.php on line 23
+[04-Jun-2020 10:03:39 UTC] PHP Fatal error:  Interface function App\Repositories\TicketRepository::getTickets() cannot contain body in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Repositories/TicketRepositoryInterface.php on line 13
+[04-Jun-2020 10:07:30 UTC] PHP Fatal error:  Interface function App\Repositories\TicketRepository::getTickets() cannot contain body in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Repositories/TicketRepositoryInterface.php on line 13
+[04-Jun-2020 10:08:18 UTC] PHP Warning:  array_merge(): Argument #1 is not an array in /home/iheoikpm/.vim/bundle/phpcomplete-extended/bin/IndexGenerator.php on line 353
+[04-Jun-2020 10:08:18 UTC] PHP Warning:  array_count_values() expects parameter 1 to be array, null given in /home/iheoikpm/.vim/bundle/phpcomplete-extended/bin/IndexGenerator.php on line 353
+[04-Jun-2020 10:08:18 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/iheoikpm/.vim/bundle/phpcomplete-extended/bin/IndexGenerator.php on line 356
+[04-Jun-2020 10:08:18 UTC] PHP Warning:  array_merge(): Argument #1 is not an array in /home/iheoikpm/.vim/bundle/phpcomplete-extended/bin/IndexGenerator.php on line 353
+[04-Jun-2020 10:08:18 UTC] PHP Warning:  array_count_values() expects parameter 1 to be array, null given in /home/iheoikpm/.vim/bundle/phpcomplete-extended/bin/IndexGenerator.php on line 353
+[04-Jun-2020 10:08:18 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/iheoikpm/.vim/bundle/phpcomplete-extended/bin/IndexGenerator.php on line 356
+[04-Jun-2020 10:13:11 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Repositories/TicketRepository.php on line 29
+[04-Jun-2020 10:15:25 UTC] PHP Parse error:  syntax error, unexpected ',' in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Repositories/TicketRepository.php on line 29
+[04-Jun-2020 10:15:54 UTC] PHP Parse error:  syntax error, unexpected ',' in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Repositories/TicketRepository.php on line 29
+[04-Jun-2020 10:52:40 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Providers/AppServiceProvider.php on line 20
+[04-Jun-2020 10:58:23 UTC] PHP Parse error:  syntax error, unexpected ',' in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Model/Ticket.php on line 12
+[04-Jun-2020 11:01:26 UTC] PHP Parse error:  syntax error, unexpected ';', expecting ',' or ')' in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Repositories/TicketRepository.php on line 35
+[04-Jun-2020 11:04:47 UTC] PHP Parse error:  syntax error, unexpected '$ticketCollection' (T_VARIABLE) in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Repositories/TicketRepository.php on line 40
+[04-Jun-2020 11:06:19 UTC] PHP Fatal error:  Declaration of App\Repositories\TicketRepository::getTickets() must be compatible with App\Repositories\TicketRepositoryInterface::getTickets(): App\Entities\TicketCollection in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Repositories/TicketRepository.php on line 11

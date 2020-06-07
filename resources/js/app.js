@@ -16,10 +16,15 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+const files = require.context('./', true, /\.vue$/i)
+files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// Vue.component('sample-component', require('./components/SampleComponents.vue').default);
+// Vue.component('ticket-view-component', require('./components/TicketViewComponent.vue').default);
+// Vue.component('ticket-nav-component', require('./components/TicketNavComponent.vue').default);
+// Vue.component('nav-component', require('./components/NavComponent.vue').default);
+// Vue.component('nav-component', require('./components/ExampleComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,4 +34,20 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+});
+
+const app2 = new Vue({
+    el: '#app2',
+});
+
+const navApp = new vue({
+    el: '#navApp',
+});
+
+const ticketnavapp = new vue({
+    el: '#ticket-nav-app',
+});
+
+const ticketViewApp = new Vue({
+    el: '#ticket-view-app',
 });
