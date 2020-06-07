@@ -67,7 +67,7 @@
             }
         </style>
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link href"{{ mix('css/app.css') }}" rel="stypesheet" type="text/css">
+        <link href="{{ mix('css/app.css') }}" rel="stypesheet" type="text/css">
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -105,10 +105,8 @@
         <div id="app">
             <sample-component></sample-component>
             <sample-component></sample-component>
-        </div>
-        <div id="app2">
             <example-component></example-component>
         </div>
-        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset(mix('/js/app.js')) }}"></script>
     </body>
 </html>

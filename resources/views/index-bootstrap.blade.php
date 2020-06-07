@@ -13,7 +13,8 @@
 <!-- vue,.js -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
 <!-- css -->
-    <link rel="stypesheet" href="{{ mix('css/app.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href"{{ mix('css/app.css') }}" rel="stypesheet" type="text/css">
     <!-- Styles -->
     <style>
         html, body {
@@ -141,7 +142,7 @@
         <div id='app'>
         <header>
     <!-- nav -->
-                <nav-component></nav-component>
+                <example-component></example-component>
     <!-- nav -->
         </header>
             <ticket-nav-component></ticket-nav-component>
@@ -150,7 +151,7 @@
     </div>
 </div>
 <!-- <script src="{{ asset('js/app.js') }}"></script> -->
-<script src="{{ mix('js/app.js') }}"></script>
+        <script src="{{ asset(mix('/js/app.js')) }}"></script>
   </body>
 </html>
 
