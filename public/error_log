@@ -1,1 +1,2 @@
 [04-Jun-2020 10:07:35 UTC] PHP Fatal error:  Interface function App\Repositories\TicketRepository::getTickets() cannot contain body in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Repositories/TicketRepositoryInterface.php on line 13
+[07-Jun-2020 07:08:41 UTC] PHP Fatal error:  Class 'App\Entities\Collection' not found in /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/app/Entities/TicketCollection.php on line 7

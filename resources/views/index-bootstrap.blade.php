@@ -142,11 +142,11 @@
         <div id='app'>
         <header>
     <!-- nav -->
-                <example-component></example-component>
+                <nav-component></nav-component>
     <!-- nav -->
         </header>
             <ticket-nav-component></ticket-nav-component>
-            <ticket-view-component></ticket-view-component>
+            <!--            <ticket-view-component></ticket-view-component> -->
         </div>
     </div>
 </div>

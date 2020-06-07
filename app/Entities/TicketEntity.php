@@ -13,7 +13,7 @@ class TicketEntity
     protected $memo;
     protected $startDateTime;
     protected $stopDateTime;
-    protected $deadlineDateTIme;
+    protected $deadlineDateTime;
     protected $status;
 
     private function __construct(
@@ -87,4 +87,20 @@ class TicketEntity
             $status
         );
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id, 
+            'userId' => $this->userId, 
+            'parentId' => $this->parentId, 
+            'text' => $this->text, 
+            'memo' => $this->memo, 
+            'startDateTime' => $this->startDateTime, 
+            'stopDateTime' => $this->stopDateTime,
+            'deadlineDateTime' => $this->deadlineDateTime,
+            'status' => $this->status,
+        ];
+    }
+
 }

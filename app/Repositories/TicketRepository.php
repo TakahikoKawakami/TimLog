@@ -20,7 +20,7 @@ class TicketRepository implements TicketRepositoryInterface
     public function getTickets() 
     {
         $records = $this->ticketEloquent->get();
-        return $records;
+//        return $records;
 
         $ticketCollection = collect();
         foreach ($records as $record) {
@@ -38,8 +38,7 @@ class TicketRepository implements TicketRepositoryInterface
                 )
             );
         }
-        dd($ticketCollection);
-        return $ticketCollection;
+        return new TicketCollection($ticketCollection);
     }
 
 }

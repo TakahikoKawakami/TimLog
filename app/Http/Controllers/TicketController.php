@@ -25,6 +25,7 @@ class TicketController extends Controller
     {
         $ticketService = new TicketService($this->ticketRepository);
         $tickets = $ticketService->getTickets();
-        return json_decode($tickets);
+        $tickets = $tickets->toArray();
+        return json_encode($tickets);
     }
 }

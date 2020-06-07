@@ -2,7 +2,7 @@
     <div class="main-wrapper">
 <!-- ticket contents  -->
         <ul class="list-group">
-            <li v-for="ticket in childTickets">
+            <li v-for="ticket in Tickets">
                 <ul>
                     <li class="list-group-item"> <!-- 畳まれた状態のチケット -->
                         <div class="ticket-container"> 
@@ -58,7 +58,7 @@
         data: {
             ticketNum: 0,
             selectTickets: [],
-            childTickets: [
+            Tickets: [
                 { id: 1,
                     parentId: -1,
                     text: 'test ticket1',
