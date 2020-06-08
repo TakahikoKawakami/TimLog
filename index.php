@@ -1,12 +1,9 @@
 <?php
-header("refresh: 5; https://ticket-timer.apps.shaba-room.work/public/");
 
-	echo '<title>Laravel Installed</title><div style="background: #e9ffed; border: 1px solid #b0dab7; padding: 15px;" align="center" >
-	<font size="5" color="#182e7a">Laravel is installed successfully.</font><br /><br />
-	<font size="4">Laravel is a Framework and doesn\'t have an index page.<br /><br />
-	You will be redirected to its "public" folder in 5 seconds...<br /><br />
-	Laravel is a clean and classy framework for PHP web development.
 
-Freeing you from spaghetti code, Laravel helps you create wonderful applications using simple, expressive syntax. Development should be a creative experience that you enjoy, not something that is painful. Enjoy the fresh air.
-</font></div>';
+	echo '<title>Vue.js Installed</title><div style="background: #e9ffed; border: 1px solid #b0dab7; padding: 15px;" align="center" >
+	<font size="5" color="#182e7a">Vue.js is installed successfully.</font><br /><br />
+	<font size="4">Vue.js is a JavaScript, so doesn\'t have an index page.<br /><br />
+	Vue.js is a library for building interactive web interfaces. It provides data-reactive components with a simple and flexible API. </font></div>';
+
 ?>

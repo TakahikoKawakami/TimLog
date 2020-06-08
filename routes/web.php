@@ -10,8 +10,19 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/vue', function() {
+    return view('welcome');
+});
+Route::get('/', 'TicketController@index');
+/*
 Route::get('/', function () {
     return view('index-bootstrap');
-//    return view('index-vue');
-});
+});*/
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

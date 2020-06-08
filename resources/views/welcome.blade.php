@@ -66,6 +66,8 @@
                 margin-bottom: 30px;
             }
         </style>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link href="{{ mix('css/app.css') }}" rel="stypesheet" type="text/css">
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -100,5 +102,11 @@
                 </div>
             </div>
         </div>
+        <div id="app">
+            <sample-component></sample-component>
+            <sample-component></sample-component>
+            <example-component></example-component>
+        </div>
+        <script src="{{ asset(mix('/js/app.js')) }}"></script>
     </body>
 </html>
