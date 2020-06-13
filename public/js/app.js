@@ -1967,6 +1967,39 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewTicketButtonComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/NewTicketButtonComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: {},
+  methods: {
+    getTicket: function getTicket() {
+      var _this = this;
+
+      axios.get('https://ticket-timer.dev.apps.shaba-room.work/public/api/tickets').then(function (response) {
+        return _this.ticketNum = response;
+      });
+    },
+    createBros: function createBros() {
+      this.$emit('create-ticket-event');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/SampleComponents.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/SampleComponents.vue?vue&type=script&lang=js& ***!
@@ -2007,71 +2040,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TicketNavComponent.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TicketNavComponent.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TicketComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TicketComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: {},
-  data: function data() {
-    return {
-      selectTickets: {}
-    };
-  },
-  mounted: function mounted() {
-    var self = this;
-    axios.get('/public/api/tickets').then(function (response) {
-      self.selectTickets = response.data;
-      console.log(response.data);
-    });
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TicketViewComponent.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TicketViewComponent.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2117,31 +2094,121 @@ Vue.directive('auto-focus', {
   }
 });
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: {
-    ticketNum: 0,
-    selectTickets: [],
-    Tickets: [{
-      id: 1,
-      parentId: -1,
-      text: 'test ticket1',
+  props: ['ticket'],
+  data: function data() {
+    return {
       openFlag: false,
-      time: '3.5H',
-      createDateTime: '',
-      updateDateTime: ''
-    }],
-    edit: false,
-    results: []
+      edit: false
+    };
+  },
+  methods: {
+    addSelectTickets: function addSelectTickets(ticket) {
+      this.selectTickets.push({
+        id: ticket.id,
+        text: ticket.text
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TicketNavComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TicketNavComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {},
+  data: function data() {
+    return {
+      selectTickets: {}
+    };
+  },
+  // 読み込み時に実行
+  mounted: function mounted() {
+    var self = this; // apiを叩いて、レスポンスをselectTicketsに格納
+
+    axios.get('/public/api/tickets').then(function (response) {
+      self.selectTickets = response.data;
+      console.log(response.data);
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TicketViewComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TicketViewComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      ticketNum: 0,
+      selectTickets: [],
+      Tickets: [],
+      edit: false,
+      results: []
+    };
   },
   mounted: function mounted() {
-    this.getTickets('test');
+    var _this = this;
+
+    axios.get('https://ticket-timer.dev.apps.shaba-room.work/public/api/tickets').then(function (response) {
+      return _this.Tickets = response.data;
+    });
   },
   methods: {
     getTickets: function getTickets(section) {
-      var _this = this;
+      var _this2 = this;
 
       var url = builderUri(section);
       axios.get(url).then(function (response) {
-        _this.results = response;
+        _this2.results = response;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2153,7 +2220,7 @@ Vue.directive('auto-focus', {
         text: "new ticket",
         openFlag: false
       };
-      this.childTickets.push(newTicket);
+      this.Tickets.push(newTicket);
     },
     addSelectTickets: function addSelectTickets(ticket) {
       this.selectTickets.push({
@@ -37756,42 +37823,87 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("nav", { attrs: { id: "nav-drawer" } }, [
+    _c("input", {
+      staticClass: "nav-unshown",
+      attrs: { id: "nav-input", type: "checkbox" }
+    }),
+    _vm._v(" "),
+    _vm._m(0),
+    _c("span", { staticClass: "title" }, [
+      _vm._v("TicketTimer " + _vm._s(_vm.ticketNum))
+    ]),
+    _vm._v(" "),
+    _c("label", { attrs: { id: "nav-close", for: "nav-input" } }, [
+      _vm._v("close")
+    ]),
+    _vm._v(" "),
+    _vm._m(1)
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("nav", { attrs: { id: "nav-drawer" } }, [
-      _c("input", {
-        staticClass: "nav-unshown",
-        attrs: { id: "nav-input", type: "checkbox" }
-      }),
-      _vm._v(" "),
-      _c("label", { attrs: { id: "nav-open", for: "nav-input" } }, [
-        _c("span")
-      ]),
-      _c("span", { staticClass: "title" }, [_vm._v("TicketTimer")]),
-      _vm._v(" "),
-      _c("label", { attrs: { id: "nav-close", for: "nav-input" } }, [
-        _vm._v("close")
-      ]),
-      _vm._v(" "),
-      _c("div", { attrs: { id: "nav-content" } }, [
-        _c("ul", { staticClass: "main-nav" }, [
-          _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("home")])]),
-          _vm._v(" "),
-          _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("setting")])]),
-          _vm._v(" "),
-          _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("how to use")])]),
-          _vm._v(" "),
-          _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("logout")])])
-        ])
+    return _c("label", { attrs: { id: "nav-open", for: "nav-input" } }, [
+      _c("span")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "nav-content" } }, [
+      _c("ul", { staticClass: "main-nav" }, [
+        _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("home")])]),
+        _vm._v(" "),
+        _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("setting")])]),
+        _vm._v(" "),
+        _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("how to use")])]),
+        _vm._v(" "),
+        _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("logout")])])
       ])
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewTicketButtonComponent.vue?vue&type=template&id=44a4f92c&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/NewTicketButtonComponent.vue?vue&type=template&id=44a4f92c& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { align: "center" } }, [
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-primary",
+        on: {
+          click: function($event) {
+            return _vm.createBros()
+          }
+        }
+      },
+      [_vm._v("+")]
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -37816,6 +37928,199 @@ var render = function() {
   return _c("p", [_vm._v("test")])
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TicketComponent.vue?vue&type=template&id=5b8c7b36&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TicketComponent.vue?vue&type=template&id=5b8c7b36& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("ul", [
+    _c("li", { staticClass: "list-group-item" }, [
+      _c("div", { staticClass: "ticket-container" }, [
+        _c(
+          "a",
+          {
+            staticClass: "ticket-summary",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                return _vm.addSelectTickets(_vm.ticket)
+              }
+            }
+          },
+          [
+            _c("span", {
+              staticClass: "ticket-title",
+              domProps: { textContent: _vm._s(_vm.ticket.text) }
+            }),
+            _vm._v(" "),
+            _c("span", {
+              staticClass: "ticket-time",
+              domProps: { textContent: _vm._s(_vm.ticket.time) }
+            })
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "ticket-icon-list-group" }, [
+          _c(
+            "span",
+            { staticClass: "ticket-timer-icon" },
+            [_c("ion-icon", { attrs: { name: "alarm-outline" } })],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass: "ticket-open-icon",
+              on: {
+                click: function($event) {
+                  _vm.openFlag = !_vm.openFlag
+                }
+              }
+            },
+            [
+              !_vm.openFlag
+                ? _c("ion-icon", { attrs: { name: "caret-forward-outline" } })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.openFlag
+                ? _c("ion-icon", { attrs: { name: "caret-down-outline" } })
+                : _vm._e()
+            ],
+            1
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _vm.openFlag
+      ? _c("li", { staticClass: "list-group-item" }, [
+          _c("div", {}, [
+            _c("span", [_vm._v("チケット番号：" + _vm._s(_vm.ticket.id))]),
+            _c("span", [
+              _vm._v("親チケット番号：" + _vm._s(_vm.ticket.parentId))
+            ])
+          ]),
+          _vm._v(" "),
+          !_vm.edit
+            ? _c("span", {
+                staticClass: "text",
+                domProps: { textContent: _vm._s(_vm.ticket.text) },
+                on: {
+                  click: function($event) {
+                    _vm.edit = true
+                  }
+                }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: !_vm.edit,
+                  expression: "!edit"
+                }
+              ],
+              staticClass: "edit-icon",
+              on: {
+                click: function($event) {
+                  _vm.edit = true
+                }
+              }
+            },
+            [_c("ion-icon", { attrs: { name: "create-outline" } })],
+            1
+          ),
+          _vm._v(" "),
+          _vm.edit
+            ? _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.text,
+                    expression: "ticket.text"
+                  },
+                  { name: "auto-focus", rawName: "v-auto-focus" }
+                ],
+                attrs: { type: "text" },
+                domProps: { value: _vm.ticket.text },
+                on: {
+                  blur: function($event) {
+                    _vm.edit = false
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.ticket, "text", $event.target.value)
+                  }
+                }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(0)
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "ul",
+      {
+        staticClass: "group",
+        staticStyle: {
+          "text-align": "right",
+          "flex-direction": "row",
+          "justify-content": "space-between"
+        }
+      },
+      [
+        _c(
+          "li",
+          {
+            staticClass: "btn btn-danger",
+            staticStyle: { display: "inline-block" }
+          },
+          [_vm._v("削除")]
+        ),
+        _vm._v(" "),
+        _c(
+          "li",
+          {
+            staticClass: "btn btn-info",
+            staticStyle: { display: "inline-block" }
+          },
+          [_vm._v("完了")]
+        )
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -37895,206 +38200,43 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "main-wrapper" }, [
-    _c(
-      "ul",
-      { staticClass: "list-group" },
-      _vm._l(_vm.Tickets, function(ticket) {
-        return _c("li", [
-          _c("ul", [
-            _c("li", { staticClass: "list-group-item" }, [
-              _c("div", { staticClass: "ticket-container" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "ticket-summary",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        return _vm.addSelectTickets(ticket)
-                      }
-                    }
-                  },
-                  [
-                    _c("span", {
-                      staticClass: "ticket-title",
-                      domProps: { textContent: _vm._s(ticket.text) }
-                    }),
-                    _vm._v(" "),
-                    _c("span", {
-                      staticClass: "ticket-time",
-                      domProps: { textContent: _vm._s(ticket.time) }
-                    })
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "ticket-icon-list-group" }, [
-                  _c(
-                    "span",
-                    { staticClass: "ticket-timer-icon" },
-                    [_c("ion-icon", { attrs: { name: "alarm-outline" } })],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "span",
-                    {
-                      staticClass: "ticket-open-icon",
-                      on: {
-                        click: function($event) {
-                          ticket.openFlag = !ticket.openFlag
-                        }
-                      }
-                    },
-                    [
-                      !ticket.openFlag
-                        ? _c("ion-icon", {
-                            attrs: { name: "caret-forward-outline" }
-                          })
-                        : _vm._e(),
-                      _vm._v(" "),
-                      ticket.openFlag
-                        ? _c("ion-icon", {
-                            attrs: { name: "caret-down-outline" }
-                          })
-                        : _vm._e()
-                    ],
-                    1
-                  )
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            ticket.openFlag
-              ? _c("li", { staticClass: "list-group-item" }, [
-                  _c("div", {}, [
-                    _c("span", [_vm._v("@" + _vm._s(ticket.id))]),
-                    _c("span", [_vm._v("@" + _vm._s(ticket.parentId))])
-                  ]),
-                  _vm._v(" "),
-                  !_vm.edit
-                    ? _c("span", {
-                        staticClass: "text",
-                        domProps: { textContent: _vm._s(ticket.text) },
-                        on: {
-                          click: function($event) {
-                            _vm.edit = true
-                          }
-                        }
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "span",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: !_vm.edit,
-                          expression: "!edit"
-                        }
-                      ],
-                      staticClass: "edit-icon",
-                      on: {
-                        click: function($event) {
-                          _vm.edit = true
-                        }
-                      }
-                    },
-                    [_c("ion-icon", { attrs: { name: "create-outline" } })],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm.edit
-                    ? _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: ticket.text,
-                            expression: "ticket.text"
-                          },
-                          { name: "auto-focus", rawName: "v-auto-focus" }
-                        ],
-                        attrs: { type: "text" },
-                        domProps: { value: ticket.text },
-                        on: {
-                          blur: function($event) {
-                            _vm.edit = false
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(ticket, "text", $event.target.value)
-                          }
-                        }
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm._m(0, true)
-                ])
-              : _vm._e()
-          ])
-        ])
-      }),
-      0
-    ),
-    _vm._v(" "),
-    _c("div", { attrs: { align: "center" } }, [
+  return _c(
+    "div",
+    [
+      _c("ticket-nav-component"),
+      _vm._v(" "),
       _c(
-        "button",
-        {
-          staticClass: "btn btn-primary",
-          on: {
-            click: function($event) {
-              return _vm.createBros(_vm.parentId)
+        "div",
+        { staticClass: "main-wrapper" },
+        [
+          _c(
+            "ul",
+            { staticClass: "list-group" },
+            _vm._l(_vm.Tickets, function(ticket) {
+              return _c(
+                "li",
+                [_c("ticket-component", { attrs: { ticket: ticket } })],
+                1
+              )
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _c("new-ticket-button-component", {
+            on: {
+              "create-ticket-event": function($event) {
+                return _vm.createBros(_vm.ticketNum)
+              }
             }
-          }
-        },
-        [_vm._v("+")]
+          })
+        ],
+        1
       )
-    ])
-  ])
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "ul",
-      {
-        staticClass: "group",
-        staticStyle: {
-          "text-align": "right",
-          "flex-direction": "row",
-          "justify-content": "space-between"
-        }
-      },
-      [
-        _c(
-          "li",
-          {
-            staticClass: "btn btn-danger",
-            staticStyle: { display: "inline-block" }
-          },
-          [_vm._v("削除")]
-        ),
-        _vm._v(" "),
-        _c(
-          "li",
-          {
-            staticClass: "btn btn-info",
-            staticStyle: { display: "inline-block" }
-          },
-          [_vm._v("完了")]
-        )
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -50273,7 +50415,9 @@ module.exports = function(module) {
 var map = {
 	"./components/ExampleComponent.vue": "./resources/js/components/ExampleComponent.vue",
 	"./components/NavComponent.vue": "./resources/js/components/NavComponent.vue",
+	"./components/NewTicketButtonComponent.vue": "./resources/js/components/NewTicketButtonComponent.vue",
 	"./components/SampleComponents.vue": "./resources/js/components/SampleComponents.vue",
+	"./components/TicketComponent.vue": "./resources/js/components/TicketComponent.vue",
 	"./components/TicketNavComponent.vue": "./resources/js/components/TicketNavComponent.vue",
 	"./components/TicketViewComponent.vue": "./resources/js/components/TicketViewComponent.vue"
 };
@@ -50538,6 +50682,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/NewTicketButtonComponent.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/components/NewTicketButtonComponent.vue ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _NewTicketButtonComponent_vue_vue_type_template_id_44a4f92c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NewTicketButtonComponent.vue?vue&type=template&id=44a4f92c& */ "./resources/js/components/NewTicketButtonComponent.vue?vue&type=template&id=44a4f92c&");
+/* harmony import */ var _NewTicketButtonComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewTicketButtonComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/NewTicketButtonComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _NewTicketButtonComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _NewTicketButtonComponent_vue_vue_type_template_id_44a4f92c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _NewTicketButtonComponent_vue_vue_type_template_id_44a4f92c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/NewTicketButtonComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/NewTicketButtonComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/NewTicketButtonComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NewTicketButtonComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./NewTicketButtonComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewTicketButtonComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NewTicketButtonComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/NewTicketButtonComponent.vue?vue&type=template&id=44a4f92c&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/NewTicketButtonComponent.vue?vue&type=template&id=44a4f92c& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewTicketButtonComponent_vue_vue_type_template_id_44a4f92c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./NewTicketButtonComponent.vue?vue&type=template&id=44a4f92c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewTicketButtonComponent.vue?vue&type=template&id=44a4f92c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewTicketButtonComponent_vue_vue_type_template_id_44a4f92c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewTicketButtonComponent_vue_vue_type_template_id_44a4f92c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/SampleComponents.vue":
 /*!******************************************************!*\
   !*** ./resources/js/components/SampleComponents.vue ***!
@@ -50602,6 +50815,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SampleComponents_vue_vue_type_template_id_2640aa6a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SampleComponents_vue_vue_type_template_id_2640aa6a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/TicketComponent.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/TicketComponent.vue ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TicketComponent_vue_vue_type_template_id_5b8c7b36___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TicketComponent.vue?vue&type=template&id=5b8c7b36& */ "./resources/js/components/TicketComponent.vue?vue&type=template&id=5b8c7b36&");
+/* harmony import */ var _TicketComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TicketComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/TicketComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TicketComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TicketComponent_vue_vue_type_template_id_5b8c7b36___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TicketComponent_vue_vue_type_template_id_5b8c7b36___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/TicketComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/TicketComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/TicketComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./TicketComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TicketComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/TicketComponent.vue?vue&type=template&id=5b8c7b36&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/TicketComponent.vue?vue&type=template&id=5b8c7b36& ***!
+  \************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketComponent_vue_vue_type_template_id_5b8c7b36___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./TicketComponent.vue?vue&type=template&id=5b8c7b36& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TicketComponent.vue?vue&type=template&id=5b8c7b36&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketComponent_vue_vue_type_template_id_5b8c7b36___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketComponent_vue_vue_type_template_id_5b8c7b36___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -50763,8 +51045,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/iheoikpm/public_html/shaba-room.work/apps/dev/TicketTimer/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/iheoikpm/public_html/shaba-room.work/apps/dev/TicketTimer/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

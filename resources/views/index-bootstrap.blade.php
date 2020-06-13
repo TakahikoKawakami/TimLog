@@ -140,13 +140,12 @@
             </div>
         @endif
         <div id='app'>
-        <header>
-    <!-- nav -->
-                <nav-component></nav-component>
-    <!-- nav -->
-        </header>
-            <ticket-nav-component></ticket-nav-component>
-            <!--            <ticket-view-component></ticket-view-component> -->
+            <header>
+        <!-- nav -->
+                    <nav-component></nav-component>
+        <!-- nav -->
+            </header>
+            <ticket-view-component></ticket-view-component>
         </div>
     </div>
 </div>
@@ -154,5 +153,4 @@
         <script src="{{ asset(mix('/js/app.js')) }}"></script>
   </body>
 </html>
-
 
