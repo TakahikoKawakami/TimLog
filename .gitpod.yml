@@ -1,5 +1,11 @@
-image: gitpod/workspace-mysql
+image:
+  file: .gitpod.Dockerfile
+
+# List the ports you want to expose and what to do when they are served. See https://www.gitpod.io/docs/config-ports/
+ports:
+  - port: 3000
+    onOpen: open-preview
 
 tasks:
-  - init: npm install
-    command: npm run dev
+  - init: bash .gitpod-init.sh
+    command: php artisan migrate --seed && php artisan serve
