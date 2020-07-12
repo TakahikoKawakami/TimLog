@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
 <!-- css -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href"{{ mix('css/app.css') }}" rel="stypesheet" type="text/css">
+    <link href"{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">
     <!-- Styles -->
     <style>
         html, body {
@@ -46,7 +46,7 @@
         .ticket-summary {
         }
         .ticket-icon-list-group {
-           
+
         }
         .ticket-open-icon {
           margin-left: auto;
@@ -85,7 +85,10 @@
     </div>
 </div>
 <!-- <script src="{{ asset('js/app.js') }}"></script> -->
-        <script src="{{ asset(mix('/js/app.js')) }}"></script>
+        <!-- サーバ環境ではassetが必要？ -->
+        <!-- <script src="{{ asset(mix('/js/app.js')) }}"></script>  -->
+        <!-- gitpod環境？ -->
+        <script src="{{ mix('/js/app.js') }}"></script>
   </body>
 </html>
 

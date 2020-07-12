@@ -83,7 +83,7 @@
         #nav-input:checked ~ #nav-close {
             display: block;/*カバーを表示*/
             opacity: .5;
-        } 
+        }
         #nav-input:checked ~ #nav-content {
             -webkit-transform: translateX(0%);
             transform: translateX(0%);/*中身を表示（右へスライド）*/

@@ -1,17 +1,17 @@
 <template>
-<div>
-    <ticket-nav-component></ticket-nav-component>
-    <div class="main-wrapper">
-<!-- ticket contents  -->
-        <ul class="list-group">
-            <li v-for="ticket in Tickets">
-                <ticket-component v-bind:ticket="ticket"></ticket-component>
-            </li>
-        </ul> 
-<!-- ticket contents -->
-        <new-ticket-button-component v-on:create-ticket-event="createBros(ticketNum)"></new-ticket-button-component>
+    <div>
+        <ticket-nav-component></ticket-nav-component>
+        <div class="main-wrapper">
+    <!-- ticket contents  -->
+            <ul class="list-group">
+                <li v-for="ticket in Tickets">
+                    <ticket-component v-bind:ticket="ticket"></ticket-component>
+                </li>
+            </ul>
+    <!-- ticket contents -->
+            <new-ticket-button-component v-on:create-ticket-event="createBros(ticketNum)"></new-ticket-button-component>
+        </div>
     </div>
-</div>
 </template>
 
 <script>
