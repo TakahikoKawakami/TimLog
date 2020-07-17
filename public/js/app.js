@@ -2049,6 +2049,93 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+Vue.directive('auto-focus', {
+  bind: function bind() {
+    var el = this.el;
+    Vue.nextTick(function () {
+      el.focus();
+    });
+  }
+});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['ticket'],
+  data: function data() {
+    return {
+      openFlag: false,
+      edit: false
+    };
+  },
+  methods: {
+    addSelectTickets: function addSelectTickets(ticket) {
+      this.selectTickets.push({
+        id: ticket.id,
+        text: ticket.text
+      });
+    },
+    openModal: function openModal() {
+      this.openFlag = true;
+    },
+    closeModal: function closeModal() {
+      this.openFlag = false;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TicketModalComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TicketModalComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal.vue */ "./resources/js/components/modal.vue");
 //
 //
@@ -2071,58 +2158,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
-Vue.directive('auto-focus', {
-  bind: function bind() {
-    var el = this.el;
-    Vue.nextTick(function () {
-      el.focus();
-    });
-  }
-});
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     MyModal: _modal_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -2130,22 +2166,37 @@ Vue.directive('auto-focus', {
   props: ['ticket'],
   data: function data() {
     return {
-      openFlag: false,
-      edit: false
+      ticketNum: 0,
+      selectTickets: [],
+      edit: false,
+      results: []
     };
   },
   methods: {
+    getTickets: function getTickets(section) {
+      var _this = this;
+
+      var url = builderUri(section);
+      axios.get(url).then(function (response) {
+        _this.results = response;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    createBros: function createBros(parentId) {
+      var newTicket = {
+        id: this.ticketNum,
+        parentId: parentId,
+        text: "new ticket",
+        openFlag: false
+      };
+      this.Tickets.push(newTicket);
+    },
     addSelectTickets: function addSelectTickets(ticket) {
       this.selectTickets.push({
         id: ticket.id,
         text: ticket.text
       });
-    },
-    openModal: function openModal() {
-      this.openFlag = true;
-    },
-    closeModal: function closeModal() {
-      this.openFlag = false;
     }
   }
 });
@@ -2224,6 +2275,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2235,19 +2288,19 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    var _this = this;
-
-    axios.get('https://ticket-timer.dev.apps.shaba-room.work/public/api/tickets').then(function (response) {
-      return _this.Tickets = response.data;
+    // apiを叩いて、レスポンスをselectTicketsに格納
+    axios.get('/api/tickets').then(function (response) {
+      self.selectTickets = response.data;
+      console.log(response.data);
     });
   },
   methods: {
     getTickets: function getTickets(section) {
-      var _this2 = this;
+      var _this = this;
 
       var url = builderUri(section);
       axios.get(url).then(function (response) {
-        _this2.results = response;
+        _this.results = response;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -17713,7 +17766,7 @@ return jQuery;
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.17.15';
+  var VERSION = '4.17.19';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -21420,8 +21473,21 @@ return jQuery;
      * @returns {Array} Returns the new sorted array.
      */
     function baseOrderBy(collection, iteratees, orders) {
+      if (iteratees.length) {
+        iteratees = arrayMap(iteratees, function(iteratee) {
+          if (isArray(iteratee)) {
+            return function(value) {
+              return baseGet(value, iteratee.length === 1 ? iteratee[0] : iteratee);
+            }
+          }
+          return iteratee;
+        });
+      } else {
+        iteratees = [identity];
+      }
+
       var index = -1;
-      iteratees = arrayMap(iteratees.length ? iteratees : [identity], baseUnary(getIteratee()));
+      iteratees = arrayMap(iteratees, baseUnary(getIteratee()));
 
       var result = baseMap(collection, function(value, key, collection) {
         var criteria = arrayMap(iteratees, function(iteratee) {
@@ -21678,6 +21744,10 @@ return jQuery;
         var key = toKey(path[index]),
             newValue = value;
 
+        if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+          return object;
+        }
+
         if (index != lastIndex) {
           var objValue = nested[key];
           newValue = customizer ? customizer(objValue, key, nested) : undefined;
@@ -21830,11 +21900,14 @@ return jQuery;
      *  into `array`.
      */
     function baseSortedIndexBy(array, value, iteratee, retHighest) {
-      value = iteratee(value);
-
       var low = 0,
-          high = array == null ? 0 : array.length,
-          valIsNaN = value !== value,
+          high = array == null ? 0 : array.length;
+      if (high === 0) {
+        return 0;
+      }
+
+      value = iteratee(value);
+      var valIsNaN = value !== value,
           valIsNull = value === null,
           valIsSymbol = isSymbol(value),
           valIsUndefined = value === undefined;
@@ -23319,10 +23392,11 @@ return jQuery;
       if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
         return false;
       }
-      // Assume cyclic values are equal.
-      var stacked = stack.get(array);
-      if (stacked && stack.get(other)) {
-        return stacked == other;
+      // Check that cyclic values are equal.
+      var arrStacked = stack.get(array);
+      var othStacked = stack.get(other);
+      if (arrStacked && othStacked) {
+        return arrStacked == other && othStacked == array;
       }
       var index = -1,
           result = true,
@@ -23484,10 +23558,11 @@ return jQuery;
           return false;
         }
       }
-      // Assume cyclic values are equal.
-      var stacked = stack.get(object);
-      if (stacked && stack.get(other)) {
-        return stacked == other;
+      // Check that cyclic values are equal.
+      var objStacked = stack.get(object);
+      var othStacked = stack.get(other);
+      if (objStacked && othStacked) {
+        return objStacked == other && othStacked == object;
       }
       var result = true;
       stack.set(object, other);
@@ -26868,6 +26943,10 @@ return jQuery;
      * // The `_.property` iteratee shorthand.
      * _.filter(users, 'active');
      * // => objects for ['barney']
+     *
+     * // Combining several predicates using `_.overEvery` or `_.overSome`.
+     * _.filter(users, _.overSome([{ 'age': 36 }, ['age', 40]]));
+     * // => objects for ['fred', 'barney']
      */
     function filter(collection, predicate) {
       var func = isArray(collection) ? arrayFilter : baseFilter;
@@ -27617,15 +27696,15 @@ return jQuery;
      * var users = [
      *   { 'user': 'fred',   'age': 48 },
      *   { 'user': 'barney', 'age': 36 },
-     *   { 'user': 'fred',   'age': 40 },
+     *   { 'user': 'fred',   'age': 30 },
      *   { 'user': 'barney', 'age': 34 }
      * ];
      *
      * _.sortBy(users, [function(o) { return o.user; }]);
-     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
+     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 30]]
      *
      * _.sortBy(users, ['user', 'age']);
-     * // => objects for [['barney', 34], ['barney', 36], ['fred', 40], ['fred', 48]]
+     * // => objects for [['barney', 34], ['barney', 36], ['fred', 30], ['fred', 48]]
      */
     var sortBy = baseRest(function(collection, iteratees) {
       if (collection == null) {
@@ -32500,11 +32579,11 @@ return jQuery;
 
       // Use a sourceURL for easier debugging.
       // The sourceURL gets injected into the source that's eval-ed, so be careful
-      // with lookup (in case of e.g. prototype pollution), and strip newlines if any.
-      // A newline wouldn't be a valid sourceURL anyway, and it'd enable code injection.
+      // to normalize all kinds of whitespace, so e.g. newlines (and unicode versions of it) can't sneak in
+      // and escape the comment, thus injecting code that gets evaled.
       var sourceURL = '//# sourceURL=' +
         (hasOwnProperty.call(options, 'sourceURL')
-          ? (options.sourceURL + '').replace(/[\r\n]/g, ' ')
+          ? (options.sourceURL + '').replace(/\s/g, ' ')
           : ('lodash.templateSources[' + (++templateCounter) + ']')
         ) + '\n';
 
@@ -32537,8 +32616,6 @@ return jQuery;
 
       // If `variable` is not specified wrap a with-statement around the generated
       // code to add the data object to the top of the scope chain.
-      // Like with sourceURL, we take care to not check the option's prototype,
-      // as this configuration is a code injection vector.
       var variable = hasOwnProperty.call(options, 'variable') && options.variable;
       if (!variable) {
         source = 'with (obj) {\n' + source + '\n}\n';
@@ -33245,6 +33322,9 @@ return jQuery;
      * values against any array or object value, respectively. See `_.isEqual`
      * for a list of supported value comparisons.
      *
+     * **Note:** Multiple values can be checked by combining several matchers
+     * using `_.overSome`
+     *
      * @static
      * @memberOf _
      * @since 3.0.0
@@ -33260,6 +33340,10 @@ return jQuery;
      *
      * _.filter(objects, _.matches({ 'a': 4, 'c': 6 }));
      * // => [{ 'a': 4, 'b': 5, 'c': 6 }]
+     *
+     * // Checking for several possible values
+     * _.filter(users, _.overSome([_.matches({ 'a': 1 }), _.matches({ 'a': 4 })]));
+     * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matches(source) {
       return baseMatches(baseClone(source, CLONE_DEEP_FLAG));
@@ -33273,6 +33357,9 @@ return jQuery;
      * **Note:** Partial comparisons will match empty array and empty object
      * `srcValue` values against any array or object value, respectively. See
      * `_.isEqual` for a list of supported value comparisons.
+     *
+     * **Note:** Multiple values can be checked by combining several matchers
+     * using `_.overSome`
      *
      * @static
      * @memberOf _
@@ -33290,6 +33377,10 @@ return jQuery;
      *
      * _.find(objects, _.matchesProperty('a', 4));
      * // => { 'a': 4, 'b': 5, 'c': 6 }
+     *
+     * // Checking for several possible values
+     * _.filter(users, _.overSome([_.matchesProperty('a', 1), _.matchesProperty('a', 4)]));
+     * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matchesProperty(path, srcValue) {
       return baseMatchesProperty(path, baseClone(srcValue, CLONE_DEEP_FLAG));
@@ -33513,6 +33604,10 @@ return jQuery;
      * Creates a function that checks if **all** of the `predicates` return
      * truthy when invoked with the arguments it receives.
      *
+     * Following shorthands are possible for providing predicates.
+     * Pass an `Object` and it will be used as an parameter for `_.matches` to create the predicate.
+     * Pass an `Array` of parameters for `_.matchesProperty` and the predicate will be created using them.
+     *
      * @static
      * @memberOf _
      * @since 4.0.0
@@ -33539,6 +33634,10 @@ return jQuery;
      * Creates a function that checks if **any** of the `predicates` return
      * truthy when invoked with the arguments it receives.
      *
+     * Following shorthands are possible for providing predicates.
+     * Pass an `Object` and it will be used as an parameter for `_.matches` to create the predicate.
+     * Pass an `Array` of parameters for `_.matchesProperty` and the predicate will be created using them.
+     *
      * @static
      * @memberOf _
      * @since 4.0.0
@@ -33558,6 +33657,9 @@ return jQuery;
      *
      * func(NaN);
      * // => false
+     *
+     * var matchesFunc = _.overSome([{ 'a': 1 }, { 'a': 2 }])
+     * var matchesPropertyFunc = _.overSome([['a', 1], ['a', 2]])
      */
     var overSome = createOver(arraySome);
 
@@ -38633,184 +38735,69 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("div", { staticClass: "list-group-item" }, [
-        _c("div", { staticClass: "ticket-container" }, [
-          _c(
-            "a",
-            {
-              staticClass: "ticket-summary",
-              attrs: { href: "#" },
-              on: {
-                click: function($event) {
-                  return _vm.addSelectTickets(_vm.ticket)
-                }
+  return _c("div", [
+    _c("div", { staticClass: "list-group-item" }, [
+      _c("div", { staticClass: "ticket-container" }, [
+        _c(
+          "a",
+          {
+            staticClass: "ticket-summary",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                return _vm.addSelectTickets(_vm.ticket)
               }
-            },
-            [
-              _c("span", {
-                staticClass: "ticket-title",
-                domProps: { textContent: _vm._s(_vm.ticket.text) }
-              }),
-              _vm._v(" "),
-              _c("span", {
-                staticClass: "ticket-time",
-                domProps: { textContent: _vm._s(_vm.ticket.time) }
-              })
-            ]
+            }
+          },
+          [
+            _c("span", {
+              staticClass: "ticket-title",
+              domProps: { textContent: _vm._s(_vm.ticket.text) }
+            }),
+            _vm._v(" "),
+            _c("span", {
+              staticClass: "ticket-time",
+              domProps: { textContent: _vm._s(_vm.ticket.time) }
+            })
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "ticket-icon-list-group" }, [
+          _c(
+            "span",
+            { staticClass: "ticket-timer-icon" },
+            [_c("ion-icon", { attrs: { name: "alarm-outline" } })],
+            1
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "ticket-icon-list-group" }, [
+          _c("span", [
             _c(
-              "span",
-              { staticClass: "ticket-timer-icon" },
-              [_c("ion-icon", { attrs: { name: "alarm-outline" } })],
-              1
-            ),
-            _vm._v(" "),
-            _c("span", [
-              _c(
-                "button",
-                {
-                  staticClass: "ticket-open-icon",
-                  attrs: {
-                    "data-toggle": "modal",
-                    "data-target": "#ticket-modal"
-                  }
-                },
-                [
-                  !_vm.openFlag
-                    ? _c("ion-icon", {
-                        attrs: { name: "caret-forward-outline" }
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.openFlag
-                    ? _c("ion-icon", { attrs: { name: "caret-down-outline" } })
-                    : _vm._e()
-                ],
-                1
-              )
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "MyModal",
-        [
-          _c("template", { slot: "body" }, [
-            _c("div", {}, [
-              _c("span", [_vm._v("チケット番号：" + _vm._s(_vm.ticket.id))]),
-              _c("span", [
-                _vm._v("親チケット番号：" + _vm._s(_vm.ticket.parentId))
-              ])
-            ]),
-            _vm._v(" "),
-            !_vm.edit
-              ? _c("span", {
-                  staticClass: "text",
-                  domProps: { textContent: _vm._s(_vm.ticket.text) },
-                  on: {
-                    click: function($event) {
-                      _vm.edit = true
-                    }
-                  }
-                })
-              : _vm._e(),
-            _vm._v(" "),
-            _c(
-              "span",
+              "button",
               {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: !_vm.edit,
-                    expression: "!edit"
-                  }
-                ],
-                staticClass: "edit-icon",
-                on: {
-                  click: function($event) {
-                    _vm.edit = true
-                  }
-                }
-              },
-              [_c("ion-icon", { attrs: { name: "create-outline" } })],
-              1
-            ),
-            _vm._v(" "),
-            _vm.edit
-              ? _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.ticket.text,
-                      expression: "ticket.text"
-                    },
-                    { name: "auto-focus", rawName: "v-auto-focus" }
-                  ],
-                  attrs: { type: "text" },
-                  domProps: { value: _vm.ticket.text },
-                  on: {
-                    blur: function($event) {
-                      _vm.edit = false
-                    },
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.ticket, "text", $event.target.value)
-                    }
-                  }
-                })
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c("template", { slot: "footer" }, [
-            _c(
-              "ul",
-              {
-                staticClass: "group",
-                staticStyle: {
-                  "text-align": "right",
-                  "flex-direction": "row",
-                  "justify-content": "space-between"
+                staticClass: "ticket-open-icon",
+                attrs: {
+                  "data-toggle": "modal",
+                  "data-target": "#ticket-modal"
                 }
               },
               [
-                _c(
-                  "li",
-                  {
-                    staticClass: "btn btn-danger",
-                    staticStyle: { display: "inline-block" }
-                  },
-                  [_vm._v("削除")]
-                ),
+                !_vm.openFlag
+                  ? _c("ion-icon", { attrs: { name: "caret-forward-outline" } })
+                  : _vm._e(),
                 _vm._v(" "),
-                _c(
-                  "li",
-                  {
-                    staticClass: "btn btn-info",
-                    staticStyle: { display: "inline-block" }
-                  },
-                  [_vm._v("完了")]
-                )
-              ]
+                _vm.openFlag
+                  ? _c("ion-icon", { attrs: { name: "caret-down-outline" } })
+                  : _vm._e()
+              ],
+              1
             )
           ])
-        ],
-        2
-      )
-    ],
-    1
-  )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _vm._m(0)
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -38880,6 +38867,135 @@ var staticRenderFns = [
     )
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TicketModalComponent.vue?vue&type=template&id=16f779e7&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TicketModalComponent.vue?vue&type=template&id=16f779e7& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "MyModal",
+    [
+      _c("template", { slot: "body" }, [
+        _c("div", {}, [
+          _c("span", [_vm._v("チケット番号：" + _vm._s(_vm.ticket.id))]),
+          _c("span", [_vm._v("親チケット番号：" + _vm._s(_vm.ticket.parentId))])
+        ]),
+        _vm._v(" "),
+        !_vm.edit
+          ? _c("span", {
+              staticClass: "text",
+              domProps: { textContent: _vm._s(_vm.ticket.text) },
+              on: {
+                click: function($event) {
+                  _vm.edit = true
+                }
+              }
+            })
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "span",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.edit,
+                expression: "!edit"
+              }
+            ],
+            staticClass: "edit-icon",
+            on: {
+              click: function($event) {
+                _vm.edit = true
+              }
+            }
+          },
+          [_c("ion-icon", { attrs: { name: "create-outline" } })],
+          1
+        ),
+        _vm._v(" "),
+        _vm.edit
+          ? _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.ticket.text,
+                  expression: "ticket.text"
+                },
+                { name: "auto-focus", rawName: "v-auto-focus" }
+              ],
+              attrs: { type: "text" },
+              domProps: { value: _vm.ticket.text },
+              on: {
+                blur: function($event) {
+                  _vm.edit = false
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.ticket, "text", $event.target.value)
+                }
+              }
+            })
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("template", { slot: "footer" }, [
+        _c(
+          "ul",
+          {
+            staticClass: "group",
+            staticStyle: {
+              "text-align": "right",
+              "flex-direction": "row",
+              "justify-content": "space-between"
+            }
+          },
+          [
+            _c(
+              "li",
+              {
+                staticClass: "btn btn-danger",
+                staticStyle: { display: "inline-block" }
+              },
+              [_vm._v("削除")]
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                staticClass: "btn btn-info",
+                staticStyle: { display: "inline-block" }
+              },
+              [_vm._v("完了")]
+            )
+          ]
+        )
+      ])
+    ],
+    2
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -51255,6 +51371,7 @@ var map = {
 	"./components/NewTicketButtonComponent.vue": "./resources/js/components/NewTicketButtonComponent.vue",
 	"./components/SampleComponents.vue": "./resources/js/components/SampleComponents.vue",
 	"./components/TicketComponent.vue": "./resources/js/components/TicketComponent.vue",
+	"./components/TicketModalComponent.vue": "./resources/js/components/TicketModalComponent.vue",
 	"./components/TicketNavComponent.vue": "./resources/js/components/TicketNavComponent.vue",
 	"./components/TicketViewComponent.vue": "./resources/js/components/TicketViewComponent.vue",
 	"./components/modal.vue": "./resources/js/components/modal.vue"
@@ -51740,6 +51857,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketComponent_vue_vue_type_template_id_5b8c7b36___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketComponent_vue_vue_type_template_id_5b8c7b36___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/TicketModalComponent.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/TicketModalComponent.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TicketModalComponent_vue_vue_type_template_id_16f779e7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TicketModalComponent.vue?vue&type=template&id=16f779e7& */ "./resources/js/components/TicketModalComponent.vue?vue&type=template&id=16f779e7&");
+/* harmony import */ var _TicketModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TicketModalComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/TicketModalComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TicketModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TicketModalComponent_vue_vue_type_template_id_16f779e7___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TicketModalComponent_vue_vue_type_template_id_16f779e7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/TicketModalComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/TicketModalComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/TicketModalComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./TicketModalComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TicketModalComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/TicketModalComponent.vue?vue&type=template&id=16f779e7&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/TicketModalComponent.vue?vue&type=template&id=16f779e7& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketModalComponent_vue_vue_type_template_id_16f779e7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./TicketModalComponent.vue?vue&type=template&id=16f779e7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TicketModalComponent.vue?vue&type=template&id=16f779e7&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketModalComponent_vue_vue_type_template_id_16f779e7___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketModalComponent_vue_vue_type_template_id_16f779e7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

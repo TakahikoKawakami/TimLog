@@ -5,7 +5,9 @@
     <!-- ticket contents  -->
             <ul class="list-group">
                 <li v-for="ticket in Tickets">
-                    <ticket-component v-bind:ticket="ticket"></ticket-component>
+                    <ticket-component
+                        v-bind:ticket="ticket"
+                    > </ticket-component>
                 </li>
             </ul>
     <!-- ticket contents -->
@@ -26,9 +28,11 @@
             }
         },
         mounted(){
-            axios
-            .get('https://ticket-timer.dev.apps.shaba-room.work/public/api/tickets')
-            .then(response => (this.Tickets = response.data))
+            // apiを叩いて、レスポンスをselectTicketsに格納
+            axios.get('/api/tickets').then(function(response) {
+                self.selectTickets = response.data;
+                console.log(response.data);
+            });
         },
         methods: {
             getTickets(section) {

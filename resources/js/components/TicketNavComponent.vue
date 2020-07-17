@@ -20,7 +20,7 @@
     export default {
         props: {
         },
-        data: function(){
+        data(){
             return {
                 selectTickets: {},
             }
