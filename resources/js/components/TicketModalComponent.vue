@@ -1,5 +1,5 @@
 <template>
-    <MyModal>
+    <MyModal v-on:close-event="closeModal()">
         <template slot="body">
             <div class="">
                 <span>チケット番号：{{ ticket.id }}</span><span>親チケット番号：{{ ticket.parentId }}</span>
@@ -23,11 +23,11 @@
     import MyModal from './modal.vue'
     export default {
         components: { MyModal },
-        props: ['ticket'],
+        props: ['targetTicket'],
         data(){
             return {
                 ticketNum: 0,
-                selectTickets: [],
+                ticket: this.targetTicket,
                 edit: false,
                 results: []
             }
@@ -53,6 +53,9 @@
                     id: ticket.id,
                     text: ticket.text,
                 });
+            },
+            closeModal() {
+                this.$emit('close-event');
             }
         }
     }

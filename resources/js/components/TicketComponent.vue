@@ -11,16 +11,23 @@
                     <ion-icon name="alarm-outline"></ion-icon> <!-- timer start -->
                 </span>
                 <span>
-                    <button class="ticket-open-icon" data-toggle="modal" data-target="#ticket-modal">
-                        <ion-icon v-if="!openFlag" name="caret-forward-outline"></ion-icon> <!-- edit open -->
-                        <ion-icon v-if="openFlag" name="caret-down-outline"></ion-icon> <!-- edit close -->
+                    <button
+                        class="ticket-open-icon"
+                        v-on:click="openModal()"
+                    >
+                        <ion-icon v-if="!openModalFlag" name="caret-forward-outline"></ion-icon> <!-- edit open -->
+                        <ion-icon v-if="openModalFlag" name="caret-down-outline"></ion-icon> <!-- edit close -->
                     </button>
                 </span>
             </div>
         </div>
     </div>
-    <!-- <ticket-modal-component></ticket-modal-component> -->
-
+    <ticket-modal-component
+        v-if="openModalFlag"
+        v-bind:targetTicket="ticket"
+        v-on:close-event="closeModal"
+    ></ticket-modal-component>
+<!--
     <div class="modal fade" id="ticket-modal" tabindex="-1" role="dialog" aria-labelledby="ticket-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centerd" role="document">
             <div class="modal-content">
@@ -39,6 +46,7 @@
             </div>
         </div>
     </div>
+    -->
 </div>
 </template>
 
@@ -55,7 +63,7 @@
         props: ['ticket'],
         data() {
             return {
-                openFlag: false,
+                openModalFlag: false,
                 edit: false,
             }
         },
@@ -67,10 +75,10 @@
                 });
             },
             openModal() {
-                this.openFlag = true;
+                this.openModalFlag = true;
             },
             closeModal() {
-                this.openFlag = false;
+                this.openModalFlag = false;
             }
         }
     }
