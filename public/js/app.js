@@ -2166,6 +2166,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2247,15 +2248,6 @@ __webpack_require__.r(__webpack_exports__);
     return {
       selectTickets: {}
     };
-  },
-  // 読み込み時に実行
-  mounted: function mounted() {
-    var self = this; // apiを叩いて、レスポンスをselectTicketsに格納
-
-    axios.get('/public/api/tickets').then(function (response) {
-      self.selectTickets = response.data;
-      console.log(response.data);
-    });
   }
 });
 
@@ -2293,28 +2285,34 @@ __webpack_require__.r(__webpack_exports__);
     return {
       ticketNum: 0,
       selectTickets: [],
-      Tickets: [],
+      tickets: [],
       edit: false,
       results: []
     };
   },
   mounted: function mounted() {
-    // apiを叩いて、レスポンスをselectTicketsに格納
-    axios.get('/api/tickets').then(function (response) {
-      self.selectTickets = response.data;
-      console.log(response.data);
+    var _this = this;
+
+    var url = location.href + '/api/tickets';
+    console.log("mounted start---------" + url);
+    axios.get(url).then(function (response) {
+      return _this.tickets = response.data;
     });
+    console.log(this.tickets);
+    console.log("mounted   end---------" + url);
   },
   methods: {
-    getTickets: function getTickets(section) {
-      var _this = this;
+    // apiを叩いて、レスポンスをselectTicketsに格納
+    getTickets: function getTickets() {
+      var _this2 = this;
 
-      var url = builderUri(section);
+      var url = location.href + '/api/tickets';
+      console.log("getTickets start---------" + url);
       axios.get(url).then(function (response) {
-        _this.results = response;
-      })["catch"](function (error) {
-        console.log(error);
+        return _this2.tickets = response.data;
       });
+      console.log(this.tickets);
+      console.log("getTickets   end---------" + url);
     },
     createBros: function createBros(parentId) {
       var newTicket = {
@@ -2323,7 +2321,7 @@ __webpack_require__.r(__webpack_exports__);
         text: "new ticket",
         openFlag: false
       };
-      this.Tickets.push(newTicket);
+      this.tickets.push(newTicket);
     },
     addSelectTickets: function addSelectTickets(ticket) {
       this.selectTickets.push({
@@ -39002,71 +39000,42 @@ var render = function() {
     },
     [
       _c("template", { slot: "body" }, [
-        _c("div", {}, [
-          _c("span", [_vm._v("チケット番号：" + _vm._s(_vm.ticket.id))]),
-          _c("span", [_vm._v("親チケット番号：" + _vm._s(_vm.ticket.parentId))])
-        ]),
-        _vm._v(" "),
-        !_vm.edit
-          ? _c("span", {
-              staticClass: "text",
-              domProps: { textContent: _vm._s(_vm.ticket.text) },
-              on: {
-                click: function($event) {
-                  _vm.edit = true
-                }
-              }
-            })
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "span",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: !_vm.edit,
-                expression: "!edit"
-              }
-            ],
-            staticClass: "edit-icon",
-            on: {
-              click: function($event) {
-                _vm.edit = true
-              }
-            }
-          },
-          [_c("ion-icon", { attrs: { name: "create-outline" } })],
-          1
-        ),
-        _vm._v(" "),
-        _vm.edit
-          ? _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.ticket.text,
-                  expression: "ticket.text"
-                },
-                { name: "auto-focus", rawName: "v-auto-focus" }
-              ],
-              attrs: { type: "text" },
-              domProps: { value: _vm.ticket.text },
-              on: {
-                blur: function($event) {
-                  _vm.edit = false
-                },
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.ticket, "text", $event.target.value)
-                }
-              }
-            })
-          : _vm._e()
+        _c("table", {}, [
+          _c("tr", [
+            _c("td", [_vm._v("チケット番号")]),
+            _c("td", [_vm._v(_vm._s(_vm.ticket.id))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("親チケット番号")]),
+            _c("td", [_vm._v(_vm._s(_vm.ticket.parent_id))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("チケット名")]),
+            _c("td", [_vm._v(_vm._s(_vm.ticket.text))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("予定工数")]),
+            _c("td", [_vm._v(_vm._s(_vm.ticket.deadline_second))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("開始予定日")]),
+            _c("td", [_vm._v(_vm._s(_vm.ticket.start_date_time))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("終了予定日")]),
+            _c("td", [_vm._v(_vm._s(_vm.ticket.deadline_date))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("メモ")]),
+            _c("td", [_vm._v(_vm._s(_vm.ticket.memo))])
+          ])
+        ])
       ]),
       _vm._v(" "),
       _c("template", { slot: "footer" }, [
@@ -39197,7 +39166,7 @@ var render = function() {
           _c(
             "ul",
             { staticClass: "list-group" },
-            _vm._l(_vm.Tickets, function(ticket) {
+            _vm._l(_vm.tickets, function(ticket) {
               return _c(
                 "li",
                 [_c("ticket-component", { attrs: { ticket: ticket } })],

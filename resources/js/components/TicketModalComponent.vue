@@ -1,14 +1,15 @@
 <template>
     <MyModal v-on:close-event="closeModal()">
         <template slot="body">
-            <div class="">
-                <span>チケット番号：{{ ticket.id }}</span><span>親チケット番号：{{ ticket.parentId }}</span>
-            </div>
-            <span class="text" v-if="!edit" v-text="ticket.text" v-on:click="edit = true"></span>
-            <span class="edit-icon" v-show="!edit" v-on:click="edit = true">
-                <ion-icon name="create-outline"></ion-icon>
-            </span>
-            <input v-if="edit" type="text" v-model="ticket.text" v-on:blur="edit = false" v-auto-focus>
+            <table class="">
+                <tr><td>チケット番号</td><td>{{ ticket.id }}</td></tr>
+                <tr><td>親チケット番号</td><td>{{ ticket.parent_id }}</td></tr>
+                <tr><td>チケット名</td><td>{{ ticket.text }}</td></tr>
+                <tr><td>予定工数</td><td>{{ ticket.deadline_second }}</td></tr>
+                <tr><td>開始予定日</td><td>{{ ticket.start_date_time }}</td></tr>
+                <tr><td>終了予定日</td><td>{{ ticket.deadline_date }}</td></tr>
+                <tr><td>メモ</td><td>{{ ticket.memo }}</td></tr>
+            </table>
         </template>
         <template slot="footer">
             <ul class="group" style="text-align: right; flex-direction: row; justify-content: space-between;">

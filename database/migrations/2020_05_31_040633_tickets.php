@@ -19,10 +19,12 @@ class Tickets extends Migration
             $table->integer('parent_id');
             $table->string('text');
             $table->string('memo');
-            $table->date('start_date');
-            $table->date('stop_date');
+            $table->dateTime('start_date_time');
+            $table->dateTime('stop_date_time');
             $table->date('deadline_date');
-            $table->integer('status');
+            $table->integer('deadline_second')->comment("予定工数（秒）");
+            $table->integer('status')->comment("ステータス　0:開始前, 1:計測中, 2:停止中, 3:完了, 99:削除");
+            $table->integer('display_sequence');
             $table->timestamps();
         });
     }

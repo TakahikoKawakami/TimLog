@@ -5,7 +5,13 @@ image:
 ports:
   - port: 8000
     onOpen: open-preview
+  - port: 9000
+    onOpen: ignore
 
 tasks:
   - init: bash .gitpod-init.sh
     command: php artisan migrate --seed && php artisan serve
+
+vscode:
+  extensions:
+    - felixfbecker.php-debug@1.13.0:WX8Y3EpQk3zgahy41yJtNQ==

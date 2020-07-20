@@ -4,7 +4,7 @@
         <div class="main-wrapper">
     <!-- ticket contents  -->
             <ul class="list-group">
-                <li v-for="ticket in Tickets">
+                <li v-for="ticket in tickets">
                     <ticket-component
                         v-bind:ticket="ticket"
                     > </ticket-component>
@@ -22,24 +22,30 @@
             return {
                 ticketNum: 0,
                 selectTickets: [],
-                Tickets: [],
+                tickets: [],
                 edit: false,
-                results: []
+                results: [],
             }
         },
         mounted(){
-            // apiを叩いて、レスポンスをselectTicketsに格納
-            axios.get('/api/tickets').then(function(response) {
-                self.selectTickets = response.data;
-                console.log(response.data);
-            });
+            let url = location.href + '/api/tickets';
+            console.log("mounted start---------" + url)
+            axios
+                .get(url)
+                .then(response => (this.tickets = response.data))
+            console.log(this.tickets)
+            console.log("mounted   end---------" + url)
         },
         methods: {
-            getTickets(section) {
-                let url = builderUri(section);
-                axios.get(url).then((response) => {
-                        this.results = response;
-                }).catch( error => {console.log(error);});
+            // apiを叩いて、レスポンスをselectTicketsに格納
+            getTickets() {
+                let url = location.href + '/api/tickets';
+                console.log("getTickets start---------" + url)
+                axios
+                    .get(url)
+                    .then(response => (this.tickets = response.data))
+                console.log(this.tickets)
+                console.log("getTickets   end---------" + url)
             },
             createBros(parentId) {
                 let newTicket = {
@@ -48,7 +54,7 @@
                     text: "new ticket",
                     openFlag: false,
                 }
-                this.Tickets.push(newTicket)
+                this.tickets.push(newTicket)
             },
             addSelectTickets(ticket) {
                 this.selectTickets.push({
