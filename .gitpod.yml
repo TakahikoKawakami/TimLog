@@ -1,17 +1,15 @@
+
 image:
   file: .gitpod.Dockerfile
-
-# List the ports you want to expose and what to do when they are served. See https://www.gitpod.io/docs/config-ports/
+# This is to get rid of the annoying popup feel free to leave this out
 ports:
-  - port: 8000
-    onOpen: open-preview
+  # - port: 8000
+    # onOpen: open-preview
   - port: 9000
     onOpen: ignore
-
-tasks:
-  - init: bash .gitpod-init.sh
-    command: php artisan migrate --seed && php artisan serve
-
 vscode:
   extensions:
     - felixfbecker.php-debug@1.13.0:WX8Y3EpQk3zgahy41yJtNQ==
+tasks:
+  - init: bash .gitpod-init.sh
+    command: php artisan migrate --seed && php artisan serve

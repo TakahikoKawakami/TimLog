@@ -8,8 +8,10 @@ use App\Entities\TicketEntity;
 
 interface TicketRepositoryInterface
 {
-
-
     public function getTickets();
+
+    // public function getById();
+
+    // public function store();
 
 }

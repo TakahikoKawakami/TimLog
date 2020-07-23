@@ -43,4 +43,41 @@ class TicketRepository implements TicketRepositoryInterface
         return new TicketCollection($ticketCollection);
     }
 
+    // public function getById(int $id): TicketEntity
+    // {
+    //     // $record = $this->ticketEloquent->;
+    //     // return TicketEntity::rebuild(
+    //     //     $record->id,
+    //     //     $record->user_id,
+    //     //     $record->parent_id,
+    //     //     $record->text,
+    //     //     $record->memo,
+    //     //     Carbon::parse($record->start_date_time),
+    //     //     Carbon::parse($record->stop_date_time),
+    //     //     Carbon::parse($record->deadline_date),
+    //     //     Carbon::parse($record->deadline_second),
+    //     //     $record->status,
+    //     //     $record->display_sequence
+    //     // );
+    // }
+
+    // public function store(TicketEntity $ticket): TicketEntity
+    // {
+    //     $storeRecord = $this->ticketEloquent->fill(
+    //         $ticket->id,
+    //         $ticket->user_id,
+    //         $ticket->parent_id,
+    //         $ticket->text,
+    //         $ticket->memo,
+    //         $ticket->start_date_time,
+    //         $ticket->stop_date_time,
+    //         $ticket->deadline_date,
+    //         $ticket->deadline_second,
+    //         $ticket->status,
+    //         $ticket->display_sequence
+    //     )->save();
+
+    //     return
+    // }
+
 }
