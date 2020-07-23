@@ -2,18 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "php",
-      "name": "Launch",
-      "request": "launch",
-    //   "port": 8001,
-      "stopOnEntry": true,
-    //   "program": "${file}",
-    //   "program": "${workspaceRoot}",
-    //   "cwd": "${workspaceRoot}",
-    //   "externalConsole": false
-        "pathMappings": {
-        "${workspaceRoot}": "${workspaceRoot}"
-    },
+        "type": "php",
+        "name": "Launch",
+        "request": "launch",
+        "port": 9000,
+        "stopOnEntry": true,
+        //   "program": "${file}",
+        //   "program": "${workspaceRoot}",
+        //   "cwd": "${workspaceRoot}",
+        //   "externalConsole": false
+    //     "pathMappings": {
+    //     "${workspaceRoot}": "${workspaceRoot}"
+    // },
     }
   ]
 }

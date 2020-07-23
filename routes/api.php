@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-// test
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,7 +17,8 @@ Route::get("sample", function() {
     return $data;
 });
 Route::get("tickets", "TicketController@apiIndex");
-
+Route::post("tickets", "TicketController@apiCreate");
+Route::put("tickets/{id}", "TicketController@apiUpdate");
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

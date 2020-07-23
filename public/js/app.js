@@ -2167,6 +2167,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2192,23 +2196,18 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    createBros: function createBros(parentId) {
-      var newTicket = {
-        id: this.ticketNum,
-        parentId: parentId,
-        text: "new ticket",
-        openFlag: false
-      };
-      this.Tickets.push(newTicket);
-    },
-    addSelectTickets: function addSelectTickets(ticket) {
-      this.selectTickets.push({
-        id: ticket.id,
-        text: ticket.text
-      });
-    },
     closeModal: function closeModal() {
       this.$emit('close-event');
+    },
+    storeTicket: function storeTicket(_storeTicket) {
+      var url = location.href + "api/tickets/" + _storeTicket.id;
+      console.log("storeTicket start-------");
+      axios.put(url, {
+        parentId: _storeTicket.parent_id
+      }).then(function (response) {
+        console.log(response);
+      });
+      console.log("storeTicket end  -------");
     }
   }
 });
@@ -39003,7 +39002,27 @@ var render = function() {
         _c("table", {}, [
           _c("tr", [
             _c("td", [_vm._v("チケット番号")]),
-            _c("td", [_vm._v(_vm._s(_vm.ticket.id))])
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.id,
+                    expression: "ticket.id"
+                  }
+                ],
+                domProps: { value: _vm.ticket.id },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.ticket, "id", $event.target.value)
+                  }
+                }
+              })
+            ])
           ]),
           _vm._v(" "),
           _c("tr", [
@@ -39063,9 +39082,14 @@ var render = function() {
               "li",
               {
                 staticClass: "btn btn-info",
-                staticStyle: { display: "inline-block" }
+                staticStyle: { display: "inline-block" },
+                on: {
+                  click: function($event) {
+                    return _vm.storeTicket(_vm.ticket)
+                  }
+                }
               },
-              [_vm._v("完了")]
+              [_vm._v("登録")]
             )
           ]
         )

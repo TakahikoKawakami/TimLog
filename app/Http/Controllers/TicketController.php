@@ -7,6 +7,8 @@ use App\Repositories\TicketRepositoryInterface;
 use App\Services\TicketService;
 use App\Utils\ArrayUtil;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use App\Http\Requests\TicketCreateRequest;
+use App\Http\Requests\TicketUpdateRequest;
 
 class TicketController extends Controller
 {
@@ -32,6 +34,25 @@ class TicketController extends Controller
         $tickets = ArrayUtil::toSnakeKeys($ticketArray);
 
         return json_encode($tickets);
+    }
+
+    public function apiCreate(TicketCreateRequest $request)
+    {
+        $ticketService = new TicketService($this->ticketRepository);
+        $newTicketEntity = $ticketService->createTicket($request);
+        $returnTicket = ArrayUtil::toSnakeKeys($newTicketEntity->toArray());
+
+        return json_encode($returnTicket);
+    }
+
+    public function apiUpdate(int $id, TicketUpdateRequest $request)
+    {
+        return $request;
+        $ticketService = new TicketService($this->ticketRepository);
+        $updatedTicketEntity = $ticketService->updateTicket($id, $request);
+        $returnTicket = ArrayUtil::toSnakeKeys($updatedTicketEntity->toArray());
+
+        return json_encode($returnTicket);
     }
 
     /**
