@@ -20,19 +20,10 @@
     export default {
         props: {
         },
-        data: function(){
+        data(){
             return {
                 selectTickets: {},
             }
-        },
-        // 読み込み時に実行
-        mounted() {
-            var self = this;
-            // apiを叩いて、レスポンスをselectTicketsに格納
-            axios.get('/public/api/tickets').then(function(response) {
-                self.selectTickets = response.data;
-                console.log(response.data);
-            });
         }
     }
 </script>

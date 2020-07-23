@@ -4,7 +4,7 @@ namespace App\Entities;
 
 use Carbon\Carbon;
 
-class TicketEntity 
+class TicketEntity
 {
     protected $id;
     protected $userId;
@@ -13,19 +13,23 @@ class TicketEntity
     protected $memo;
     protected $startDateTime;
     protected $stopDateTime;
-    protected $deadlineDateTime;
+    protected $deadlineDate;
+    protected $deadlineSecond;
     protected $status;
+    protected $displaySequence;
 
     private function __construct(
-        ?int $id, 
-        int $userId, 
-        int $parentId, 
-        string $text, 
-        string $memo, 
-        Carbon $startDateTime, 
+        ?int $id,
+        int $userId,
+        int $parentId,
+        string $text,
+        string $memo,
+        Carbon $startDateTime,
         Carbon $stopDateTime,
-        Carbon $deadlineDateTime,
-        int $status
+        Carbon $deadlineDate,
+        Carbon $deadlineSecond,
+        int $status,
+        int $displaySequence
     )
     {
         $this->id = $id;
@@ -35,71 +39,83 @@ class TicketEntity
         $this->memo = $memo;
         $this->startDateTime = $startDateTime;
         $this->stopDateTime = $stopDateTime;
-        $this->deadlineDateTIme = $deadlineDateTime;
+        $this->deadlineDate = $deadlineDate;
+        $this->deadlineSecond = $deadlineSecond;
         $this->status = $status;
+        $this->displaySequence = $displaySequence;
     }
 
     public static function build(
-        int $userId, 
-        int $parentId, 
-        string $text, 
-        string $memo, 
-        Carbon $startDateTime, 
+        int $userId,
+        int $parentId,
+        string $text,
+        string $memo,
+        Carbon $startDateTime,
         Carbon $stopDateTime,
-        Carbon $deadlineDateTime,
-        int $status
+        Carbon $deadlineDate,
+        Carbon $deadlineSecond,
+        int $status,
+        int $displaySequence
     ): TicketEntity
     {
         return new TicketEntity(
-            null, 
-            $userId, 
-            $parentId, 
-            $text, 
-            $memo, 
-            $startDateTime, 
+            null,
+            $userId,
+            $parentId,
+            $text,
+            $memo,
+            $startDateTime,
             $stopDateTime,
-            $deadlineDateTime,
-            $status
+            $deadlineDate,
+            $deadlineSecond,
+            $status,
+            $displaySequence
         );
     }
 
     public static function rebuild(
-        int $id, 
-        int $userId, 
-        int $parentId, 
-        string $text, 
-        string $memo, 
-        Carbon $startDateTime, 
+        int $id,
+        int $userId,
+        int $parentId,
+        string $text,
+        string $memo,
+        Carbon $startDateTime,
         Carbon $stopDateTime,
-        Carbon $deadlineDateTime,
-        int $status
+        Carbon $deadlineDate,
+        Carbon $deadlineSecond,
+        int $status,
+        int $displaySequence
     ): TicketEntity
     {
         return new TicketEntity(
-            $id, 
-            $userId, 
-            $parentId, 
-            $text, 
-            $memo, 
-            $startDateTime, 
+            $id,
+            $userId,
+            $parentId,
+            $text,
+            $memo,
+            $startDateTime,
             $stopDateTime,
-            $deadlineDateTime,
-            $status
+            $deadlineDate,
+            $deadlineSecond,
+            $status,
+            $displaySequence
         );
     }
 
     public function toArray(): array
     {
         return [
-            'id' => $this->id, 
-            'userId' => $this->userId, 
-            'parentId' => $this->parentId, 
-            'text' => $this->text, 
-            'memo' => $this->memo, 
-            'startDateTime' => $this->startDateTime, 
+            'id' => $this->id,
+            'userId' => $this->userId,
+            'parentId' => $this->parentId,
+            'text' => $this->text,
+            'memo' => $this->memo,
+            'startDateTime' => $this->startDateTime,
             'stopDateTime' => $this->stopDateTime,
-            'deadlineDateTime' => $this->deadlineDateTime,
+            'deadlineDate' => $this->deadlineDate,
+            'deadlineSecond' => $this->deadlineSecond,
             'status' => $this->status,
+            'displaySequence' => $this->displaySequence,
         ];
     }
 

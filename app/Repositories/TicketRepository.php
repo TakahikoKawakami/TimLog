@@ -17,7 +17,7 @@ class TicketRepository implements TicketRepositoryInterface
         $this->ticketEloquent = new Ticket();
     }
 
-    public function getTickets() 
+    public function getTickets(): TicketCollection
     {
         $records = $this->ticketEloquent->get();
 //        return $records;
@@ -31,10 +31,12 @@ class TicketRepository implements TicketRepositoryInterface
                     $record->parent_id,
                     $record->text,
                     $record->memo,
-                    Carbon::parse($record->start_date),
-                    Carbon::parse($record->stop_date),
+                    Carbon::parse($record->start_date_time),
+                    Carbon::parse($record->stop_date_time),
                     Carbon::parse($record->deadline_date),
-                    $record->status
+                    Carbon::parse($record->deadline_second),
+                    $record->status,
+                    $record->display_sequence
                 )
             );
         }

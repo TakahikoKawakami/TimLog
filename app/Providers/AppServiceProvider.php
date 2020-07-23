@@ -28,6 +28,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        /* for gitpod
+        we’ll need to following code in our AppServiceProvider to force Laravel to use our APP_URL to generate URLs and Routes.
+        The code we’ve added forces Laravel to use the app.url config entry (which is gotten from .env’s APP_URL) as the root URL.
+        */
+        \URL::forceRootUrl(\Config::get('app.url'));
+        if (\Str::contains(\Config::get('app.url'), 'https://')) {
+            \URL::forceScheme('https');
+        }
     }
 }
