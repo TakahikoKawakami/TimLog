@@ -3,29 +3,31 @@
 namespace App\Repositories;
 use Carbon\Carbon;
 
-use App\Repositories\TicketRepositoryInterface;
 use App\Model\Ticket;
-use App\Entities\TicketCollection;
+use Illuminate\Support\Str;
 use App\Entities\TicketEntity;
+use App\Entities\TicketCollection;
+use App\Factories\TicketFactoryInterface;
+use App\Repositories\TicketRepositoryInterface;
 
 class TicketRepository implements TicketRepositoryInterface
 {
     protected $ticketEloquent;
 
-    public function __construct()
+    public function __construct(TicketFactoryInterface $ticketFactory)
     {
+        $this->ticketFactory = $ticketFactory;
         $this->ticketEloquent = new Ticket();
     }
 
     public function getTickets(): TicketCollection
     {
         $records = $this->ticketEloquent->get();
-//        return $records;
 
         $ticketCollection = collect();
         foreach ($records as $record) {
             $ticketCollection->push(
-                TicketEntity::rebuild(
+                $this->ticketFactory->rebuild(
                     $record->id,
                     $record->user_id,
                     $record->parent_id,
@@ -34,7 +36,7 @@ class TicketRepository implements TicketRepositoryInterface
                     Carbon::parse($record->start_date_time),
                     Carbon::parse($record->stop_date_time),
                     Carbon::parse($record->deadline_date),
-                    Carbon::parse($record->deadline_second),
+                    $record->deadline_second,
                     $record->status,
                     $record->display_sequence
                 )
@@ -43,41 +45,46 @@ class TicketRepository implements TicketRepositoryInterface
         return new TicketCollection($ticketCollection);
     }
 
-    // public function getById(int $id): TicketEntity
-    // {
-    //     // $record = $this->ticketEloquent->;
-    //     // return TicketEntity::rebuild(
-    //     //     $record->id,
-    //     //     $record->user_id,
-    //     //     $record->parent_id,
-    //     //     $record->text,
-    //     //     $record->memo,
-    //     //     Carbon::parse($record->start_date_time),
-    //     //     Carbon::parse($record->stop_date_time),
-    //     //     Carbon::parse($record->deadline_date),
-    //     //     Carbon::parse($record->deadline_second),
-    //     //     $record->status,
-    //     //     $record->display_sequence
-    //     // );
-    // }
+    public function getById(int $id, bool $getDeleted = false): TicketEntity
+    {
+        $eloquent = $this->ticketEloquent->where('id', $id);
+        if (!$getDeleted) {
+            $eloquent = $eloquent->where('status','!=', self::STATUS_DELETED);
+        }
+        $record = $eloquent->first();
+        return $this->ticketFactory->rebuildFromEloquent($record);
+    }
 
-    // public function store(TicketEntity $ticket): TicketEntity
+    public function insertTicket(TicketEntity $ticket): TicketEntity
+    {
+        $request = $ticket->toArray();
+        unset($request['id']);
+        return $this->storeTicket($request);
+    }
+
+    // public function storeTicket(TicketEntity $ticket): TicketEntity
     // {
+    //     $request = $ticket->toArray();
+    //     foreach ($request as $key => $value) {
+    //         $this->ticket->$key = $value;
+    //     }
+    //     $developerPaymentHead->update();
+    //     return $this->getByPrimary($developerPaymentHead->id);
+
     //     $storeRecord = $this->ticketEloquent->fill(
-    //         $ticket->id,
-    //         $ticket->user_id,
-    //         $ticket->parent_id,
-    //         $ticket->text,
-    //         $ticket->memo,
-    //         $ticket->start_date_time,
-    //         $ticket->stop_date_time,
-    //         $ticket->deadline_date,
-    //         $ticket->deadline_second,
-    //         $ticket->status,
-    //         $ticket->display_sequence
     //     )->save();
 
     //     return
     // }
 
+    private function storeTicket(array $request): TicketEntity
+    {
+        $fillArray = [];
+        foreach ($request as $key => $value) {
+            $fillArray[Str::snake($key)] = $value;
+        }
+        $this->ticketEloquent->fill($fillArray)->save();
+
+        return $this->getById($this->ticketEloquent->id, false);
+    }
 }

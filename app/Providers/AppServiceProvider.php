@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use App\Repositories\TicketRepositoryInterface;
+use App\Factories\TicketFactory;
 use App\Repositories\TicketRepository;
+use Illuminate\Support\ServiceProvider;
+use App\Factories\TicketFactoryInterface;
+use App\Repositories\TicketRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,10 +17,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(TicketRepositoryInterface::class,function($app) {
-                return new TicketRepository();
+        $this->app->singleton(TicketFactoryInterface::class,function($app) {
+            return new TicketFactory();
             //App\Repositories\TicketRepository::class
-            });
+        });
+        $this->app->singleton(TicketRepositoryInterface::class,function($app) {
+                return new TicketRepository(new TicketFactory);
+            //App\Repositories\TicketRepository::class
+        });
     }
 
     /**

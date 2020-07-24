@@ -18,7 +18,7 @@ class TicketEntity
     protected $status;
     protected $displaySequence;
 
-    private function __construct(
+    public function __construct(
         ?int $id,
         int $userId,
         int $parentId,
@@ -27,7 +27,7 @@ class TicketEntity
         Carbon $startDateTime,
         Carbon $stopDateTime,
         Carbon $deadlineDate,
-        Carbon $deadlineSecond,
+        int $deadlineSecond,
         int $status,
         int $displaySequence
     )
@@ -43,63 +43,6 @@ class TicketEntity
         $this->deadlineSecond = $deadlineSecond;
         $this->status = $status;
         $this->displaySequence = $displaySequence;
-    }
-
-    public static function build(
-        int $userId,
-        int $parentId,
-        string $text,
-        string $memo,
-        Carbon $startDateTime,
-        Carbon $stopDateTime,
-        Carbon $deadlineDate,
-        Carbon $deadlineSecond,
-        int $status,
-        int $displaySequence
-    ): TicketEntity
-    {
-        return new TicketEntity(
-            null,
-            $userId,
-            $parentId,
-            $text,
-            $memo,
-            $startDateTime,
-            $stopDateTime,
-            $deadlineDate,
-            $deadlineSecond,
-            $status,
-            $displaySequence
-        );
-    }
-
-    public static function rebuild(
-        int $id,
-        int $userId,
-        int $parentId,
-        string $text,
-        string $memo,
-        Carbon $startDateTime,
-        Carbon $stopDateTime,
-        Carbon $deadlineDate,
-        Carbon $deadlineSecond,
-        int $status,
-        int $displaySequence
-    ): TicketEntity
-    {
-        return new TicketEntity(
-            $id,
-            $userId,
-            $parentId,
-            $text,
-            $memo,
-            $startDateTime,
-            $stopDateTime,
-            $deadlineDate,
-            $deadlineSecond,
-            $status,
-            $displaySequence
-        );
     }
 
     public function toArray(): array
@@ -118,5 +61,6 @@ class TicketEntity
             'displaySequence' => $this->displaySequence,
         ];
     }
+
 
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ Route::get("sample", function() {
 Route::get("tickets", "TicketController@apiIndex");
 Route::post("tickets", "TicketController@apiCreate");
 Route::put("tickets/{id}", "TicketController@apiUpdate");
+Route::delete("tickets/{id}", "TicketController@apiDelete");
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

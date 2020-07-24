@@ -1,19 +1,23 @@
 <?php
 
 namespace App\Services;
-use App\Repositories\TicketRepositoryInterface;
-use App\Entities\TicketEntity;
-use App\Http\Requests\TicketUpdateRequest;
 use Carbon\Carbon;
+use App\Entities\TicketEntity;
+use App\Factories\TicketFactoryInterface;
+use App\Http\Requests\TicketCreateRequest;
+use App\Http\Requests\TicketUpdateRequest;
+use App\Repositories\TicketRepositoryInterface;
 
 class TicketService
 {
     protected $userRepository;
 
+    protected $ticketFactory;
     protected $ticketRepository;
 
-    public function __construct(TicketRepositoryInterface $ticketRepository)
+    public function __construct(TicketFactoryInterface $ticketFactory, TicketRepositoryInterface $ticketRepository)
     {
+        $this->ticketFactory = $ticketFactory;
         $this->ticketRepository = $ticketRepository;
     }
 
@@ -22,55 +26,18 @@ class TicketService
         return $this->ticketRepository->getTickets();
     }
 
-    public function createTicket(): TicketEntity
+    public function createTicket(array $fieldsArray): TicketEntity
     {
-        return new TicketEntity(
-            null,
-            1,
-            2,
-            "3",
-            "4",
-            Carbon::now(),
-            Carbon::now(),
-            Carbon::now(),
-            Carbon::now(),
-            9,
-            10
-        );
-//        return $this->ticketRepository->createTicket();
+        $newTicket = $this->ticketFactory->buildFromArray($fieldsArray);
+        return $this->ticketRepository->insertTicket($newTicket);
     }
 
-    public function updateTicket(int $id, TicketUpdateRequest $request): TicketEntity
+    public function updateTicket(int $id, array $fieldsArray): TicketEntity
     {
-        $newlyTicketEntity = TicketEntity::rebuild(
-            $id,
-            "123",// userId
-            $request->parentId,
-            $request->text,
-            $request->memo,
-            $request->startDateTime,
-            $request->stopDateTime,
-            $request->deadlineDate,
-            $request->deadlineSecond,
-            $request->status,
-            $request->displaySequence
-        );
-        $targetTicketEntity = $this->ticketRepository->store($newlyTicketEntity);
-
-        return new TicketEntity(
-            $id,
-            1,
-            2,
-            "3",
-            "4",
-            Carbon::now(),
-            Carbon::now(),
-            Carbon::now(),
-            Carbon::now(),
-            9,
-            10
-        );
-//        return $this->ticketRepository->createTicket();
+        $arrayForUpdate = $fieldsArray;
+        $arrayForUpdate['id'] = $id;
+        $newlyTicketEntity = $this->ticketFactory->rebuildFromArray($fieldsArray);
+        return $this->ticketRepository->insertTicket($newlyTicketEntity);
     }
 
 }

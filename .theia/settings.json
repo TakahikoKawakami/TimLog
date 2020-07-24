@@ -1,3 +1,5 @@
 {
-    "editor.autoSave": "off"
+    "editor.autoSave": "off",
+    "workbench.list.openMode": "singleClick"
+
 }
