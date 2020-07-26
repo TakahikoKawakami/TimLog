@@ -28,16 +28,16 @@ class TicketService
 
     public function createTicket(array $fieldsArray): TicketEntity
     {
-        $newTicket = $this->ticketFactory->buildFromArray($fieldsArray);
-        return $this->ticketRepository->insertTicket($newTicket);
+        $newTicketEntity = $this->ticketFactory->buildFromArray($fieldsArray);
+        return $this->ticketRepository->storeTicket($newTicketEntity);
     }
 
     public function updateTicket(int $id, array $fieldsArray): TicketEntity
     {
-        $arrayForUpdate = $fieldsArray;
-        $arrayForUpdate['id'] = $id;
-        $newlyTicketEntity = $this->ticketFactory->rebuildFromArray($fieldsArray);
-        return $this->ticketRepository->insertTicket($newlyTicketEntity);
+        $targetTicketEntity = $this->ticketRepository->getById($id, false);
+        $targetTicketEntity->bulkUpdateByArray($fieldsArray);
+
+        return $this->ticketRepository->storeTicket($targetTicketEntity);
     }
 
 }

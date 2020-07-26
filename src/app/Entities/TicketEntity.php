@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class TicketEntity
 {
@@ -62,5 +63,65 @@ class TicketEntity
         ];
     }
 
+    public function bulkUpdateByArray(array $array): void
+    {
+        foreach ($array as $key => $value) {
+            if ($this->has($key)) {
+                // Str::studly 頭文字を大文字に変換する（pascal case）
+                $methodName = "update" . Str::studly($key);
+                $this->$methodName($value);
+            }
+        }
+    }
 
+    public function updateParentId(int $value)
+    {
+        $this->parentId = $value;
+    }
+
+    public function updateText(string $value)
+    {
+        $this->text = $value;
+    }
+
+    public function updateMemo(string $value)
+    {
+        $this->memo = $value;
+    }
+
+    public function updateStartDateTime(Carbon $value)
+    {
+        $this->startDateTime = $value;
+    }
+
+    public function updateStopDateTime(Carbon $value)
+    {
+        $this->stopDateTime = $value;
+    }
+
+    public function updateDeadlineDate(Carbon $value)
+    {
+        $this->deadlineDate = $value;
+    }
+
+    public function updateDeadlineSecond(int $value)
+    {
+        $this->deadlineSecond = $value;
+    }
+
+    public function updateStatus(int $value)
+    {
+        $this->status = $value;
+    }
+
+    public function updateDisplaySequence(int $value)
+    {
+        $this->displaySequence = $value;
+    }
+
+    public function has($key)
+    {
+        $thisArray = $this->toArray();
+        return isset($thisArray[$key]) ? true : false;
+    }
 }
