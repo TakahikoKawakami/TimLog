@@ -4,8 +4,8 @@ php:
     - unused_use
   finder:
     not-name:
-      - index.php
-      - server.php
+      - src/index.php
+      - src/server.php
 js:
   finder:
     not-name:

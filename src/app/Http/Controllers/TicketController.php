@@ -63,11 +63,18 @@ class TicketController extends Controller
 
     public function apiUpdate(int $id, TicketUpdateRequest $request)
     {
-        return $request;
-        // $updatedTicketEntity = $this->ticketService->updateTicket($id, $request);
-        // $returnTicket = ArrayUtil::toSnakeKeys($updatedTicketEntity->toArray());
-
-        // return json_encode($returnTicket);
+        try {
+            DB::beginTransaction();
+            $newTicketEntity = $this->ticketService->updateTicket($id, $request->all());
+            $returnTicket = ArrayUtil::toSnakeKeys($newTicketEntity->toArray());
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('error');
+            throw $e;
+        }
+        return response()->json($returnTicket);
+        // return $request;
     }
 
     /**

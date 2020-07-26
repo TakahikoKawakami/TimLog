@@ -24,8 +24,7 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true,
-        "cache-dir": "/home/iheoikpm/public_html/shaba-room.work/apps/ticket-timer/cache"
+        "sort-packages": true
     },
     "extra": {
         "laravel": {

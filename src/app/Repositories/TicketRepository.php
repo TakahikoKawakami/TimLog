@@ -55,11 +55,15 @@ class TicketRepository implements TicketRepositoryInterface
         return $this->ticketFactory->rebuildFromEloquent($record);
     }
 
-    public function insertTicket(TicketEntity $ticket): TicketEntity
+    public function storeTicket(TicketEntity $ticket): TicketEntity
     {
         $request = $ticket->toArray();
-        unset($request['id']);
-        return $this->storeTicket($request);
+
+        // insert時、idにはnullが入っているので、削除する
+        if (is_null($request['id'])) {
+            unset($request['id']);
+        }
+        return $this->store($request);
     }
 
     // public function storeTicket(TicketEntity $ticket): TicketEntity
@@ -77,7 +81,7 @@ class TicketRepository implements TicketRepositoryInterface
     //     return
     // }
 
-    private function storeTicket(array $request): TicketEntity
+    private function store(array $request): TicketEntity
     {
         $fillArray = [];
         foreach ($request as $key => $value) {

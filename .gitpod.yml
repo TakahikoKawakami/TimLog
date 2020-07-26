@@ -12,4 +12,4 @@ vscode:
     - felixfbecker.php-debug@1.13.0:WX8Y3EpQk3zgahy41yJtNQ==
 tasks:
   - init: bash .gitpod-init.sh
-    command: php artisan migrate --seed && php artisan serve
+    command: cd src && php artisan migrate --seed && php artisan serve

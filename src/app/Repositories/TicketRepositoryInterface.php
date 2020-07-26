@@ -18,7 +18,7 @@ interface TicketRepositoryInterface
 
     public function getById(int $id, bool $getDeleted);
 
-    public function insertTicket(TicketEntity $ticket): TicketEntity;
+    public function storeTicket(TicketEntity $ticket): TicketEntity;
 
 
 }
