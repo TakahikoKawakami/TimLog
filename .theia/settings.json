@@ -1,5 +1,8 @@
 {
     "editor.autoSave": "off",
-    "workbench.list.openMode": "singleClick"
+    "workbench.list.openMode": "singleClick",
+    "cSpell.words": [
+        "Authenticatable"
+    ]
 
 }
