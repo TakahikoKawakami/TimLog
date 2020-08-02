@@ -14,7 +14,7 @@ interface TicketRepositoryInterface
     const STATUS_FINISHED = 3;
     const STATUS_DELETED = 99;
 
-    public function getTickets();
+    public function getTickets(bool $getDeleted);
 
     public function getById(int $id, bool $getDeleted);
 

@@ -2200,10 +2200,18 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('close-event');
     },
     storeTicket: function storeTicket(_storeTicket) {
-      var url = location.href + "api/tickets/" + _storeTicket.id;
+      var url = location.href + "api/tickets/" + this.targetTicket.id;
       console.log("storeTicket start-------");
       axios.put(url, {
-        parentId: _storeTicket.parent_id
+        parentId: _storeTicket.parent_id,
+        text: _storeTicket.text,
+        memo: _storeTicket.memo,
+        startDateTime: _storeTicket.start_date_time,
+        stopDateTime: _storeTicket.stop_date_time,
+        deadlineDate: _storeTicket.deadline_date,
+        deadlineSecond: _storeTicket.deadline_second,
+        status: _storeTicket.status,
+        displaySequence: _storeTicket.display_sequence
       }).then(function (response) {
         console.log(response);
       });
@@ -39002,23 +39010,28 @@ var render = function() {
         _c("table", {}, [
           _c("tr", [
             _c("td", [_vm._v("チケット番号")]),
+            _c("td", [_vm._v(_vm._s(_vm.ticket.id))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("親チケット番号")]),
             _c("td", [
               _c("input", {
                 directives: [
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.ticket.id,
-                    expression: "ticket.id"
+                    value: _vm.ticket.parent_id,
+                    expression: "ticket.parent_id"
                   }
                 ],
-                domProps: { value: _vm.ticket.id },
+                domProps: { value: _vm.ticket.parent_id },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.ticket, "id", $event.target.value)
+                    _vm.$set(_vm.ticket, "parent_id", $event.target.value)
                   }
                 }
               })
@@ -39026,33 +39039,128 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("td", [_vm._v("親チケット番号")]),
-            _c("td", [_vm._v(_vm._s(_vm.ticket.parent_id))])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
             _c("td", [_vm._v("チケット名")]),
-            _c("td", [_vm._v(_vm._s(_vm.ticket.text))])
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.text,
+                    expression: "ticket.text"
+                  }
+                ],
+                domProps: { value: _vm.ticket.text },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.ticket, "text", $event.target.value)
+                  }
+                }
+              })
+            ])
           ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [_vm._v("予定工数")]),
-            _c("td", [_vm._v(_vm._s(_vm.ticket.deadline_second))])
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.deadline_second,
+                    expression: "ticket.deadline_second"
+                  }
+                ],
+                domProps: { value: _vm.ticket.deadline_second },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.ticket, "deadline_second", $event.target.value)
+                  }
+                }
+              })
+            ])
           ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [_vm._v("開始予定日")]),
-            _c("td", [_vm._v(_vm._s(_vm.ticket.start_date_time))])
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.start_date_time,
+                    expression: "ticket.start_date_time"
+                  }
+                ],
+                domProps: { value: _vm.ticket.start_date_time },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.ticket, "start_date_time", $event.target.value)
+                  }
+                }
+              })
+            ])
           ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [_vm._v("終了予定日")]),
-            _c("td", [_vm._v(_vm._s(_vm.ticket.deadline_date))])
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.deadline_date,
+                    expression: "ticket.deadline_date"
+                  }
+                ],
+                domProps: { value: _vm.ticket.deadline_date },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.ticket, "deadline_date", $event.target.value)
+                  }
+                }
+              })
+            ])
           ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [_vm._v("メモ")]),
-            _c("td", [_vm._v(_vm._s(_vm.ticket.memo))])
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.memo,
+                    expression: "ticket.memo"
+                  }
+                ],
+                domProps: { value: _vm.ticket.memo },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.ticket, "memo", $event.target.value)
+                  }
+                }
+              })
+            ])
           ])
         ])
       ]),
@@ -52269,8 +52377,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /workspace/TicketTimer/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /workspace/TicketTimer/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /workspace/TicketTimer/src/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /workspace/TicketTimer/src/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -20,9 +20,15 @@ class TicketRepository implements TicketRepositoryInterface
         $this->ticketEloquent = new Ticket();
     }
 
-    public function getTickets(): TicketCollection
+    public function getTickets(bool $getDeleted = false): TicketCollection
     {
-        $records = $this->ticketEloquent->get();
+        $eloquent = $this->ticketEloquent;
+        if (!$getDeleted) {
+            $eloquent = $eloquent->where('status','!=', self::STATUS_DELETED);
+        }
+
+
+        $records = $eloquent->get();
 
         $ticketCollection = collect();
         foreach ($records as $record) {
@@ -61,9 +67,10 @@ class TicketRepository implements TicketRepositoryInterface
 
         // insert時、idにはnullが入っているので、削除する
         if (is_null($request['id'])) {
-            unset($request['id']);
+            return $this->insert($request);
         }
-        return $this->store($request);
+        // update時はそのまま
+        return $this->update($request);
     }
 
     // public function storeTicket(TicketEntity $ticket): TicketEntity
@@ -81,7 +88,14 @@ class TicketRepository implements TicketRepositoryInterface
     //     return
     // }
 
-    private function store(array $request): TicketEntity
+    /**
+     * チケットを新規登録する
+     * TicketModelのfillableで指定されたフィールドのみ更新される
+     *
+     * @param array $request
+     * @return TicketEntity
+     */
+    private function insert(array $request): TicketEntity
     {
         $fillArray = [];
         foreach ($request as $key => $value) {
@@ -91,4 +105,16 @@ class TicketRepository implements TicketRepositoryInterface
 
         return $this->getById($this->ticketEloquent->id, false);
     }
+
+    private function update(array $request): TicketEntity
+    {
+        $fillArray = [];
+        foreach ($request as $key => $value) {
+            $fillArray[Str::snake($key)] = $value;
+        }
+        $this->ticketEloquent->find($fillArray['id'])->update($fillArray);
+
+        return $this->getById($fillArray['id'], false);
+    }
+
 }

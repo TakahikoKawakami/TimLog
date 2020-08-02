@@ -84,7 +84,7 @@ class TicketEntity
         $this->text = $value;
     }
 
-    public function updateMemo(string $value)
+    public function updateMemo(?string $value)
     {
         $this->memo = $value;
     }

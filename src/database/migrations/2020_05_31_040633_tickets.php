@@ -18,7 +18,7 @@ class Tickets extends Migration
             $table->integer('user_id');
             $table->integer('parent_id');
             $table->string('text');
-            $table->string('memo');
+            $table->string('memo')->nullable(true);
             $table->dateTime('start_date_time');
             $table->dateTime('stop_date_time');
             $table->date('deadline_date');

@@ -40,7 +40,7 @@ class BasePutRequest extends FormRequest
      *
      * @var array
      */
-    protected $rules;
+    protected $rules = [];
 
     /**
      * Determine if the user is authorized to make this request.

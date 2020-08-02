@@ -61,7 +61,7 @@ class TicketController extends Controller
         return response()->json($returnTicket);
     }
 
-    public function apiUpdate(int $id, TicketUpdateRequest $request)
+    public function apiUpdate(TicketUpdateRequest $request, int $id)
     {
         try {
             DB::beginTransaction();
