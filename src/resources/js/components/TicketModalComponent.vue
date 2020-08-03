@@ -80,6 +80,7 @@
                         console.log(response);
                     })
                 console.log("storeTicket end  -------");
+                this.closeModal();
             }
         }
     }
