@@ -6,7 +6,27 @@
                 <a class="ticket-element ticket-summary" href="#" v-on:click="addSelectTickets(ticket)">
                     <span class="ticket-title" v-text="ticket.text"></span>
                 </a>
-                <div class="ticket-element ticket-time" v-text="ticket.deadline_second"></div>
+                <timer-component
+                    v-bind:second="ticket.deadline_second"
+                    v-bind:status="ticket.status"
+                    ref='timer'
+            ></timer-component>
+            </div>
+            <div class="ticket-element">
+                <button
+                    class="timer-btn"
+                    v-if="ticket.status==0"
+                    v-on:click="startTimer()"
+                >
+                    <ion-icon name="play-outline"></ion-icon>
+                </button>
+                <button
+                    class="timer-btn"
+                    v-if="ticket.status==1"
+                    v-on:click="stopTimer()"
+                >
+                    <ion-icon name="pause"></ion-icon>
+                </button>
             </div>
             <div class="ticket-element ticket-icon-list-group">
                 <span class="ticket-timer-icon">
@@ -57,11 +77,12 @@
         }
     })
     export default {
-        props: ['ticket'],
+        props: ['eachTicket'],
         data() {
             return {
                 openModalFlag: false,
                 edit: false,
+                ticket: this.eachTicket,
             }
         },
         methods: {
@@ -76,6 +97,16 @@
             },
             closeModal() {
                 this.openModalFlag = false;
+            },
+            startTimer() {
+                console.log('timer start-----');
+                this.$refs.timer.start();
+                this.ticket.status = 1;
+            },
+            stopTimer() {
+                console.log('timer start-----');
+                this.$refs.timer.stop();
+                this.ticket.status = 0;
             }
         }
     }

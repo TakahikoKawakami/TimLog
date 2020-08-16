@@ -6,7 +6,7 @@
             <ul class="list-group">
                 <li v-for="ticket in tickets">
                     <ticket-component
-                        v-bind:ticket="ticket"
+                        v-bind:eachTicket="ticket"
                     > </ticket-component>
                 </li>
             </ul>
