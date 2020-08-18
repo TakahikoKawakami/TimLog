@@ -85,6 +85,13 @@
                 ticket: this.eachTicket,
             }
         },
+        mounted() {
+            if (this.ticket.status == 1) {
+                this.startTimer();
+            } else if (this.ticket.status == 0) {
+                this.stopTimer();
+            }
+        },
         methods: {
             addSelectTickets: function(ticket) {
                 this.selectTickets.push({
@@ -102,11 +109,43 @@
                 console.log('timer start-----');
                 this.$refs.timer.start();
                 this.ticket.status = 1;
+
+                this.updateTicketStatus();
             },
             stopTimer() {
                 console.log('timer start-----');
                 this.$refs.timer.stop();
                 this.ticket.status = 0;
+
+                this.updateTicketStatus();
+            },
+
+            getDateTime(date, format) {
+                let targetDateTime = new Date(date);
+                let result = format;
+                result = result.replace(/YYYY/, targetDateTime.getFullYear());
+                result = result.replace(/MM/, targetDateTime.getMonth() + 1);
+                result = result.replace(/DD/, targetDateTime.getDate());
+
+                result = result.replace(/hh/, targetDateTime.getHours());
+                result = result.replace(/ii/, targetDateTime.getMinutes());
+                result = result.replace(/ss/, targetDateTime.getSeconds());
+
+                return result;
+            },
+
+            updateTicketStatus() {
+                let url = location.href + "api/tickets/" + this.ticket.id;
+                let now = Date.now();
+                axios
+                    .put(url, {
+                        startDateTime: this.getDateTime(Date.now(), "YYYY-MM-DD hh:ii:ss"),
+                        status: this.ticket.status,
+                    })
+                    .then(function(response) {
+                        console.log(response);
+                    })
+
             }
         }
     }

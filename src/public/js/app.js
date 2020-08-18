@@ -2118,7 +2118,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 Vue.directive('auto-focus', {
   bind: function bind() {
     var el = this.el;
@@ -2135,6 +2134,13 @@ Vue.directive('auto-focus', {
       edit: false,
       ticket: this.eachTicket
     };
+  },
+  mounted: function mounted() {
+    if (this.ticket.status == 1) {
+      this.startTimer();
+    } else if (this.ticket.status == 0) {
+      this.stopTimer();
+    }
   },
   methods: {
     addSelectTickets: function addSelectTickets(ticket) {
@@ -2153,11 +2159,34 @@ Vue.directive('auto-focus', {
       console.log('timer start-----');
       this.$refs.timer.start();
       this.ticket.status = 1;
+      this.updateTicketStatus();
     },
     stopTimer: function stopTimer() {
       console.log('timer start-----');
       this.$refs.timer.stop();
       this.ticket.status = 0;
+      this.updateTicketStatus();
+    },
+    getDateTime: function getDateTime(date, format) {
+      var targetDateTime = new Date(date);
+      var result = format;
+      result = result.replace(/YYYY/, targetDateTime.getFullYear());
+      result = result.replace(/MM/, targetDateTime.getMonth() + 1);
+      result = result.replace(/DD/, targetDateTime.getDate());
+      result = result.replace(/hh/, targetDateTime.getHours());
+      result = result.replace(/ii/, targetDateTime.getMinutes());
+      result = result.replace(/ss/, targetDateTime.getSeconds());
+      return result;
+    },
+    updateTicketStatus: function updateTicketStatus() {
+      var url = location.href + "api/tickets/" + this.ticket.id;
+      var now = Date.now();
+      axios.put(url, {
+        startDateTime: this.getDateTime(Date.now(), "YYYY-MM-DD hh:ii:ss"),
+        status: this.ticket.status
+      }).then(function (response) {
+        console.log(response);
+      });
     }
   }
 });
@@ -39141,7 +39170,7 @@ var render = function() {
                   })
                 ]
               ),
-              _vm._v("\n                残：\n                "),
+              _vm._v(" "),
               _c("timer-component", {
                 ref: "timer",
                 attrs: {
