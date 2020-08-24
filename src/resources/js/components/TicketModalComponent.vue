@@ -8,6 +8,9 @@
                 <tr><td>予定工数</td><td><input v-model="ticket.deadline_second"></td></tr>
                 <tr><td>開始予定日</td><td><input v-model="ticket.start_date_time"></td></tr>
                 <tr><td>終了予定日</td><td><input v-model="ticket.deadline_date"></td></tr>
+                <tr><td>計測開始日</td><td><input v-model="ticket.run_start_date_time"></td></tr>
+                <tr><td>計測停止日</td><td><input v-model="ticket.run_stop_date_time"></td></tr>
+                <tr><td>残り時間</td><td><input v-model="ticket.deadline_second"></td></tr>
                 <tr><td>メモ</td><td><input v-model="ticket.memo"></td></tr>
             </table>
         </template>

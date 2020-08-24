@@ -109,15 +109,17 @@
                 console.log('timer start-----');
                 this.$refs.timer.start();
                 this.ticket.status = 1;
+                this.ticket.run_start_date_time = this.getDateTime(Date.now(), 'YYYY-MM-DD hh:ii:ss');
 
-                this.updateTicketStatus();
+                this.updateTicket();
             },
             stopTimer() {
                 console.log('timer start-----');
                 this.$refs.timer.stop();
                 this.ticket.status = 0;
+                this.ticket.run_stop_date_time = this.getDateTime(Date.now(), 'YYYY-MM-DD hh:ii:ss');
 
-                this.updateTicketStatus();
+                this.updateTicket();
             },
 
             getDateTime(date, format) {
@@ -134,13 +136,15 @@
                 return result;
             },
 
-            updateTicketStatus() {
+            updateTicket() {
                 let url = location.href + "api/tickets/" + this.ticket.id;
                 let now = Date.now();
                 axios
                     .put(url, {
                         startDateTime: this.getDateTime(Date.now(), "YYYY-MM-DD hh:ii:ss"),
                         status: this.ticket.status,
+                        runStartDateTime: this.ticket.run_start_date_time,
+                        runStopDateTime: this.ticket.run_stop_date_time,
                     })
                     .then(function(response) {
                         console.log(response);

@@ -2159,13 +2159,15 @@ Vue.directive('auto-focus', {
       console.log('timer start-----');
       this.$refs.timer.start();
       this.ticket.status = 1;
-      this.updateTicketStatus();
+      this.ticket.run_start_date_time = this.getDateTime(Date.now(), 'YYYY-MM-DD hh:ii:ss');
+      this.updateTicket();
     },
     stopTimer: function stopTimer() {
       console.log('timer start-----');
       this.$refs.timer.stop();
       this.ticket.status = 0;
-      this.updateTicketStatus();
+      this.ticket.run_stop_date_time = this.getDateTime(Date.now(), 'YYYY-MM-DD hh:ii:ss');
+      this.updateTicket();
     },
     getDateTime: function getDateTime(date, format) {
       var targetDateTime = new Date(date);
@@ -2178,12 +2180,14 @@ Vue.directive('auto-focus', {
       result = result.replace(/ss/, targetDateTime.getSeconds());
       return result;
     },
-    updateTicketStatus: function updateTicketStatus() {
+    updateTicket: function updateTicket() {
       var url = location.href + "api/tickets/" + this.ticket.id;
       var now = Date.now();
       axios.put(url, {
         startDateTime: this.getDateTime(Date.now(), "YYYY-MM-DD hh:ii:ss"),
-        status: this.ticket.status
+        status: this.ticket.status,
+        runStartDateTime: this.ticket.run_start_date_time,
+        runStopDateTime: this.ticket.run_stop_date_time
       }).then(function (response) {
         console.log(response);
       });
@@ -2203,6 +2207,9 @@ Vue.directive('auto-focus', {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal.vue */ "./resources/js/components/modal.vue");
+//
+//
+//
 //
 //
 //
@@ -39421,6 +39428,89 @@ var render = function() {
                       return
                     }
                     _vm.$set(_vm.ticket, "deadline_date", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("計測開始日")]),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.run_start_date_time,
+                    expression: "ticket.run_start_date_time"
+                  }
+                ],
+                domProps: { value: _vm.ticket.run_start_date_time },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.ticket,
+                      "run_start_date_time",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("計測停止日")]),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.run_stop_date_time,
+                    expression: "ticket.run_stop_date_time"
+                  }
+                ],
+                domProps: { value: _vm.ticket.run_stop_date_time },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.ticket,
+                      "run_stop_date_time",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("残り時間")]),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.deadline_second,
+                    expression: "ticket.deadline_second"
+                  }
+                ],
+                domProps: { value: _vm.ticket.deadline_second },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.ticket, "deadline_second", $event.target.value)
                   }
                 }
               })

@@ -43,6 +43,9 @@ class TicketRepository implements TicketRepositoryInterface
                     Carbon::parse($record->stop_date_time),
                     Carbon::parse($record->deadline_date),
                     $record->deadline_second,
+                    Carbon::parse($record->run_start_date_time),
+                    Carbon::parse($record->run_stop_date_time),
+                    $record->runtime_second,
                     $record->status,
                     $record->display_sequence
                 )
