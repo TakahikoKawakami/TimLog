@@ -2118,6 +2118,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 Vue.directive('auto-focus', {
   bind: function bind() {
     var el = this.el;
@@ -2131,20 +2152,28 @@ Vue.directive('auto-focus', {
   data: function data() {
     return {
       openModalFlag: false,
+      openChildTicketFlag: false,
       edit: false,
-      ticket: this.eachTicket
+      ticket: this.eachTicket,
+      runtimeSecond: this.eachTicket.runtime_second
     };
   },
-  mounted: function mounted() {
+  created: function created() {
     if (this.ticket.status == 1) {
       var lastRunStartDateTime = new Date(this.ticket.run_start_date_time);
       var nowDateTime = new Date(Date.now());
-      var runtimeSecond = (nowDateTime.getTime() - lastRunStartDateTime.getTime()) / 1000;
-      this.ticket.runtime_second += runtimeSecond;
+      var leaveSecond = (nowDateTime.getTime() - lastRunStartDateTime.getTime()) / 1000; // this.ticket.runtime_second += leaveSecond;
+
+      this.runtimeSecond += leaveSecond;
       console.log("---monted");
       console.log("last run start: " + lastRunStartDateTime);
       console.log("now           : " + nowDateTime);
-      console.log("runtimeSecond : " + runtimeSecond);
+      console.log("leaveSecond   : " + leaveSecond);
+      console.log("runtimeSecond : " + this.runtimeSecond);
+    }
+  },
+  mounted: function mounted() {
+    if (this.ticket.status == 1) {
       this.$refs.timer.start();
     }
   },
@@ -2154,6 +2183,9 @@ Vue.directive('auto-focus', {
         id: ticket.id,
         text: ticket.text
       });
+    },
+    toggleChildList: function toggleChildList() {
+      this.openChildTicketFlag = !this.openChildTicketFlag;
     },
     openModal: function openModal() {
       this.openModalFlag = true;
@@ -2390,6 +2422,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['parentId'],
   data: function data() {
     return {
       ticketNum: 0,
@@ -2402,9 +2435,14 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    var url = location.href + '/api/tickets';
+    console.log("parentId : " + this.parentId);
+    var url = location.href + 'api/tickets';
     console.log("mounted start---------" + url);
-    axios.get(url).then(function (response) {
+    axios.get(url, {
+      params: {
+        parent_id: this.parentId
+      }
+    }).then(function (response) {
       return _this.tickets = response.data;
     });
     console.log(this.tickets);
@@ -2415,7 +2453,7 @@ __webpack_require__.r(__webpack_exports__);
     getTickets: function getTickets() {
       var _this2 = this;
 
-      var url = location.href + '/api/tickets';
+      var url = location.href + 'api/tickets';
       console.log("getTickets start---------" + url);
       axios.get(url).then(function (response) {
         return _this2.tickets = response.data;
@@ -7057,7 +7095,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".ticket-container[data-v-5b8c7b36] {\n  display: flex;\n}\n.between-container[data-v-5b8c7b36] {\n  justify-content: space-between;\n}\n.vertical-container[data-v-5b8c7b36] {\n  flex-direction: column;\n  justify-content: space-between;\n}\n", ""]);
+exports.push([module.i, ".ticket-container[data-v-5b8c7b36] {\n  display: flex;\n}\n.between-container[data-v-5b8c7b36] {\n  justify-content: space-between;\n}\n.vertical-container[data-v-5b8c7b36] {\n  flex-direction: column;\n  justify-content: space-between;\n}\n.element-wide[data-v-5b8c7b36] {\n  width: 100%;\n}\n", ""]);
 
 // exports
 
@@ -39176,116 +39214,160 @@ var render = function() {
     "div",
     [
       _c("div", { staticClass: "list-group-item" }, [
-        _c("div", { staticClass: "ticket-container between-container" }, [
-          _c(
-            "div",
-            { staticClass: "ticket-container vertical-container" },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "ticket-element ticket-summary",
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      return _vm.addSelectTickets(_vm.ticket)
-                    }
-                  }
-                },
-                [
-                  _c("span", {
-                    staticClass: "ticket-title",
-                    domProps: { textContent: _vm._s(_vm.ticket.text) }
-                  })
-                ]
-              ),
-              _vm._v(" "),
-              _c("timer-component", {
-                ref: "timer",
-                attrs: {
-                  second:
-                    _vm.ticket.deadline_second - _vm.ticket.runtime_second,
-                  status: _vm.ticket.status
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "ticket-element" }, [
-            _vm.ticket.status == 0
-              ? _c(
-                  "button",
-                  {
-                    staticClass: "timer-btn",
-                    on: {
-                      click: function($event) {
-                        return _vm.startTimer()
-                      }
-                    }
-                  },
-                  [_c("ion-icon", { attrs: { name: "play-outline" } })],
-                  1
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.ticket.status == 1
-              ? _c(
-                  "button",
-                  {
-                    staticClass: "timer-btn",
-                    on: {
-                      click: function($event) {
-                        return _vm.stopTimer()
-                      }
-                    }
-                  },
-                  [_c("ion-icon", { attrs: { name: "pause" } })],
-                  1
-                )
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "ticket-element ticket-icon-list-group" }, [
+        _c("div", { staticClass: "ticket-container vertical-container" }, [
+          _c("div", { staticClass: "ticket-container between-container" }, [
             _c(
-              "span",
-              { staticClass: "ticket-timer-icon" },
-              [_c("ion-icon", { attrs: { name: "alarm-outline" } })],
+              "div",
+              { staticClass: "ticket-container vertical-container" },
+              [
+                _c(
+                  "a",
+                  {
+                    staticClass: "ticket-element ticket-summary",
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        return _vm.addSelectTickets(_vm.ticket)
+                      }
+                    }
+                  },
+                  [
+                    _c("span", {
+                      staticClass: "ticket-title",
+                      domProps: { textContent: _vm._s(_vm.ticket.text) }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c("timer-component", {
+                  ref: "timer",
+                  attrs: {
+                    second: _vm.ticket.deadline_second - _vm.runtimeSecond,
+                    status: _vm.ticket.status
+                  }
+                })
+              ],
               1
             ),
             _vm._v(" "),
-            _c("span", [
-              _c(
-                "button",
-                {
-                  staticClass: "ticket-open-icon",
-                  on: {
-                    click: function($event) {
-                      return _vm.openModal()
-                    }
-                  }
-                },
+            _c("div", { staticClass: "ticket-element" }, [
+              _vm.ticket.status == 0
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "timer-btn",
+                      on: {
+                        click: function($event) {
+                          return _vm.startTimer()
+                        }
+                      }
+                    },
+                    [_c("ion-icon", { attrs: { name: "play-outline" } })],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.ticket.status == 1
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "timer-btn",
+                      on: {
+                        click: function($event) {
+                          return _vm.stopTimer()
+                        }
+                      }
+                    },
+                    [_c("ion-icon", { attrs: { name: "pause" } })],
+                    1
+                  )
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "ticket-element ticket-icon-list-group" },
+              [
+                _c(
+                  "span",
+                  { staticClass: "ticket-timer-icon" },
+                  [_c("ion-icon", { attrs: { name: "alarm-outline" } })],
+                  1
+                ),
+                _vm._v(" "),
+                _c("span", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "ticket-open-icon",
+                      on: {
+                        click: function($event) {
+                          return _vm.openModal()
+                        }
+                      }
+                    },
+                    [
+                      !_vm.openModalFlag
+                        ? _c("ion-icon", {
+                            attrs: { name: "caret-forward-outline" }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.openModalFlag
+                        ? _c("ion-icon", {
+                            attrs: { name: "caret-down-outline" }
+                          })
+                        : _vm._e()
+                    ],
+                    1
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _vm.openChildTicketFlag
+            ? _c(
+                "div",
+                { staticClass: "list-group-item" },
                 [
-                  !_vm.openModalFlag
-                    ? _c("ion-icon", {
-                        attrs: { name: "caret-forward-outline" }
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.openModalFlag
-                    ? _c("ion-icon", { attrs: { name: "caret-down-outline" } })
-                    : _vm._e()
+                  _c("ticket-view-component", {
+                    attrs: { "parent-id": _vm.ticket.id }
+                  })
                 ],
                 1
               )
-            ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "element-wide" }, [
+            _c(
+              "button",
+              {
+                staticClass: "ticket-open-icon element-wide",
+                on: {
+                  click: function($event) {
+                    return _vm.toggleChildList()
+                  }
+                }
+              },
+              [
+                !_vm.openChildTicketFlag
+                  ? _c("ion-icon", { attrs: { name: "caret-forward-outline" } })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.openChildTicketFlag
+                  ? _c("ion-icon", { attrs: { name: "caret-down-outline" } })
+                  : _vm._e()
+              ],
+              1
+            )
           ])
         ])
       ]),
       _vm._v(" "),
       _vm.openModalFlag
         ? _c("ticket-modal-component", {
-            attrs: { targetTicket: _vm.ticket },
+            attrs: { "target-ticket": _vm.ticket },
             on: { "close-event": _vm.closeModal }
           })
         : _vm._e()
@@ -39688,41 +39770,35 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("ticket-nav-component"),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "main-wrapper" },
-        [
-          _c(
-            "ul",
-            { staticClass: "list-group" },
-            _vm._l(_vm.tickets, function(ticket) {
-              return _c(
-                "li",
-                [_c("ticket-component", { attrs: { eachTicket: ticket } })],
-                1
-              )
-            }),
-            0
-          ),
-          _vm._v(" "),
-          _c("new-ticket-button-component", {
-            on: {
-              "create-ticket-event": function($event) {
-                return _vm.createBros(_vm.ticketNum)
-              }
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "main-wrapper" },
+      [
+        _c(
+          "ul",
+          { staticClass: "list-group" },
+          _vm._l(_vm.tickets, function(ticket) {
+            return _c(
+              "li",
+              [_c("ticket-component", { attrs: { "each-ticket": ticket } })],
+              1
+            )
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c("new-ticket-button-component", {
+          on: {
+            "create-ticket-event": function($event) {
+              return _vm.createBros(_vm.ticketNum)
             }
-          })
-        ],
-        1
-      )
-    ],
-    1
-  )
+          }
+        })
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

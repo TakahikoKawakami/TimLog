@@ -4,8 +4,9 @@ namespace App\Services;
 use Carbon\Carbon;
 use App\Entities\TicketEntity;
 use App\Factories\TicketFactoryInterface;
-use App\Http\Requests\TicketCreateRequest;
-use App\Http\Requests\TicketUpdateRequest;
+use App\Http\Requests\Ticket\GetTicketRequest;
+use App\Http\Requests\Ticket\CreateTicketRequest;
+use App\Http\Requests\Ticket\UpdateTicketRequest;
 use App\Repositories\TicketRepositoryInterface;
 
 class TicketService
@@ -21,9 +22,9 @@ class TicketService
         $this->ticketRepository = $ticketRepository;
     }
 
-    public function getTickets()
+    public function getTickets(?array $queryArray = null)
     {
-        return $this->ticketRepository->getTickets();
+        return $this->ticketRepository->getTickets($queryArray);
     }
 
     public function createTicket(array $fieldsArray): TicketEntity

@@ -20,9 +20,14 @@ class TicketRepository implements TicketRepositoryInterface
         $this->ticketEloquent = new Ticket();
     }
 
-    public function getTickets(bool $getDeleted = false): TicketCollection
+    public function getTickets(?array $queryArray = null, bool $getDeleted = false): TicketCollection
     {
         $eloquent = $this->ticketEloquent;
+        if (!is_null($queryArray)) {
+            foreach ($queryArray as $key => $value) {
+                $eloquent = $eloquent->where($key,$value);
+            }
+        }
         if (!$getDeleted) {
             $eloquent = $eloquent->where('status','!=', self::STATUS_DELETED);
         }

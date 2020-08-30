@@ -77,10 +77,12 @@
         <div id='app'>
             <header>
         <!-- nav -->
-                    <nav-component></nav-component>
+                <nav-component></nav-component>
         <!-- nav -->
             </header>
-            <ticket-view-component></ticket-view-component>
+            <ticket-view-component
+                v-bind:parent-id="0"
+            ></ticket-view-component>
         </div>
     </div>
 </div>

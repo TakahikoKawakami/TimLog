@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Factories\TicketFactoryInterface;
-use App\Http\Requests\TicketCreateRequest;
-use App\Http\Requests\TicketUpdateRequest;
+use App\Http\Requests\Ticket\GetTicketRequest;
+use App\Http\Requests\Ticket\CreateTicketRequest;
+use App\Http\Requests\Ticket\UpdateTicketRequest;
 use App\Repositories\TicketRepositoryInterface;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -37,16 +38,16 @@ class TicketController extends Controller
         return view('index-bootstrap')->with(["tickets"=>$tickets]);
     }
 
-    public function apiIndex(): JsonResponse
+    public function apiIndex(GetTicketRequest $request): JsonResponse
     {
-        $tickets = $this->ticketService->getTickets();
+        $tickets = $this->ticketService->getTickets($request->all());
         $ticketArray = $tickets->toArray();
         $tickets = ArrayUtil::toSnakeKeys($ticketArray);
 
         return response()->json($tickets);
     }
 
-    public function apiCreate(TicketCreateRequest $request): JsonResponse
+    public function apiCreate(CreateTicketRequest $request): JsonResponse
     {
         try {
             DB::beginTransaction();
@@ -61,7 +62,7 @@ class TicketController extends Controller
         return response()->json($returnTicket);
     }
 
-    public function apiUpdate(TicketUpdateRequest $request, int $id)
+    public function apiUpdate(UpdateTicketRequest $request, int $id)
     {
         try {
             DB::beginTransaction();

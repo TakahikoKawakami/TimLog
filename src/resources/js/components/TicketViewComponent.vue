@@ -1,12 +1,12 @@
 <template>
     <div>
-        <ticket-nav-component></ticket-nav-component>
+        <!-- <ticket-nav-component></ticket-nav-component> -->
         <div class="main-wrapper">
     <!-- ticket contents  -->
             <ul class="list-group">
                 <li v-for="ticket in tickets">
                     <ticket-component
-                        v-bind:eachTicket="ticket"
+                        v-bind:each-ticket="ticket"
                     > </ticket-component>
                 </li>
             </ul>
@@ -18,6 +18,7 @@
 
 <script>
     export default {
+        props: ['parentId'],
         data(){
             return {
                 ticketNum: 0,
@@ -28,10 +29,15 @@
             }
         },
         mounted(){
-            let url = location.href + '/api/tickets';
+            console.log("parentId : " + this.parentId);
+            let url = location.href + 'api/tickets';
             console.log("mounted start---------" + url)
             axios
-                .get(url)
+                .get( url, {
+                    params: {
+                        parent_id: this.parentId
+                    }
+                })
                 .then(response => (this.tickets = response.data))
             console.log(this.tickets)
             console.log("mounted   end---------" + url)
@@ -39,7 +45,7 @@
         methods: {
             // apiを叩いて、レスポンスをselectTicketsに格納
             getTickets() {
-                let url = location.href + '/api/tickets';
+                let url = location.href + 'api/tickets';
                 console.log("getTickets start---------" + url)
                 axios
                     .get(url)

@@ -1,52 +1,70 @@
 <template>
 <div>
     <div class="list-group-item"> <!-- 畳まれた状態のチケット -->
-        <div class="ticket-container between-container">
-            <div class="ticket-container vertical-container">
-                <a class="ticket-element ticket-summary" href="#" v-on:click="addSelectTickets(ticket)">
-                    <span class="ticket-title" v-text="ticket.text"></span>
-                </a>
-                <timer-component
-                    v-bind:second="ticket.deadline_second - ticket.runtime_second"
-                    v-bind:status="ticket.status"
-                    ref='timer'
-            ></timer-component>
-            </div>
-            <div class="ticket-element">
-                <button
-                    class="timer-btn"
-                    v-if="ticket.status==0"
-                    v-on:click="startTimer()"
-                >
-                    <ion-icon name="play-outline"></ion-icon>
-                </button>
-                <button
-                    class="timer-btn"
-                    v-if="ticket.status==1"
-                    v-on:click="stopTimer()"
-                >
-                    <ion-icon name="pause"></ion-icon>
-                </button>
-            </div>
-            <div class="ticket-element ticket-icon-list-group">
-                <span class="ticket-timer-icon">
-                    <ion-icon name="alarm-outline"></ion-icon> <!-- timer start -->
-                </span>
-                <span>
+        <div class="ticket-container vertical-container">
+            <div class="ticket-container between-container">
+                <div class="ticket-container vertical-container">
+                    <a class="ticket-element ticket-summary" href="#" v-on:click="addSelectTickets(ticket)">
+                        <span class="ticket-title" v-text="ticket.text"></span>
+                    </a>
+                    <timer-component
+                        v-bind:second="ticket.deadline_second - runtimeSecond"
+                        v-bind:status="ticket.status"
+                        ref='timer'
+                ></timer-component>
+                </div>
+                <div class="ticket-element">
                     <button
-                        class="ticket-open-icon"
-                        v-on:click="openModal()"
+                        class="timer-btn"
+                        v-if="ticket.status==0"
+                        v-on:click="startTimer()"
                     >
-                        <ion-icon v-if="!openModalFlag" name="caret-forward-outline"></ion-icon> <!-- edit open -->
-                        <ion-icon v-if="openModalFlag" name="caret-down-outline"></ion-icon> <!-- edit close -->
+                        <ion-icon name="play-outline"></ion-icon>
                     </button>
-                </span>
+                    <button
+                        class="timer-btn"
+                        v-if="ticket.status==1"
+                        v-on:click="stopTimer()"
+                    >
+                        <ion-icon name="pause"></ion-icon>
+                    </button>
+                </div>
+                <div class="ticket-element ticket-icon-list-group">
+                    <span class="ticket-timer-icon">
+                        <ion-icon name="alarm-outline"></ion-icon> <!-- timer start -->
+                    </span>
+                    <span>
+                        <button
+                            class="ticket-open-icon"
+                            v-on:click="openModal()"
+                        >
+                            <ion-icon v-if="!openModalFlag" name="caret-forward-outline"></ion-icon> <!-- edit open -->
+                            <ion-icon v-if="openModalFlag" name="caret-down-outline"></ion-icon> <!-- edit close -->
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="list-group-item"
+                v-if="openChildTicketFlag">
+                <ticket-view-component
+                    v-bind:parent-id="ticket.id"
+                ></ticket-view-component>
+            </div>
+            <div class="element-wide">
+                <button
+                    class="ticket-open-icon element-wide"
+                    v-on:click="toggleChildList()"
+                >
+                    <ion-icon v-if="!openChildTicketFlag" name="caret-forward-outline"></ion-icon> <!-- edit open -->
+                    <ion-icon v-if="openChildTicketFlag" name="caret-down-outline"></ion-icon> <!-- edit close -->
+                </button>
             </div>
         </div>
     </div>
+
     <ticket-modal-component
         v-if="openModalFlag"
-        v-bind:targetTicket="ticket"
+        v-bind:target-ticket="ticket"
         v-on:close-event="closeModal"
     ></ticket-modal-component>
 </div>
@@ -62,6 +80,9 @@
 .vertical-container {
     flex-direction: column;
     justify-content: space-between;
+}
+.element-wide {
+    width: 100%;
 }
 
 </style>
@@ -81,21 +102,28 @@
         data() {
             return {
                 openModalFlag: false,
+                openChildTicketFlag: false,
                 edit: false,
                 ticket: this.eachTicket,
+                runtimeSecond: this.eachTicket.runtime_second,
+            }
+        },
+        created() {
+            if (this.ticket.status == 1) {
+                let lastRunStartDateTime = new Date(this.ticket.run_start_date_time);
+                let nowDateTime = new Date(Date.now());
+                let leaveSecond = (nowDateTime.getTime() - lastRunStartDateTime.getTime()) / 1000;
+                // this.ticket.runtime_second += leaveSecond;
+                this.runtimeSecond += leaveSecond
+                console.log("---monted");
+                console.log("last run start: " + lastRunStartDateTime);
+                console.log("now           : " + nowDateTime);
+                console.log("leaveSecond   : " + leaveSecond);
+                console.log("runtimeSecond : " + this.runtimeSecond);
             }
         },
         mounted() {
             if (this.ticket.status == 1) {
-                let lastRunStartDateTime = new Date(this.ticket.run_start_date_time);
-                let nowDateTime = new Date(Date.now());
-                let runtimeSecond = (nowDateTime.getTime() - lastRunStartDateTime.getTime()) / 1000;
-                this.ticket.runtime_second += runtimeSecond;
-                console.log("---monted");
-                console.log("last run start: " + lastRunStartDateTime);
-                console.log("now           : " + nowDateTime);
-                console.log("runtimeSecond : " + runtimeSecond);
-
                 this.$refs.timer.start();
             }
         },
@@ -105,6 +133,9 @@
                     id: ticket.id,
                     text: ticket.text,
                 });
+            },
+            toggleChildList() {
+                this.openChildTicketFlag = !this.openChildTicketFlag;
             },
             openModal() {
                 this.openModalFlag = true;
