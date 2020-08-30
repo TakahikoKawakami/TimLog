@@ -16,6 +16,9 @@ class TicketEntity
     protected $stopDateTime;
     protected $deadlineDate;
     protected $deadlineSecond;
+    protected $runStartDateTime;
+    protected $runStopDateTime;
+    protected $runtime_second;
     protected $status;
     protected $displaySequence;
 
@@ -29,6 +32,9 @@ class TicketEntity
         Carbon $stopDateTime,
         Carbon $deadlineDate,
         int $deadlineSecond,
+        Carbon $runStartDateTime,
+        Carbon $runStopDateTime,
+        int $runtimeSecond,
         int $status,
         int $displaySequence
     )
@@ -42,25 +48,20 @@ class TicketEntity
         $this->stopDateTime = $stopDateTime;
         $this->deadlineDate = $deadlineDate;
         $this->deadlineSecond = $deadlineSecond;
+        $this->runStartDateTime = $runStartDateTime;
+        $this->runStopDateTime = $runStopDateTime;
+        $this->runtimeSecond = $runtimeSecond;
         $this->status = $status;
         $this->displaySequence = $displaySequence;
     }
 
     public function toArray(): array
     {
-        return [
-            'id' => $this->id,
-            'userId' => $this->userId,
-            'parentId' => $this->parentId,
-            'text' => $this->text,
-            'memo' => $this->memo,
-            'startDateTime' => $this->startDateTime,
-            'stopDateTime' => $this->stopDateTime,
-            'deadlineDate' => $this->deadlineDate,
-            'deadlineSecond' => $this->deadlineSecond,
-            'status' => $this->status,
-            'displaySequence' => $this->displaySequence,
-        ];
+        $result = [];
+        foreach ($this as $key => $value) {
+            $result[$key] = $value;
+        }
+        return $result;
     }
 
     public function bulkUpdateByArray(array $array): void
@@ -107,6 +108,21 @@ class TicketEntity
     public function updateDeadlineSecond(int $value)
     {
         $this->deadlineSecond = $value;
+    }
+
+    public function updateRunStartDateTime(Carbon $value)
+    {
+        $this->runStartDateTime = $value;
+    }
+
+    public function updateRunStopDateTime(Carbon $value)
+    {
+        $this->runStopDateTime = $value;
+    }
+
+    public function updateRuntimeSecond(int $value)
+    {
+        $this->runtimeSecond = $value;
     }
 
     public function updateStatus(int $value)

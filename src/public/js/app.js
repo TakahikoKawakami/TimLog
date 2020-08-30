@@ -2118,7 +2118,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 Vue.directive('auto-focus', {
   bind: function bind() {
     var el = this.el;
@@ -2135,6 +2134,19 @@ Vue.directive('auto-focus', {
       edit: false,
       ticket: this.eachTicket
     };
+  },
+  mounted: function mounted() {
+    if (this.ticket.status == 1) {
+      var lastRunStartDateTime = new Date(this.ticket.run_start_date_time);
+      var nowDateTime = new Date(Date.now());
+      var runtimeSecond = (nowDateTime.getTime() - lastRunStartDateTime.getTime()) / 1000;
+      this.ticket.runtime_second += runtimeSecond;
+      console.log("---monted");
+      console.log("last run start: " + lastRunStartDateTime);
+      console.log("now           : " + nowDateTime);
+      console.log("runtimeSecond : " + runtimeSecond);
+      this.$refs.timer.start();
+    }
   },
   methods: {
     addSelectTickets: function addSelectTickets(ticket) {
@@ -2153,11 +2165,57 @@ Vue.directive('auto-focus', {
       console.log('timer start-----');
       this.$refs.timer.start();
       this.ticket.status = 1;
+      this.ticket.run_start_date_time = this.getDateTime(Date.now(), 'YYYY-MM-DD hh:ii:ss');
+      var runStartDateTime = new Date(this.ticket.run_start_date_time).getTime();
+      var runStopDateTime = new Date(this.ticket.run_stop_date_time).getTime();
+      console.log("start: " + runStartDateTime);
+      console.log("stop : " + runStopDateTime);
+      console.log("残: " + this.ticket.runtime_second);
+      this.updateTicket();
     },
     stopTimer: function stopTimer() {
-      console.log('timer start-----');
+      console.log('timer stop-----');
       this.$refs.timer.stop();
       this.ticket.status = 0;
+      this.ticket.run_stop_date_time = this.getDateTime(Date.now(), 'YYYY-MM-DD hh:ii:ss');
+      var runStartDateTime = new Date(this.ticket.run_start_date_time).toISOString();
+      var runStopDateTime = new Date(this.ticket.run_stop_date_time).toISOString();
+      console.log("startDateTime: " + runStartDateTime);
+      console.log("stopDateTime : " + runStopDateTime);
+      runStartDateTime = new Date(runStartDateTime).getTime();
+      runStopDateTime = new Date(runStopDateTime).getTime();
+      var diff = runStopDateTime - runStartDateTime;
+      var runTime = diff / 1000;
+      this.ticket.runtime_second += runTime;
+      console.log("start: " + runStartDateTime + "ms");
+      console.log("stop : " + runStopDateTime + "ms");
+      console.log("diff: " + diff + "s");
+      console.log("runTime: " + runTime + "s");
+      console.log("残: " + this.ticket.runtime_second + "s");
+      this.updateTicket();
+    },
+    getDateTime: function getDateTime(date, format) {
+      var targetDateTime = new Date(date);
+      var result = format;
+      result = result.replace(/YYYY/, targetDateTime.getFullYear());
+      result = result.replace(/MM/, targetDateTime.getMonth() + 1);
+      result = result.replace(/DD/, targetDateTime.getDate());
+      result = result.replace(/hh/, targetDateTime.getHours());
+      result = result.replace(/ii/, targetDateTime.getMinutes());
+      result = result.replace(/ss/, targetDateTime.getSeconds());
+      return result;
+    },
+    updateTicket: function updateTicket() {
+      var url = location.href + "api/tickets/" + this.ticket.id;
+      var now = Date.now();
+      axios.put(url, {
+        status: this.ticket.status,
+        runStartDateTime: this.ticket.run_start_date_time,
+        runStopDateTime: this.ticket.run_stop_date_time,
+        runtimeSecond: this.ticket.runtime_second
+      }).then(function (response) {
+        console.log(response);
+      });
     }
   }
 });
@@ -2174,6 +2232,9 @@ Vue.directive('auto-focus', {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal.vue */ "./resources/js/components/modal.vue");
+//
+//
+//
 //
 //
 //
@@ -2241,10 +2302,7 @@ __webpack_require__.r(__webpack_exports__);
         deadlineSecond: _storeTicket.deadline_second,
         status: _storeTicket.status,
         displaySequence: _storeTicket.display_sequence
-      }; // let forUpdateArray = ticketDataArray.filter(dog => {
-      //     return ticke.type === 'pomeranian';
-      // });
-
+      };
       axios.put(url, {
         parentId: _storeTicket.parent_id,
         text: _storeTicket.text,
@@ -39141,11 +39199,12 @@ var render = function() {
                   })
                 ]
               ),
-              _vm._v("\n                残：\n                "),
+              _vm._v(" "),
               _c("timer-component", {
                 ref: "timer",
                 attrs: {
-                  second: _vm.ticket.deadline_second,
+                  second:
+                    _vm.ticket.deadline_second - _vm.ticket.runtime_second,
                   status: _vm.ticket.status
                 }
               })
@@ -39392,6 +39451,89 @@ var render = function() {
                       return
                     }
                     _vm.$set(_vm.ticket, "deadline_date", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("計測開始日")]),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.run_start_date_time,
+                    expression: "ticket.run_start_date_time"
+                  }
+                ],
+                domProps: { value: _vm.ticket.run_start_date_time },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.ticket,
+                      "run_start_date_time",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("計測停止日")]),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.run_stop_date_time,
+                    expression: "ticket.run_stop_date_time"
+                  }
+                ],
+                domProps: { value: _vm.ticket.run_stop_date_time },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.ticket,
+                      "run_stop_date_time",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("実行時間")]),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.runtime_second,
+                    expression: "ticket.runtime_second"
+                  }
+                ],
+                domProps: { value: _vm.ticket.runtime_second },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.ticket, "runtime_second", $event.target.value)
                   }
                 }
               })

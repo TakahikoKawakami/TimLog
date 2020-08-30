@@ -7,7 +7,7 @@
                     <span class="ticket-title" v-text="ticket.text"></span>
                 </a>
                 <timer-component
-                    v-bind:second="ticket.deadline_second"
+                    v-bind:second="ticket.deadline_second - ticket.runtime_second"
                     v-bind:status="ticket.status"
                     ref='timer'
             ></timer-component>
@@ -85,6 +85,20 @@
                 ticket: this.eachTicket,
             }
         },
+        mounted() {
+            if (this.ticket.status == 1) {
+                let lastRunStartDateTime = new Date(this.ticket.run_start_date_time);
+                let nowDateTime = new Date(Date.now());
+                let runtimeSecond = (nowDateTime.getTime() - lastRunStartDateTime.getTime()) / 1000;
+                this.ticket.runtime_second += runtimeSecond;
+                console.log("---monted");
+                console.log("last run start: " + lastRunStartDateTime);
+                console.log("now           : " + nowDateTime);
+                console.log("runtimeSecond : " + runtimeSecond);
+
+                this.$refs.timer.start();
+            }
+        },
         methods: {
             addSelectTickets: function(ticket) {
                 this.selectTickets.push({
@@ -102,11 +116,69 @@
                 console.log('timer start-----');
                 this.$refs.timer.start();
                 this.ticket.status = 1;
+                this.ticket.run_start_date_time = this.getDateTime(Date.now(), 'YYYY-MM-DD hh:ii:ss');
+
+                let runStartDateTime = new Date(this.ticket.run_start_date_time).getTime();
+                let runStopDateTime = new Date(this.ticket.run_stop_date_time).getTime();
+                console.log("start: " + runStartDateTime);
+                console.log("stop : " + runStopDateTime);
+                console.log("残: " + this.ticket.runtime_second);
+
+                this.updateTicket();
             },
             stopTimer() {
-                console.log('timer start-----');
+                console.log('timer stop-----');
                 this.$refs.timer.stop();
                 this.ticket.status = 0;
+                this.ticket.run_stop_date_time = this.getDateTime(Date.now(), 'YYYY-MM-DD hh:ii:ss');
+
+                let runStartDateTime = new Date(this.ticket.run_start_date_time).toISOString();
+                let runStopDateTime = new Date(this.ticket.run_stop_date_time).toISOString();
+                console.log("startDateTime: " + runStartDateTime);
+                console.log("stopDateTime : " + runStopDateTime);
+
+                runStartDateTime = new Date(runStartDateTime).getTime();
+                runStopDateTime = new Date(runStopDateTime).getTime();
+                let diff = runStopDateTime - runStartDateTime;
+                let runTime = diff / 1000;
+                this.ticket.runtime_second += runTime;
+                console.log("start: " + runStartDateTime + "ms");
+                console.log("stop : " + runStopDateTime + "ms");
+                console.log("diff: " + diff + "s");
+                console.log("runTime: " + runTime + "s");
+                console.log("残: " + this.ticket.runtime_second + "s");
+
+                this.updateTicket();
+            },
+
+            getDateTime(date, format) {
+                let targetDateTime = new Date(date);
+                let result = format;
+                result = result.replace(/YYYY/, targetDateTime.getFullYear());
+                result = result.replace(/MM/, targetDateTime.getMonth() + 1);
+                result = result.replace(/DD/, targetDateTime.getDate());
+
+                result = result.replace(/hh/, targetDateTime.getHours());
+                result = result.replace(/ii/, targetDateTime.getMinutes());
+                result = result.replace(/ss/, targetDateTime.getSeconds());
+
+                return result;
+            },
+
+            updateTicket() {
+                let url = location.href + "api/tickets/" + this.ticket.id;
+                let now = Date.now();
+                axios
+                    .put(url, {
+                        status: this.ticket.status,
+                        runStartDateTime: this.ticket.run_start_date_time,
+                        runStopDateTime: this.ticket.run_stop_date_time,
+                        runtimeSecond: this.ticket.runtime_second,
+                    })
+                    .then(function(response) {
+                        console.log(response);
+                    })
+
             }
         }
     }

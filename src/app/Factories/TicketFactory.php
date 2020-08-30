@@ -19,6 +19,9 @@ class TicketFactory implements TicketFactoryInterface
         Carbon $stopDateTime,
         Carbon $deadlineDate,
         int $deadlineSecond,
+        Carbon $runStartDateTime,
+        Carbon $runStopDateTime,
+        int $runtimeSecond,
         int $status,
         int $displaySequence
     ): TicketEntity
@@ -33,6 +36,9 @@ class TicketFactory implements TicketFactoryInterface
             $stopDateTime,
             $deadlineDate,
             $deadlineSecond,
+            $runStartDateTime,
+            $runStopDateTime,
+            $runtimeSecond,
             $status,
             $displaySequence
         );
@@ -48,6 +54,9 @@ class TicketFactory implements TicketFactoryInterface
         Carbon $stopDateTime,
         Carbon $deadlineDate,
         int $deadlineSecond,
+        Carbon $runStartDateTime,
+        Carbon $runStopDateTime,
+        int $runtimeSecond,
         int $status,
         int $displaySequence
     ): TicketEntity
@@ -62,6 +71,9 @@ class TicketFactory implements TicketFactoryInterface
             $stopDateTime,
             $deadlineDate,
             $deadlineSecond,
+            $runStartDateTime,
+            $runStopDateTime,
+            $runtimeSecond,
             $status,
             $displaySequence
         );
@@ -86,6 +98,9 @@ class TicketFactory implements TicketFactoryInterface
             Carbon::parse($array['stopDateTime']),
             Carbon::parse($array['deadlineDate']),
             $array['deadlineSecond'],
+            Carbon::parse($array['runStartDateTime']),
+            Carbon::parse($array('runStopDateTime')),
+            $array['runtimeSecond'],
             $array['status'],
             $array['displaySequence']
         );
@@ -103,6 +118,9 @@ class TicketFactory implements TicketFactoryInterface
             Carbon::parse($eloquent->stop_date_time),
             Carbon::parse($eloquent->deadline_date),
             $eloquent->deadline_second,
+            Carbon::parse($eloquent->runStartDateTime),
+            Carbon::parse($eloquent->runStopDataTime),
+            $eloquent->runtime_second,
             $eloquent->status,
             $eloquent->display_sequence
         );

@@ -16,6 +16,9 @@ class Ticket extends Model
         'stop_date_time',
         'deadline_date',
         'deadline_second',
+        'run_start_date_time',
+        'run_stop_date_time',
+        'runtime_second',
         'display_sequence',
         'status',
     ];

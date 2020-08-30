@@ -15,6 +15,9 @@ interface TicketFactoryInterface
         Carbon $stopDateTime,
         Carbon $deadlineDate,
         int $deadlineSecond,
+        Carbon $runStartDateTime,
+        Carbon $runStopDateTime,
+        int $runtimeSecond,
         int $status,
         int $displaySequence
     ): TicketEntity;
@@ -29,6 +32,9 @@ interface TicketFactoryInterface
         Carbon $stopDateTime,
         Carbon $deadlineDate,
         int $deadlineSecond,
+        Carbon $runStartDateTime,
+        Carbon $runStopDateTime,
+        int $runtimeSecond,
         int $status,
         int $displaySequence
     ): TicketEntity;
