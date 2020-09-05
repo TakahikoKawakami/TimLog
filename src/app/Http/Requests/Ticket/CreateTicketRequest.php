@@ -2,29 +2,38 @@
 
 namespace App\Http\Requests\Ticket;
 
+use App\Http\Requests\Base\BasePostRequest;
 use Illuminate\Foundation\Http\FormRequest;
+use Carbon\Carbon;
 
-class CreateTicketRequest extends FormRequest
+class CreateTicketRequest extends BasePostRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $requestBodyAvailable = [
+        "parentId",
+        "text",
+        "memo",
+        "startDateTime",
+        "stopDateTime",
+        "deadlineDate",
+        "deadlineSecond",
+        "runStartDateTime",
+        "runStopDateTime",
+        "runtimeSecond",
+        "status",
+        "displaySequence"
+    ];
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function passedValidation()
     {
-        return [
-            //
-        ];
+        $data = $this->all();
+        $data['startDateTime'] = Carbon::parse($this->input('startDateTime'));
+        $data['stopDateTime'] = Carbon::parse($this->input('stopDateTime'));
+        $data['deadlineDate'] = Carbon::parse($this->input('deadlineDate'));
+        $data['runStartDateTime'] = Carbon::parse($this->input('runStartDateTime'));
+        $data['runStopDateTime'] = Carbon::parse($this->input('runStopDateTime'));
+        if (array_key_exists('memo', $data) && is_null($data['memo'])) {
+            $data['memo'] = "";
+        }
+        $this->getInputSource()->replace($data);
     }
 }

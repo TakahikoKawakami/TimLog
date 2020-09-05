@@ -75,14 +75,7 @@
             </div>
         @endif
         <div id='app'>
-            <header>
-        <!-- nav -->
-                <nav-component></nav-component>
-        <!-- nav -->
-            </header>
-            <ticket-view-component
-                v-bind:parent-id="0"
-            ></ticket-view-component>
+            <all-component></all-component>
         </div>
     </div>
 </div>
