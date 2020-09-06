@@ -26,7 +26,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -36,5 +37,32 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function redirectPath()
+    {
+        $test = 'test;';
+        return '/home';
+        //例）return 'costs/index';
+    }
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        // ここから
+        if (array_key_exists('HTTP_REFERER', $_SERVER)) {
+            $path = parse_url($_SERVER['HTTP_REFERER']); // URLを分解
+            if (array_key_exists('HOST', $path)) {
+                if ($path['HOST'] == $_SERVER['HTTP_HOST']) { // ホスト部分が自ホストと同じ
+                    session(['url.intended' => $_SERVER['HTTP_REFERER']]);
+                }
+            }
+        }
+        // ここまで追加
+        return view('auth.login');
     }
 }

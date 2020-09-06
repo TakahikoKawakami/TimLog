@@ -5,9 +5,11 @@
         <label id="nav-close" for="nav-input">close</label>
         <div id="nav-content">
             <ul class="main-nav">
-                <li><a href="#">home</a></li>
+                <li><a href="/home">Home</a>
                 <li><a href="#">setting</a></li>
                 <li><a href="#">how to use</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
                 <li><a href="#">logout</a></li>
             </ul>
         </div>

@@ -24,6 +24,7 @@ class TicketController extends Controller
 
     public function __construct(TicketFactoryInterface $ticketFactory, TicketRepositoryInterface $ticketRepository)
     {
+        $this->middleware('auth');
         $this->ticketService = new TicketService(
             $ticketFactory,
             $ticketRepository

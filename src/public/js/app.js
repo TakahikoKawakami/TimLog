@@ -1957,6 +1957,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -7297,7 +7299,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*--ハンバーガーメニュー--*/\n#nav-drawer[data-v-152c8205]  {\n    position: relative;\n}\n.nav-unshown[data-v-152c8205] {\n    display: none;\n}\n#nav-open[data-v-152c8205] {\n    display: inline-block;\n    width: 30px;\n    height: 22px;\n    vertical-align: middle;\n}\n#nav-open span[data-v-152c8205], #nav-open span[data-v-152c8205]:before, #nav-open span[data-v-152c8205]:after {\n    position: absolute;\n    height: 3px;\n    width: 25px;\n    border-radius: 3px;\n    background: #555;\n    display: block;\n    content: '';\n    cursor: pointer;\n}\n#nav-open span[data-v-152c8205]:before {\n    bottom: -8px;\n}\n#nav-open span[data-v-152c8205]:after {\n    bottom: -16px;\n}\n#nav-close[data-v-152c8205] {\n    display: none;\n    position: fixed;\n    z-index: 99;\n    top:  0;\n    width: 30%;\n    right: 0%;\n    height: 100%;\n    background: black;\n    opacity: 0;\n    transition: .3s ease-in-out;\n}\n#nav-content[data-v-152c8205] {\n    overflow: auto;\n    position: fixed;\n    top: 0;\n    left: 0;\n    z-index: 9999;/*最前面に*/\n    width: 70%;/*右側に隙間を作る（閉じるカバーを表示）*/\n    max-width: 330px;/*最大幅（調整してください）*/\n    height: 100%;\n    background: #fff;/*背景色*/\n    transition: .3s ease-in-out;/*滑らかに表示*/\n    transform: translateX(-105%);/*左に隠しておく*/\n}\n/*チェックが入ったらもろもろ表示*/\n#nav-input:checked ~ #nav-close[data-v-152c8205] {\n    display: block;/*カバーを表示*/\n    opacity: .5;\n}\n#nav-input:checked ~ #nav-content[data-v-152c8205] {\n    transform: translateX(0%);/*中身を表示（右へスライド）*/\n    box-shadow: 6px 0 25px rgba(0,0,0,.15);\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*--ハンバーガーメニュー--*/\n#nav-drawer[data-v-152c8205]  {\n    position: relative;\n}\n.nav-unshown[data-v-152c8205] {\n    display: none;\n}\n#nav-open[data-v-152c8205] {\n    display: inline-block;\n    width: 30px;\n    height: 22px;\n    vertical-align: middle;\n}\n#nav-open span[data-v-152c8205], #nav-open span[data-v-152c8205]:before, #nav-open span[data-v-152c8205]:after {\n    position: absolute;\n    height: 3px;\n    width: 25px;\n    border-radius: 3px;\n    background: #555;\n    display: block;\n    content: '';\n    cursor: pointer;\n}\n#nav-open span[data-v-152c8205]:before {\n    bottom: -8px;\n}\n#nav-open span[data-v-152c8205]:after {\n    bottom: -16px;\n}\n#nav-close[data-v-152c8205] {\n    display: none;\n    position: fixed;\n    z-index: 99;\n    top:  0;\n    width: 30%;\n    right: 0%;\n    height: 100%;\n    background: black;\n    opacity: 0;\n    transition: .3s ease-in-out;\n}\n#nav-content[data-v-152c8205] {\n    overflow: auto;\n    position: fixed;\n    top: 0;\n    left: 0;\n    z-index: 9999;/*最前面に*/\n    width: 70%;/*右側に隙間を作る（閉じるカバーを表示）*/\n    max-width: 330px;/*最大幅（調整してください）*/\n    height: 100%;\n    background: #fff;/*背景色*/\n    transition: .3s ease-in-out;/*滑らかに表示*/\n    transform: translateX(-105%);/*左に隠しておく*/\n}\n/*チェックが入ったらもろもろ表示*/\n#nav-input:checked ~ #nav-close[data-v-152c8205] {\n    display: block;/*カバーを表示*/\n    opacity: .5;\n}\n#nav-input:checked ~ #nav-content[data-v-152c8205] {\n    transform: translateX(0%);/*中身を表示（右へスライド）*/\n    box-shadow: 6px 0 25px rgba(0,0,0,.15);\n}\n", ""]);
 
 // exports
 
@@ -39201,15 +39203,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("header", [_c("nav-component")], 1),
-      _vm._v(" "),
-      _c("ticket-view-component")
-    ],
-    1
-  )
+  return _c("div", [_c("header"), _vm._v(" "), _c("ticket-view-component")], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -39266,11 +39260,16 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { attrs: { id: "nav-content" } }, [
       _c("ul", { staticClass: "main-nav" }, [
-        _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("home")])]),
-        _vm._v(" "),
+        _c("li", [_c("a", { attrs: { href: "/home" } }, [_vm._v("Home")])]),
         _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("setting")])]),
         _vm._v(" "),
         _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("how to use")])]),
+        _vm._v(" "),
+        _c("li", [_c("a", { attrs: { href: "/login" } }, [_vm._v("Login")])]),
+        _vm._v(" "),
+        _c("li", [
+          _c("a", { attrs: { href: "/register" } }, [_vm._v("Register")])
+        ]),
         _vm._v(" "),
         _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("logout")])])
       ])

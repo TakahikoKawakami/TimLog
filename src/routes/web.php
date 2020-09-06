@@ -15,7 +15,7 @@ Auth::routes();
 Route::get('/vue', function() {
     return view('welcome');
 });
-Route::get('/', 'TicketController@index');
+Route::get('/', 'TicketController@index')->name('main');
 
 Route::get('/phpinfo', function () {
     return phpinfo();
@@ -24,3 +24,10 @@ Route::get('/phpinfo', function () {
 
 
 Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/login', function() {
+//     route('login');
+// });
+
+// Route::get('/register', function() {
+//     route('register');
+// });

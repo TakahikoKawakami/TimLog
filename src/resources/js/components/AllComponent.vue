@@ -1,8 +1,8 @@
 <template>
     <div>
         <header>
-    <!-- nav -->
-            <nav-component></nav-component>
+    <!-- nav
+            <nav-component></nav-component> -->
     <!-- nav -->
         </header>
         <ticket-view-component></ticket-view-component>
