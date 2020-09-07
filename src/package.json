@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "devtools": "^6.1.25",
-        "vue-loader": "^15.9.3"
+        "vue-loader": "^15.9.3",
+        "vue-router": "^3.4.3"
     }
 }

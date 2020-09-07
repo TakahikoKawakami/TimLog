@@ -10,7 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes();
+// Auth::routes();
+
+Route::any('{all}', function () {
+    return view('index-bootstrap');
+})->where(['all' => '.*']);
 
 Route::get('/vue', function() {
     return view('welcome');

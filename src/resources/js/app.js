@@ -6,6 +6,13 @@
 
 require('./bootstrap');
 
+import Vue from 'vue';
+import store from './store';
+import router from './router';
+
+window.state = store.state;
+
+
 window.Vue = require('vue');
 
 /**
@@ -33,5 +40,5 @@ Vue.component('all-component', require('./components/AllComponent.vue').default)
  */
 
 const app = new Vue({
-    el: '#app',
-});
+    router
+}).$mount('#app');

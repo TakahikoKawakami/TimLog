@@ -24,7 +24,7 @@ class TicketController extends Controller
 
     public function __construct(TicketFactoryInterface $ticketFactory, TicketRepositoryInterface $ticketRepository)
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
         $this->ticketService = new TicketService(
             $ticketFactory,
             $ticketRepository
@@ -41,6 +41,7 @@ class TicketController extends Controller
 
     public function apiIndex(GetTicketRequest $request): JsonResponse
     {
+        $user = Auth::user();
         $tickets = $this->ticketService->getTickets($request->all());
         $ticketArray = $tickets->toArray();
         $tickets = ArrayUtil::toSnakeKeys($ticketArray);
@@ -75,8 +76,8 @@ class TicketController extends Controller
             Log::error('error');
             throw $e;
         }
-        return response()->json($returnTicket);
-        // return $request;
+        // return response()->json($returnTicket);
+        return $request;
     }
 
     /**

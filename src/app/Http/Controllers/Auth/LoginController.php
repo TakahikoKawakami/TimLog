@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use Illuminate\Auth\AuthManager;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
 class LoginController extends Controller
 {
     /*
@@ -34,9 +38,24 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(AuthManager $authManager)
     {
+        $this->authManager = $authManager;
         $this->middleware('guest')->except('logout');
+    }
+
+    public function login(Request $request) //: JsonResponse
+    {
+        $guard = $this->authManager->guard('api');
+        $token = $guard->attempt([
+            'email' =>  $request->get('email'),
+            'password'  =>  $request->get('password'),
+        ]);
+        if (!$token) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        // return redirect('/')->header('Authorization:Bearer', $token)->with('token', $token);
+        return new JsonResponse($token);
     }
 
     public function redirectPath()

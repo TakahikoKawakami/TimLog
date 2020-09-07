@@ -8,7 +8,7 @@
                 <li><a href="/home">Home</a>
                 <li><a href="#">setting</a></li>
                 <li><a href="#">how to use</a></li>
-                <li><a href="/login">Login</a></li>
+                <li v-on:click="login()">Login</li>
                 <li><a href="/register">Register</a></li>
                 <li><a href="#">logout</a></li>
             </ul>
@@ -92,3 +92,43 @@
             box-shadow: 6px 0 25px rgba(0,0,0,.15);
         }
 </style>
+
+<script>
+    export default {
+        methods: {
+            login() {
+                let url = location.href + "api/login/" + this.targetTicket.id;
+                console.log("storeTicket start-------");
+                let ticketDataArray = {
+                    parentId: storeTicket.parent_id,
+                    text: storeTicket.text,
+                    memo: storeTicket.memo,
+                    startDateTime: storeTicket.start_date_time,
+                    stopDateTime: storeTicket.stop_date_time,
+                    deadlineDate: storeTicket.deadline_date,
+                    deadlineSecond: storeTicket.deadline_second,
+                    status: storeTicket.status,
+                    displaySequence: storeTicket.display_sequence
+                };
+
+                axios
+                    .put(url, {
+                        parentId: storeTicket.parent_id,
+                        text: storeTicket.text,
+                        memo: storeTicket.memo,
+                        startDateTime: storeTicket.start_date_time,
+                        stopDateTime: storeTicket.stop_date_time,
+                        deadlineDate: storeTicket.deadline_date,
+                        deadlineSecond: storeTicket.deadline_second,
+                        status: storeTicket.status,
+                        displaySequence: storeTicket.display_sequence
+                    })
+                    .then(function(response) {
+                        console.log(response);
+                    })
+                console.log("storeTicket end  -------");
+                this.$emit('close-event');
+            }
+        }
+    }
+</script>
