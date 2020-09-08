@@ -41,7 +41,7 @@ class TicketController extends Controller
 
     public function apiIndex(GetTicketRequest $request): JsonResponse
     {
-        $user = Auth::user();
+        $user = auth()->user();
         $tickets = $this->ticketService->getTickets($request->all());
         $ticketArray = $tickets->toArray();
         $tickets = ArrayUtil::toSnakeKeys($ticketArray);

@@ -2211,7 +2211,8 @@ __webpack_require__.r(__webpack_exports__);
         email: this.email,
         password: this.password
       }).then(function (res) {
-        var token = res.data.token;
+        var token = res.data.access_token;
+        console.log('token : ' + token);
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         state.isLogin = true;
         _this.isLogin = true; // this.$router.push({path: '/login'});
@@ -2685,11 +2686,27 @@ __webpack_require__.r(__webpack_exports__);
     console.log(this.tickets);
     console.log("mounted   end---------" + url);
   },
-  watch: {
-    parentId: function parentId() {
+  // watch: {
+  //     parentId: function() {
+  //         console.log("reqire parentId: " + this.parentId);
+  //         let url = location.href + 'api/tickets';
+  //         console.log("getTickets start---------" + url)
+  //         axios
+  //             .get( url, {
+  //                 params: {
+  //                     parent_id: this.parentId
+  //                 }
+  //             })
+  //             .then(response => (this.tickets = response.data))
+  //         console.log(this.tickets)
+  //         console.log("getTickets   end---------" + url)
+  //     },
+  // },
+  methods: {
+    // apiを叩いて、レスポンスをselectTicketsに格納
+    getTickets: function getTickets() {
       var _this2 = this;
 
-      console.log("reqire parentId: " + this.parentId);
       var url = location.href + 'api/tickets';
       console.log("getTickets start---------" + url);
       axios.get(url, {
@@ -2698,24 +2715,6 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         return _this2.tickets = response.data;
-      });
-      console.log(this.tickets);
-      console.log("getTickets   end---------" + url);
-    }
-  },
-  methods: {
-    // apiを叩いて、レスポンスをselectTicketsに格納
-    getTickets: function getTickets() {
-      var _this3 = this;
-
-      var url = location.href + 'api/tickets';
-      console.log("getTickets start---------" + url);
-      axios.get(url, {
-        params: {
-          parent_id: this.parentId
-        }
-      }).then(function (response) {
-        return _this3.tickets = response.data;
       });
       console.log(this.tickets);
       console.log("getTickets   end---------" + url);

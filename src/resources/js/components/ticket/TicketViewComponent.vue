@@ -53,22 +53,22 @@
             console.log(this.tickets)
             console.log("mounted   end---------" + url)
         },
-        watch: {
-            parentId: function() {
-                console.log("reqire parentId: " + this.parentId);
-                let url = location.href + 'api/tickets';
-                console.log("getTickets start---------" + url)
-                axios
-                    .get( url, {
-                        params: {
-                            parent_id: this.parentId
-                        }
-                    })
-                    .then(response => (this.tickets = response.data))
-                console.log(this.tickets)
-                console.log("getTickets   end---------" + url)
-            },
-        },
+        // watch: {
+        //     parentId: function() {
+        //         console.log("reqire parentId: " + this.parentId);
+        //         let url = location.href + 'api/tickets';
+        //         console.log("getTickets start---------" + url)
+        //         axios
+        //             .get( url, {
+        //                 params: {
+        //                     parent_id: this.parentId
+        //                 }
+        //             })
+        //             .then(response => (this.tickets = response.data))
+        //         console.log(this.tickets)
+        //         console.log("getTickets   end---------" + url)
+        //     },
+        // },
         methods: {
             // apiを叩いて、レスポンスをselectTicketsに格納
             getTickets() {

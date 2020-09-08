@@ -28,7 +28,8 @@ export default {
                 email: this.email,
                 password: this.password
             }).then(res => {
-                const token = res.data.token;
+                const token = res.data.access_token;
+                console.log('token : ' + token);
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
                 state.isLogin = true;
                 this.isLogin = true;
