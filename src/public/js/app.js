@@ -2216,7 +2216,11 @@ __webpack_require__.r(__webpack_exports__);
         console.log('token : ' + token);
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         state.isLogin = true;
-        _this.isLogin = true; // this.$router.push({path: '/login'});
+        _this.isLogin = true;
+
+        _this.$router.push({
+          path: '/'
+        });
       })["catch"](function (error) {
         state.isLogin = false;
         _this.isLogin = false;
@@ -2647,7 +2651,11 @@ Vue.directive('auto-focus', {
         status: this.ticket.status,
         runStartDateTime: this.ticket.run_start_date_time,
         runStopDateTime: this.ticket.run_stop_date_time,
-        runtimeSecond: this.ticket.runtime_second
+        runtimeSecond: this.ticket.runtime_second,
+        memo: this.ticket.memo,
+        startDateTime: this.ticket.start_date_time,
+        endDateTime: this.ticket.end_date_time,
+        deadlineSecond: this.ticket.deadline_second
       }).then(function (response) {
         console.log(response);
       });
@@ -2865,20 +2873,13 @@ __webpack_require__.r(__webpack_exports__);
         stopDateTime: _storeTicket.stop_date_time,
         deadlineDate: _storeTicket.deadline_date,
         deadlineSecond: _storeTicket.deadline_second,
-        status: _storeTicket.status,
+        runStartDateTime: _storeTicket.run_start_date_time,
+        runStopDateTime: _storeTicket.run_stop_date_time,
+        runtimeSecond: _storeTicket.runtime_second,
+        status: 0,
         displaySequence: _storeTicket.display_sequence
       };
-      axios.post(url, {
-        parentId: _storeTicket.parent_id,
-        text: _storeTicket.text,
-        memo: _storeTicket.memo,
-        startDateTime: _storeTicket.start_date_time,
-        stopDateTime: _storeTicket.stop_date_time,
-        deadlineDate: _storeTicket.deadline_date,
-        deadlineSecond: _storeTicket.deadline_second,
-        status: _storeTicket.status,
-        displaySequence: _storeTicket.display_sequence
-      }).then(function (response) {
+      axios.post(url, ticketDataArray).then(function (response) {
         console.log(response);
       });
       console.log("storeTicket end  -------");
@@ -2899,6 +2900,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_base_modal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/base/modal.vue */ "./resources/js/components/base/modal.vue");
+//
 //
 //
 //
@@ -40586,6 +40588,35 @@ var render = function() {
                       return
                     }
                     _vm.$set(_vm.ticket, "memo", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("表示順")]),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.ticket.display_sequence,
+                    expression: "ticket.display_sequence"
+                  }
+                ],
+                domProps: { value: _vm.ticket.display_sequence },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.ticket,
+                      "display_sequence",
+                      $event.target.value
+                    )
                   }
                 }
               })

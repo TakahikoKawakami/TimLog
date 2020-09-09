@@ -33,7 +33,7 @@ export default {
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
                 state.isLogin = true;
                 this.isLogin = true;
-                // this.$router.push({path: '/login'});
+                this.$router.push({path: '/'});
             }).catch(error => {
                 state.isLogin = false;
                 this.isLogin = false;

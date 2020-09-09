@@ -99,7 +99,7 @@ class TicketFactory implements TicketFactoryInterface
             Carbon::parse($array['deadlineDate']),
             $array['deadlineSecond'],
             Carbon::parse($array['runStartDateTime']),
-            Carbon::parse($array('runStopDateTime')),
+            Carbon::parse($array['runStopDateTime']),
             $array['runtimeSecond'],
             $array['status'],
             $array['displaySequence']

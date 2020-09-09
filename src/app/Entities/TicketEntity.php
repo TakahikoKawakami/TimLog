@@ -18,7 +18,7 @@ class TicketEntity
     protected $deadlineSecond;
     protected $runStartDateTime;
     protected $runStopDateTime;
-    protected $runtime_second;
+    protected $runtimeSecond;
     protected $status;
     protected $displaySequence;
 

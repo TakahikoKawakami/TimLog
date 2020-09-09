@@ -224,6 +224,10 @@
                         runStartDateTime: this.ticket.run_start_date_time,
                         runStopDateTime: this.ticket.run_stop_date_time,
                         runtimeSecond: this.ticket.runtime_second,
+                        memo: this.ticket.memo,
+                        startDateTime: this.ticket.start_date_time,
+                        endDateTime: this.ticket.end_date_time,
+                        deadlineSecond: this.ticket.deadline_second
                     })
                     .then(function(response) {
                         console.log(response);

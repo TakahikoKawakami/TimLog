@@ -12,6 +12,7 @@
                 <tr><td>計測停止日</td><td><input v-model="ticket.run_stop_date_time"></td></tr>
                 <tr><td>実行時間</td><td><input v-model="ticket.runtime_second"></td></tr>
                 <tr><td>メモ</td><td><input v-model="ticket.memo"></td></tr>
+                <tr><td>表示順</td><td><input v-model="ticket.display_sequence"></td></tr>
             </table>
         </template>
         <template slot="footer">

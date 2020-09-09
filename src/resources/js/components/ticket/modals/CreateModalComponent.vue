@@ -46,22 +46,15 @@
                     stopDateTime: storeTicket.stop_date_time,
                     deadlineDate: storeTicket.deadline_date,
                     deadlineSecond: storeTicket.deadline_second,
-                    status: storeTicket.status,
+                    runStartDateTime: storeTicket.run_start_date_time,
+                    runStopDateTime: storeTicket.run_stop_date_time,
+                    runtimeSecond: storeTicket.runtime_second,
+                    status: 0,
                     displaySequence: storeTicket.display_sequence
                 };
 
                 axios
-                    .post(url, {
-                        parentId: storeTicket.parent_id,
-                        text: storeTicket.text,
-                        memo: storeTicket.memo,
-                        startDateTime: storeTicket.start_date_time,
-                        stopDateTime: storeTicket.stop_date_time,
-                        deadlineDate: storeTicket.deadline_date,
-                        deadlineSecond: storeTicket.deadline_second,
-                        status: storeTicket.status,
-                        displaySequence: storeTicket.display_sequence
-                    })
+                    .post(url, ticketDataArray)
                     .then(function(response) {
                         console.log(response);
                     })
