@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 
 import Home from '@/components/ticket/TicketViewComponent'
 import Login from '@/components/auth/LoginComponent'
+import Register from '@/components/auth/RegisterComponent'
 // import User from '@/components/pages/User'
 
 Vue.use(VueRouter);
@@ -10,6 +11,7 @@ Vue.use(VueRouter);
 const routes = [
     { path: '/', component: Home },
     { path: '/login', component: Login },
+    { path: '/register', component: Register },
     // { path: '/user', component: User, meta: { requiresAuth: true } }
 ];
 

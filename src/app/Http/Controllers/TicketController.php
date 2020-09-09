@@ -51,9 +51,12 @@ class TicketController extends Controller
 
     public function apiCreate(CreateTicketRequest $request): JsonResponse
     {
+        $user = auth()->user();
+        $requestBody = $request->all();
+        $requestBody['userId'] = $user->id;
         try {
             DB::beginTransaction();
-            $newTicketEntity = $this->ticketService->createTicket($request->all());
+            $newTicketEntity = $this->ticketService->createTicket($requestBody);
             $returnTicket = ArrayUtil::toSnakeKeys($newTicketEntity->toArray());
             DB::commit();
         } catch (\Exception $e) {

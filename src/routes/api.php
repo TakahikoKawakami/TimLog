@@ -19,7 +19,7 @@ Route::group([
     // 'prefix' => 'auth'
 
 ], function ($router) {
-
+    Route::post('register', 'Auth\RegisterController@register');
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');

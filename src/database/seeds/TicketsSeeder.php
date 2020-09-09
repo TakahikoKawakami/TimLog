@@ -14,6 +14,7 @@ class TicketsSeeder extends Seeder
     {
         DB::table('tickets')->insert([
             'parent_id' => 0,
+            'user_id' => 1,
             'text' => 'test ticket',
             'memo' => '',
             'start_date_time' => '2020-06-01 00:00:00',
@@ -28,7 +29,7 @@ class TicketsSeeder extends Seeder
         ]);
         DB::table('tickets')->insert([
             'parent_id' => 0,
-            'user_id' => 0,
+            'user_id' => 1,
             'text' => 'test ticket2',
             'memo' => '',
             'start_date_time' => '2020-06-01 00:00:00',

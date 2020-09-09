@@ -8,6 +8,7 @@
         <ul>
             <li><router-link to="/">ホーム</router-link></li>
             <li><router-link to="/login">ログイン</router-link></li>
+            <li><router-link to="/register">登録</router-link></li>
             <li><router-link to="/user">ユーザー情報</router-link></li>
             <li @click="logout">ログアウト</li>
         </ul>
