@@ -9,6 +9,12 @@
                 更新
             </button>
         </template>
+        <template slot="remove-button">
+            <button class="btn btn-danger" style="display: inline-block"
+                v-on:click='deleteTicket()'>
+                削除
+            </button>
+        </template>
     </ticket-modal-component>
 </template>
 
@@ -51,23 +57,25 @@
                 };
 
                 axios
-                    .put(url, {
-                        parentId: storeTicket.parent_id,
-                        text: storeTicket.text,
-                        memo: storeTicket.memo,
-                        startDateTime: storeTicket.start_date_time,
-                        stopDateTime: storeTicket.stop_date_time,
-                        deadlineDate: storeTicket.deadline_date,
-                        deadlineSecond: storeTicket.deadline_second,
-                        status: storeTicket.status,
-                        displaySequence: storeTicket.display_sequence
+                    .put(url, ticketDataArray)
+                    .then(function(response) {
+                        console.log(response);
                     })
+                console.log("storeTicket end  -------");
+                this.closeModal();
+            },
+            deleteTicket() {
+                let url = location.href + "api/tickets/" + this.targetTicket.id;
+                console.log("deleteTicket start-------");
+                axios
+                    .delete(url)
                     .then(function(response) {
                         console.log(response);
                     })
                 console.log("storeTicket end  -------");
                 this.closeModal();
             }
+
         }
     }
 </script>

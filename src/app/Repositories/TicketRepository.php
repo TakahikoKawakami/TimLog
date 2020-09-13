@@ -38,38 +38,26 @@ class TicketRepository implements TicketRepositoryInterface
         $ticketCollection = collect();
         foreach ($records as $record) {
             $ticketCollection->push(
-                $this->ticketFactory->rebuild(
-                    $record->id,
-                    $record->user_id,
-                    $record->parent_id,
-                    $record->text,
-                    $record->memo,
-                    Carbon::parse($record->start_date_time),
-                    Carbon::parse($record->stop_date_time),
-                    Carbon::parse($record->deadline_date),
-                    $record->deadline_second,
-                    Carbon::parse($record->run_start_date_time),
-                    Carbon::parse($record->run_stop_date_time),
-                    $record->runtime_second,
-                    $record->status,
-                    $record->display_sequence
-                )
+                $this->ticketFactory->rebuildFromEloquent($record)
             );
         }
         return new TicketCollection($ticketCollection);
     }
 
-    public function getById(int $id, bool $getDeleted = false): TicketEntity
+    public function getById(int $id, bool $getDeleted = false): ?TicketEntity
     {
         $eloquent = $this->ticketEloquent->where('id', $id);
         if (!$getDeleted) {
-            $eloquent = $eloquent->where('status','!=', self::STATUS_DELETED);
+            $eloquent = $eloquent->where('status','!=', TicketEntity::STATUS_DELETED);
         }
         $record = $eloquent->first();
+        if (is_null($record)) {
+            return null;
+        }
         return $this->ticketFactory->rebuildFromEloquent($record);
     }
 
-    public function storeTicket(TicketEntity $ticket): TicketEntity
+    public function storeTicket(TicketEntity $ticket): ?TicketEntity
     {
         $request = $ticket->toArray();
 
@@ -103,7 +91,7 @@ class TicketRepository implements TicketRepositoryInterface
      * @param array $request
      * @return TicketEntity
      */
-    private function insert(array $request): TicketEntity
+    private function insert(array $request): ?TicketEntity
     {
         $fillArray = [];
         foreach ($request as $key => $value) {
@@ -114,7 +102,7 @@ class TicketRepository implements TicketRepositoryInterface
         return $this->getById($this->ticketEloquent->id, false);
     }
 
-    private function update(array $request): TicketEntity
+    private function update(array $request): ?TicketEntity
     {
         $fillArray = [];
         foreach ($request as $key => $value) {

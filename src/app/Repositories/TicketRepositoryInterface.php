@@ -14,11 +14,11 @@ interface TicketRepositoryInterface
     const STATUS_FINISHED = 3;
     const STATUS_DELETED = 99;
 
-    public function getTickets(array $queryArray, bool $getDeleted);
+    public function getTickets(array $queryArray, bool $getDeleted): TicketCollection;
 
-    public function getById(int $id, bool $getDeleted);
+    public function getById(int $id, bool $getDeleted): ?TicketEntity;
 
-    public function storeTicket(TicketEntity $ticket): TicketEntity;
+    public function storeTicket(TicketEntity $ticket): ?TicketEntity;
 
 
 }

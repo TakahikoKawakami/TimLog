@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Utils\ArrayUtil;
+use App\Services\ResponseService;
 use App\Services\TicketService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -10,10 +11,11 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Factories\TicketFactoryInterface;
 use App\Http\Requests\Ticket\GetTicketRequest;
-use App\Http\Requests\Ticket\CreateTicketRequest;
-use App\Http\Requests\Ticket\UpdateTicketRequest;
 use App\Repositories\TicketRepositoryInterface;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Requests\Ticket\CreateTicketRequest;
+use App\Http\Requests\Ticket\DeleteTicketRequest;
+use App\Http\Requests\Ticket\UpdateTicketRequest;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 class TicketController extends Controller
@@ -21,6 +23,8 @@ class TicketController extends Controller
     protected $ticketFactory;
     protected $ticketRepository;
     protected $ticketService;
+
+    protected $responseService;
 
     public function __construct(TicketFactoryInterface $ticketFactory, TicketRepositoryInterface $ticketRepository)
     {
@@ -31,6 +35,8 @@ class TicketController extends Controller
         );
         $this->ticketFactory = $ticketFactory;
         $this->ticketRepository = $ticketRepository;
+
+        $this->responseService = new ResponseService();
     }
 
     public function index()
@@ -48,7 +54,8 @@ class TicketController extends Controller
         $ticketArray = $tickets->toArray();
         $tickets = ArrayUtil::toSnakeKeys($ticketArray);
 
-        return response()->json($tickets);
+        // return response()->json($tickets);
+        return $this->responseService->makeResponse($tickets);
     }
 
     public function apiCreate(CreateTicketRequest $request): JsonResponse
@@ -81,10 +88,23 @@ class TicketController extends Controller
             Log::error('error');
             throw $e;
         }
-        // return response()->json($returnTicket);
-        return $request;
+        return response()->json($returnTicket);
+        // return $request;
     }
 
+    public function apiDelete(int $id)
+    {
+        try {
+            DB::beginTransaction();
+            $successOrFailure = $this->ticketService->deleteTicket($id);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('error');
+            throw $e;
+        }
+        return response()->json(['success' => $successOrFailure]);
+    }
     /**
      * CollectionとPaginatorからレスポンスを生成
      *

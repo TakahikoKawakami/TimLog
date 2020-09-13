@@ -16,16 +16,25 @@
     <!-- ticket contents -->
             <new-ticket-button-component v-on:create-ticket-event="createBros()"></new-ticket-button-component>
         </div>
+
+        <create-modal-component
+            v-if="this.createTicketFlag"
+            v-bind:parent-id="parentId"
+            v-on:close-event="cancelBros"
+            v-on:remove-event="removeTicket"
+        ></create-modal-component>
     </div>
 </template>
 
 <script>
     import ticketComponent from '@/components/ticket/TicketComponent.vue'
     import newTicketButtonComponent from '@/components/ticket/NewTicketButtonComponent.vue'
+    import ticketCreateModalComponent from '@/components/ticket/modals/CreateModalComponent.vue'
 
     export default {
         components: {
             'ticket-component': ticketComponent,
+            'create-modal-component': ticketCreateModalComponent,
             'new-ticket-button-component': newTicketButtonComponent,
         },
         data(){
@@ -35,7 +44,7 @@
                 tickets: [],
                 edit: false,
                 results: [],
-                newTicket: null,
+                createTicketFlag: false,
                 parentId: 0,
             }
         },
@@ -85,13 +94,10 @@
                 console.log("getTickets   end---------" + url)
             },
             createBros() {
-                let newTicket = {
-                    parent_id: this.parentId,
-                    text: "new ticket",
-                    newCreated:true,
-                }
-                let newTicketId = "ticket" + newTicket.id;
-                this.tickets.push(newTicket);
+                this.createTicketFlag = true;
+            },
+            cancelBros() {
+                this.createTicketFlag = false;
             },
             addSelectTickets(ticket) {
                 this.selectTickets.push({

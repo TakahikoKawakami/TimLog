@@ -17,7 +17,7 @@
         </template>
         <template slot="footer">
             <div class="group" style="text-align: right; flex-direction: row; justify-content: space-between;">
-                <button class="btn btn-danger" style="display: inline-block">削除</button>
+                <slot name="remove-button"> </slot>
                 <slot name="save-button"> </slot>
             </div>
         </template>
@@ -28,7 +28,7 @@
     import MyModal from '@/components/base/modal.vue'
     export default {
         components: { MyModal },
-        props: ['targetTicket','new-create'],
+        props: ['targetTicket'],
         data(){
             return {
                 ticketNum: 0,
@@ -46,39 +46,6 @@
             },
             closeModal() {
                 this.$emit('close-event');
-            },
-            storeTicket(storeTicket) {
-                let url = location.href + "api/tickets/" + this.targetTicket.id;
-                console.log("storeTicket start-------");
-                let ticketDataArray = {
-                    parentId: storeTicket.parent_id,
-                    text: storeTicket.text,
-                    memo: storeTicket.memo,
-                    startDateTime: storeTicket.start_date_time,
-                    stopDateTime: storeTicket.stop_date_time,
-                    deadlineDate: storeTicket.deadline_date,
-                    deadlineSecond: storeTicket.deadline_second,
-                    status: storeTicket.status,
-                    displaySequence: storeTicket.display_sequence
-                };
-
-                axios
-                    .put(url, {
-                        parentId: storeTicket.parent_id,
-                        text: storeTicket.text,
-                        memo: storeTicket.memo,
-                        startDateTime: storeTicket.start_date_time,
-                        stopDateTime: storeTicket.stop_date_time,
-                        deadlineDate: storeTicket.deadline_date,
-                        deadlineSecond: storeTicket.deadline_second,
-                        status: storeTicket.status,
-                        displaySequence: storeTicket.display_sequence
-                    })
-                    .then(function(response) {
-                        console.log(response);
-                    })
-                console.log("storeTicket end  -------");
-                this.closeModal();
             }
         }
     }

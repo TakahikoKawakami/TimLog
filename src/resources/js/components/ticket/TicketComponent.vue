@@ -16,7 +16,7 @@
                 <div class="ticket-element">
                     <button
                         class="timer-btn"
-                        v-if="ticket.status==0"
+                        v-if="ticket.status==0 || ticket.status == 2"
                         v-on:click="startTimer()"
                     >
                         <ion-icon name="play-outline"></ion-icon>
@@ -62,13 +62,6 @@
         </button>
     </div>
 
-    <create-modal-component
-        v-if="this.isset(this.ticket.newCreated)"
-        v-bind:target-ticket="ticket"
-        v-bind:new-create="ticket.newCreated"
-        v-on:close-event="deleteTicket"
-    ></create-modal-component>
-
     <update-modal-component
         v-if="this.openModalFlag"
         v-bind:target-ticket="ticket"
@@ -106,13 +99,13 @@
     })
     import timerComponent from '@/components/TimerComponent.vue'
     import ticketViewComponent from '@/components/ticket/TicketViewComponent.vue'
-    import ticketCreateModalComponent from '@/components/ticket/modals/CreateModalComponent.vue'
     import ticketUpdateModalComponent from '@/components/ticket/modals/UpdateModalComponent.vue'
+    import moment from 'moment-timezone'
+
     export default {
         components: {
             'timer-component': timerComponent,
             'ticket-view-component': ticketViewComponent,
-            'create-modal-component': ticketCreateModalComponent,
             'update-modal-component': ticketUpdateModalComponent,
         },
         props: ['eachTicket', 'parentId'],
@@ -122,19 +115,21 @@
                 openChildTicketFlag: false,
                 edit: false,
                 ticket: this.eachTicket,
-                runtimeSecond: this.eachTicket.runtime_second,
+                runtimeSecond: Number(this.eachTicket.runtime_second),
             }
         },
         created() {
+            moment.tz.setDefault('Asia/Tokyo');
             if (this.ticket.status == 1) {
-                let lastRunStartDateTime = new Date(this.ticket.run_start_date_time);
-                let nowDateTime = new Date(Date.now());
-                let leaveSecond = (nowDateTime.getTime() - lastRunStartDateTime.getTime()) / 1000;
-                // this.ticket.runtime_second += leaveSecond;
-                this.runtimeSecond += leaveSecond
-                console.log("---monted");
+                let nowDateTime = moment(moment().format("YYYY-MM-DD hh:mm:ss"));
+                let lastRunStartDateTime = moment(this.ticket.run_start_date_time);
+                let leaveSecond = nowDateTime.diff(lastRunStartDateTime, "seconds");
+                this.runtimeSecond += leaveSecond;
+                console.log("---created");
                 console.log("last run start: " + lastRunStartDateTime);
                 console.log("now           : " + nowDateTime);
+                console.log("last run start: " + lastRunStartDateTime.format("YYYY-MM-DD hh:mm:ss"));
+                console.log("now           : " + nowDateTime.format("YYYY-MM-DD hh:mm:ss"));
                 console.log("leaveSecond   : " + leaveSecond);
                 console.log("runtimeSecond : " + this.runtimeSecond);
             }
@@ -162,57 +157,47 @@
             closeModal() {
                 this.openModalFlag = false;
             },
+            removeTicket() {
+                this.openModalFlag = false;
+            },
             startTimer() {
                 console.log('timer start-----');
                 this.$refs.timer.start();
                 this.ticket.status = 1;
-                this.ticket.run_start_date_time = this.getDateTime(Date.now(), 'YYYY-MM-DD hh:ii:ss');
+                this.ticket.run_start_date_time = moment().format('YYYY-MM-DD hh:mm:ss');
 
-                let runStartDateTime = new Date(this.ticket.run_start_date_time).getTime();
-                let runStopDateTime = new Date(this.ticket.run_stop_date_time).getTime();
-                console.log("start: " + runStartDateTime);
-                console.log("stop : " + runStopDateTime);
-                console.log("残: " + this.ticket.runtime_second);
+                let runStartDateTime = moment(this.ticket.run_start_date_time);
+                let runStopDateTime = moment(this.ticket.run_stop_date_time);
+                console.log("startDateTime: " + runStartDateTime.format('YYYY-MM-DD hh:mm:ss'));
+                console.log("stopDateTime : " + runStopDateTime.format('YYYY-MM-DD hh:mm:ss'));
+
+                let diff = runStopDateTime.diff(runStartDateTime, "seconds");
+                console.log("start: " + runStartDateTime + "ms");
+                console.log("stop : " + runStopDateTime + "ms");
+                console.log("diff: " + diff + "s");
+                console.log("残: " + this.ticket.runtime_second + "s");
 
                 this.updateTicket();
             },
             stopTimer() {
                 console.log('timer stop-----');
                 this.$refs.timer.stop();
-                this.ticket.status = 0;
-                this.ticket.run_stop_date_time = this.getDateTime(Date.now(), 'YYYY-MM-DD hh:ii:ss');
+                this.ticket.status = 2;
+                this.ticket.run_stop_date_time = moment().format('YYYY-MM-DD hh:mm:ss');
 
-                let runStartDateTime = new Date(this.ticket.run_start_date_time).toISOString();
-                let runStopDateTime = new Date(this.ticket.run_stop_date_time).toISOString();
-                console.log("startDateTime: " + runStartDateTime);
-                console.log("stopDateTime : " + runStopDateTime);
+                let runStartDateTime = moment(this.ticket.run_start_date_time);
+                let runStopDateTime = moment(this.ticket.run_stop_date_time);
+                console.log("startDateTime: " + runStartDateTime.format('YYYY-MM-DD hh:mm:ss'));
+                console.log("stopDateTime : " + runStopDateTime.format('YYYY-MM-DD hh:mm:ss'));
 
-                runStartDateTime = new Date(runStartDateTime).getTime();
-                runStopDateTime = new Date(runStopDateTime).getTime();
-                let diff = runStopDateTime - runStartDateTime;
-                let runTime = diff / 1000;
-                this.ticket.runtime_second += runTime;
+                let diff = runStopDateTime.diff(runStartDateTime, "seconds");
+                this.ticket.runtime_second += diff;
                 console.log("start: " + runStartDateTime + "ms");
                 console.log("stop : " + runStopDateTime + "ms");
                 console.log("diff: " + diff + "s");
-                console.log("runTime: " + runTime + "s");
                 console.log("残: " + this.ticket.runtime_second + "s");
 
                 this.updateTicket();
-            },
-
-            getDateTime(date, format) {
-                let targetDateTime = new Date(date);
-                let result = format;
-                result = result.replace(/YYYY/, targetDateTime.getFullYear());
-                result = result.replace(/MM/, targetDateTime.getMonth() + 1);
-                result = result.replace(/DD/, targetDateTime.getDate());
-
-                result = result.replace(/hh/, targetDateTime.getHours());
-                result = result.replace(/ii/, targetDateTime.getMinutes());
-                result = result.replace(/ss/, targetDateTime.getSeconds());
-
-                return result;
             },
 
             createTicket() {
@@ -240,8 +225,8 @@
                 axios
                     .put(url, {
                         status: this.ticket.status,
-                        runStartDateTime: this.ticket.run_start_date_time,
-                        runStopDateTime: this.ticket.run_stop_date_time,
+                        runStartDateTime: moment(this.ticket.run_start_date_time).format("YYYY-MM-DD hh:mm:ss"),
+                        runStopDateTime: moment(this.ticket.run_stop_date_time).format("YYYY-MM-DD hh:mm:ss"),
                         runtimeSecond: this.ticket.runtime_second,
                     })
                     .then(function(response) {

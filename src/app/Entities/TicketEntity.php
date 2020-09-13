@@ -7,6 +7,12 @@ use Illuminate\Support\Str;
 
 class TicketEntity
 {
+    const STATUS_NEUTRAL = '0';
+    const STATUS_RUNNING = '1';
+    const STATUS_STOPPED = '2';
+    const STATUS_FINISHED = '3';
+    const STATUS_DELETED = '99';
+
     protected $id;
     protected $userId;
     protected $parentId;

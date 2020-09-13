@@ -31,4 +31,17 @@ class ArrayUtil
         }
         return $results;
     }
+
+    public static function toStringValues(array $array)
+    {
+        $results = [];
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $results[$key] = self::toStringValues($value);
+            } else {
+                $results[$key] = (string)$value;
+            }
+        }
+        return $results;
+    }
 }

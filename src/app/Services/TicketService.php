@@ -41,5 +41,14 @@ class TicketService
         return $this->ticketRepository->storeTicket($targetTicketEntity);
     }
 
+    public function deleteTicket(int $id): bool
+    {
+        $targetTicketEntity = $this->ticketRepository->getById($id, false);
+        $targetTicketEntity->updateStatus(TicketEntity::STATUS_DELETED);
+        $this->ticketRepository->storeTicket($targetTicketEntity);
+
+        return true;
+    }
+
 }
 

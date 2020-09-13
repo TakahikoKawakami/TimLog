@@ -1,12 +1,15 @@
 <template>
     <ticket-modal-component
-        v-bind:target-ticket="ticket"
-        v-bind:new-create="ticket.newCreated"
+        v-bind:target-ticket="this.ticket"
         v-on:close-event="closeModal">
         <template slot="save-button">
             <button class="btn btn-info" style="display: inline-block"
                 v-on:click="storeTicket(ticket)" >
                 登録
+            </button>
+            <button class="btn btn-danger" style="display: inline-block"
+                v-on:click='cancel()'>
+                キャンセル
             </button>
         </template>
     </ticket-modal-component>
@@ -16,23 +19,32 @@
     import TicketModal from '@/components/ticket/modals/ModalComponent.vue'
     export default {
         components: { 'ticket-modal-component': TicketModal },
-        props: ['targetTicket','new-create'],
+        props: ['parentId'],
         data(){
             return {
                 ticketNum: 0,
-                ticket: this.targetTicket,
-                edit: false,
-                results: []
+                ticket: {
+                    parentId: this.parentId,
+                    text: null,
+                    memo: null,
+                    startDateTime: null,
+                    stopDateTime: null,
+                    deadlineDate: null,
+                    deadlineSecond: null,
+                    runStartDateTime: null,
+                    runStopDateTime: null,
+                    runtimeSecond: null,
+                    status: null,
+                    displaySequence: null
+                }
             }
         },
         methods: {
-            getTickets(section) {
-                let url = builderUri(section);
-                axios.get(url).then((response) => {
-                        this.results = response;
-                }).catch( error => {console.log(error);});
-            },
             closeModal() {
+                this.$parent.getTickets();
+                this.$emit('close-event');
+            },
+            cancel() {
                 this.$emit('close-event');
             },
             storeTicket(storeTicket) {

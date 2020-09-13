@@ -27,6 +27,8 @@
     },
     "dependencies": {
         "devtools": "^6.1.25",
+        "moment": "^2.27.0",
+        "moment-timezone": "^0.5.31",
         "vue-loader": "^15.9.3",
         "vue-router": "^3.4.3"
     }
