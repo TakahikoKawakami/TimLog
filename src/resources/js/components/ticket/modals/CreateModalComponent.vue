@@ -7,6 +7,8 @@
                 v-on:click="storeTicket(ticket)" >
                 登録
             </button>
+        </template>
+        <template slot="remove-button">
             <button class="btn btn-danger" style="display: inline-block"
                 v-on:click='cancel()'>
                 キャンセル
@@ -71,6 +73,7 @@
                         console.log(response);
                     })
                 console.log("storeTicket end  -------");
+                this.$parent.getTickets();
                 this.closeModal();
             }
         }

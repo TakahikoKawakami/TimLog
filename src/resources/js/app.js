@@ -6,14 +6,14 @@
 
 require('./bootstrap');
 
-import Vue from 'vue';
+// import Vue from 'vue';
 import store from './store';
 import router from './router';
 
 window.state = store.state;
 
 
-window.Vue = require('vue');
+// window.Vue = require('vue');
 
 /**
  * The following block of code may be used to automatically register your

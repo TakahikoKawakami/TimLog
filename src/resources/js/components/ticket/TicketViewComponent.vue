@@ -90,6 +90,11 @@
                         }
                     })
                     .then(response => (this.tickets = response.data))
+                    .catch(function (error) {
+                        console.log("error!!!!!!!");
+                        console.log(error.config);
+                        this.$router.push({path: '/login'});
+                    })
                 console.log(this.tickets)
                 console.log("getTickets   end---------" + url)
             },
@@ -104,7 +109,7 @@
                     id: ticket.id,
                     text: ticket.text,
                 });
-            }
+            },
         }
     }
 </script>

@@ -149,16 +149,14 @@
             toggleChildList() {
                 console.log("reqire parentId: " + this.ticket.id);
                 this.$parent.parentId = this.ticket.id;
-                // this.openChildTicketFlag = !this.openChildTicketFlag;
+                this.openChildTicketFlag = !this.openChildTicketFlag;
             },
             openModal() {
                 this.openModalFlag = true;
             },
             closeModal() {
                 this.openModalFlag = false;
-            },
-            removeTicket() {
-                this.openModalFlag = false;
+                this.$parent.getTickets();
             },
             startTimer() {
                 console.log('timer start-----');

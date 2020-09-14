@@ -9,7 +9,7 @@ import Register from '@/components/auth/RegisterComponent'
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/', component: Home },
+    { path: '/', component: Home, meta: { requiresAuth: true } },
     { path: '/login', component: Login },
     { path: '/register', component: Register },
     // { path: '/user', component: User, meta: { requiresAuth: true } }

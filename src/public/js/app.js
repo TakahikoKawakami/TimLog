@@ -1930,6 +1930,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -1948,7 +1950,7 @@ __webpack_require__.r(__webpack_exports__);
         state.isLogin = false;
 
         _this.$router.push({
-          path: '/'
+          path: '/login'
         });
       });
     }
@@ -2588,16 +2590,15 @@ Vue.directive('auto-focus', {
     },
     toggleChildList: function toggleChildList() {
       console.log("reqire parentId: " + this.ticket.id);
-      this.$parent.parentId = this.ticket.id; // this.openChildTicketFlag = !this.openChildTicketFlag;
+      this.$parent.parentId = this.ticket.id;
+      this.openChildTicketFlag = !this.openChildTicketFlag;
     },
     openModal: function openModal() {
       this.openModalFlag = true;
     },
     closeModal: function closeModal() {
       this.openModalFlag = false;
-    },
-    removeTicket: function removeTicket() {
-      this.openModalFlag = false;
+      this.$parent.getTickets();
     },
     startTimer: function startTimer() {
       console.log('timer start-----');
@@ -2784,6 +2785,12 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         return _this2.tickets = response.data;
+      })["catch"](function (error) {
+        console.log("error!!!!!!!");
+        console.log(error.config);
+        this.$router.push({
+          path: '/login'
+        });
       });
       console.log(this.tickets);
       console.log("getTickets   end---------" + url);
@@ -2815,6 +2822,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ticket_modals_ModalComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/ticket/modals/ModalComponent.vue */ "./resources/js/components/ticket/modals/ModalComponent.vue");
+//
+//
 //
 //
 //
@@ -2886,6 +2895,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response);
       });
       console.log("storeTicket end  -------");
+      this.$parent.getTickets();
       this.closeModal();
     }
   }
@@ -2944,16 +2954,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getTickets: function getTickets(section) {
-      var _this = this;
-
-      var url = builderUri(section);
-      axios.get(url).then(function (response) {
-        _this.results = response;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
     closeModal: function closeModal() {
       this.$emit('close-event');
     }
@@ -62219,8 +62219,10 @@ var render = function() {
             }
           },
           [_vm._v("\n            登録\n        ")]
-        ),
-        _vm._v(" "),
+        )
+      ]),
+      _vm._v(" "),
+      _c("template", { slot: "remove-button" }, [
         _c(
           "button",
           {
@@ -62276,31 +62278,6 @@ var render = function() {
           _c("tr", [
             _c("td", [_vm._v("チケット番号")]),
             _c("td", [_vm._v(_vm._s(_vm.ticket.id))])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("親チケット番号")]),
-            _c("td", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.ticket.parent_id,
-                    expression: "ticket.parent_id"
-                  }
-                ],
-                domProps: { value: _vm.ticket.parent_id },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.ticket, "parent_id", $event.target.value)
-                  }
-                }
-              })
-            ])
           ]),
           _vm._v(" "),
           _c("tr", [
@@ -77872,22 +77849,20 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // import Vue from 'vue';
 
 
 
 
-window.state = _store__WEBPACK_IMPORTED_MODULE_1__["default"].state;
-window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+window.state = _store__WEBPACK_IMPORTED_MODULE_0__["default"].state; // window.Vue = require('vue');
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -77898,7 +77873,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('all-component', __webpack_require__(/*! ./components/AllComponent.vue */ "./resources/js/components/AllComponent.vue")["default"]); // Vue.component('sample-component', require('./components/SampleComponents.vue').default);
+Vue.component('all-component', __webpack_require__(/*! ./components/AllComponent.vue */ "./resources/js/components/AllComponent.vue")["default"]); // Vue.component('sample-component', require('./components/SampleComponents.vue').default);
 // Vue.component('ticket-view-component', require('./components/TicketViewComponent.vue').default);
 // Vue.component('ticket-nav-component', require('./components/TicketNavComponent.vue').default);
 // Vue.component('nav-component', require('./components/NavComponent.vue').default);
@@ -77910,8 +77885,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('all-component', __webpack_
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  router: _router__WEBPACK_IMPORTED_MODULE_2__["default"]
+var app = new Vue({
+  router: _router__WEBPACK_IMPORTED_MODULE_1__["default"]
 }).$mount('#app');
 
 /***/ }),
@@ -78885,7 +78860,10 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var routes = [{
   path: '/',
-  component: _components_ticket_TicketViewComponent__WEBPACK_IMPORTED_MODULE_2__["default"]
+  component: _components_ticket_TicketViewComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
+  meta: {
+    requiresAuth: true
+  }
 }, {
   path: '/login',
   component: _components_auth_LoginComponent__WEBPACK_IMPORTED_MODULE_3__["default"]

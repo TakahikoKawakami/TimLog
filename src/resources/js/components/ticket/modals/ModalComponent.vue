@@ -3,7 +3,7 @@
         <template slot="body">
             <table class="">
                 <tr><td>チケット番号</td><td>{{ticket.id}}</td></tr>
-                <tr><td>親チケット番号</td><td><input v-model="ticket.parent_id"></td></tr>
+<!--                <tr><td>親チケット番号</td><td><input v-model="ticket.parent_id"></td></tr> -->
                 <tr><td>チケット名</td><td><input v-model="ticket.text"></td></tr>
                 <tr><td>予定工数</td><td><input v-model="ticket.deadline_second"></td></tr>
                 <tr><td>開始予定日</td><td><input v-model="ticket.start_date_time"></td></tr>
@@ -38,12 +38,6 @@
             }
         },
         methods: {
-            getTickets(section) {
-                let url = builderUri(section);
-                axios.get(url).then((response) => {
-                        this.results = response;
-                }).catch( error => {console.log(error);});
-            },
             closeModal() {
                 this.$emit('close-event');
             }
