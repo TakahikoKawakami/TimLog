@@ -6,7 +6,14 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+// import Vue from 'vue';
+import store from './store';
+import router from './router';
+
+window.state = store.state;
+
+
+// window.Vue = require('vue');
 
 /**
  * The following block of code may be used to automatically register your
@@ -16,10 +23,10 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-const files = require.context('./', true, /\.vue$/i)
-files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+// const files = require.context('./', true, /\.vue$/i)
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('all-component', require('./components/AllComponent.vue').default);
 // Vue.component('sample-component', require('./components/SampleComponents.vue').default);
 // Vue.component('ticket-view-component', require('./components/TicketViewComponent.vue').default);
 // Vue.component('ticket-nav-component', require('./components/TicketNavComponent.vue').default);
@@ -33,17 +40,5 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
  */
 
 const app = new Vue({
-    el: '#app',
-});
-
-const navApp = new vue({
-    el: '#navApp',
-});
-
-const ticketnavapp = new vue({
-    el: '#ticket-nav-app',
-});
-
-const ticketViewApp = new Vue({
-    el: '#ticket-view-app',
-});
+    router
+}).$mount('#app');

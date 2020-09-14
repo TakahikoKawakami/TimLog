@@ -26,6 +26,12 @@ class TicketFactory implements TicketFactoryInterface
         int $displaySequence
     ): TicketEntity
     {
+        $runStart = $startDateTime->toString();
+        $runStop = $stopDateTime->toString();
+        $runstart = $runStartDateTime->format('Y-m-d h:i:s');
+        $runstop = $runStartDateTime->format('Y-m-d h:i:s');
+        $runstart = $runStartDateTime->format('Y-m-d h:i:s');
+        $runstop = $runStartDateTime->format('Y-m-d h:i:s');
         return $this->rebuild(
             null,
             $userId,
@@ -61,6 +67,9 @@ class TicketFactory implements TicketFactoryInterface
         int $displaySequence
     ): TicketEntity
     {
+        $runstart = $runStartDateTime->format('Y-m-d h:i:s');
+        $runstop = $runStopDateTime->format('Y-m-d h:i:s');
+
         return new TicketEntity(
             $id,
             $userId,
@@ -99,7 +108,7 @@ class TicketFactory implements TicketFactoryInterface
             Carbon::parse($array['deadlineDate']),
             $array['deadlineSecond'],
             Carbon::parse($array['runStartDateTime']),
-            Carbon::parse($array('runStopDateTime')),
+            Carbon::parse($array['runStopDateTime']),
             $array['runtimeSecond'],
             $array['status'],
             $array['displaySequence']
@@ -118,8 +127,8 @@ class TicketFactory implements TicketFactoryInterface
             Carbon::parse($eloquent->stop_date_time),
             Carbon::parse($eloquent->deadline_date),
             $eloquent->deadline_second,
-            Carbon::parse($eloquent->runStartDateTime),
-            Carbon::parse($eloquent->runStopDataTime),
+            Carbon::parse($eloquent->run_start_date_time),
+            Carbon::parse($eloquent->run_stop_data_time),
             $eloquent->runtime_second,
             $eloquent->status,
             $eloquent->display_sequence

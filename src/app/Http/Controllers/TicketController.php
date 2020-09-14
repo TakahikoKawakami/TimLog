@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Utils\ArrayUtil;
+use App\Services\ResponseService;
 use App\Services\TicketService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Factories\TicketFactoryInterface;
-use App\Http\Requests\TicketCreateRequest;
-use App\Http\Requests\TicketUpdateRequest;
+use App\Http\Requests\Ticket\GetTicketRequest;
 use App\Repositories\TicketRepositoryInterface;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Requests\Ticket\CreateTicketRequest;
+use App\Http\Requests\Ticket\DeleteTicketRequest;
+use App\Http\Requests\Ticket\UpdateTicketRequest;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 class TicketController extends Controller
@@ -21,14 +24,19 @@ class TicketController extends Controller
     protected $ticketRepository;
     protected $ticketService;
 
+    protected $responseService;
+
     public function __construct(TicketFactoryInterface $ticketFactory, TicketRepositoryInterface $ticketRepository)
     {
+        // $this->middleware('auth');
         $this->ticketService = new TicketService(
             $ticketFactory,
             $ticketRepository
         );
         $this->ticketFactory = $ticketFactory;
         $this->ticketRepository = $ticketRepository;
+
+        $this->responseService = new ResponseService();
     }
 
     public function index()
@@ -37,20 +45,27 @@ class TicketController extends Controller
         return view('index-bootstrap')->with(["tickets"=>$tickets]);
     }
 
-    public function apiIndex(): JsonResponse
+    public function apiIndex(GetTicketRequest $request): JsonResponse
     {
-        $tickets = $this->ticketService->getTickets();
+        $user = auth()->user();
+        $requestBody = $request->all();
+        $requestBody['user_id'] = $user->id;
+        $tickets = $this->ticketService->getTickets($requestBody);
         $ticketArray = $tickets->toArray();
         $tickets = ArrayUtil::toSnakeKeys($ticketArray);
 
-        return response()->json($tickets);
+        // return response()->json($tickets);
+        return $this->responseService->makeResponse($tickets);
     }
 
-    public function apiCreate(TicketCreateRequest $request): JsonResponse
+    public function apiCreate(CreateTicketRequest $request): JsonResponse
     {
+        $user = auth()->user();
+        $requestBody = $request->all();
+        $requestBody['userId'] = $user->id;
         try {
             DB::beginTransaction();
-            $newTicketEntity = $this->ticketService->createTicket($request->all());
+            $newTicketEntity = $this->ticketService->createTicket($requestBody);
             $returnTicket = ArrayUtil::toSnakeKeys($newTicketEntity->toArray());
             DB::commit();
         } catch (\Exception $e) {
@@ -61,7 +76,7 @@ class TicketController extends Controller
         return response()->json($returnTicket);
     }
 
-    public function apiUpdate(TicketUpdateRequest $request, int $id)
+    public function apiUpdate(UpdateTicketRequest $request, int $id)
     {
         try {
             DB::beginTransaction();
@@ -77,6 +92,19 @@ class TicketController extends Controller
         // return $request;
     }
 
+    public function apiDelete(int $id)
+    {
+        try {
+            DB::beginTransaction();
+            $successOrFailure = $this->ticketService->deleteTicket($id);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('error');
+            throw $e;
+        }
+        return response()->json(['success' => $successOrFailure]);
+    }
     /**
      * CollectionとPaginatorからレスポンスを生成
      *

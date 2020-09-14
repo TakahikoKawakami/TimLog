@@ -7,6 +7,12 @@ use Illuminate\Support\Str;
 
 class TicketEntity
 {
+    const STATUS_NEUTRAL = '0';
+    const STATUS_RUNNING = '1';
+    const STATUS_STOPPED = '2';
+    const STATUS_FINISHED = '3';
+    const STATUS_DELETED = '99';
+
     protected $id;
     protected $userId;
     protected $parentId;
@@ -18,7 +24,7 @@ class TicketEntity
     protected $deadlineSecond;
     protected $runStartDateTime;
     protected $runStopDateTime;
-    protected $runtime_second;
+    protected $runtimeSecond;
     protected $status;
     protected $displaySequence;
 

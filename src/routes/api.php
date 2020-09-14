@@ -13,15 +13,47 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get("sample", function() {
-    $data = ["name" => "test"];
-    return $data;
-});
-Route::get("tickets", "TicketController@apiIndex");
-Route::post("tickets", "TicketController@apiCreate");
-Route::put("tickets/{id}", "TicketController@apiUpdate");
-Route::delete("tickets/{id}", "TicketController@apiDelete");
+Route::group([
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    'middleware' => 'api',
+    // 'prefix' => 'auth'
+
+], function ($router) {
+    Route::post('register', 'Auth\RegisterController@register');
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+
+    Route::group(['middleware' => ['jwt.auth']], function () {
+    // 認証が必要なメソッド
+        Route::get("tickets", "TicketController@apiIndex");
+        Route::post("tickets", "TicketController@apiCreate");
+        Route::put("tickets/{id}", "TicketController@apiUpdate");
+        Route::delete("tickets/{id}", "TicketController@apiDelete");
+    });
+
 });
+
+// Route::group(["middleware" => "api"], function () {
+// // 認証が必要ないメソッド
+//     Route::post('/register', 'Auth\RegisterController@register'); // 追加
+//     Route::post('/login', 'Auth\LoginController@login');
+
+//     Route::get("sample", function() {
+//         $data = ["name" => "test"];
+//         return $data;
+//     });
+
+//     Route::middleware('auth:api')->get('/user', function (Request $request) {
+//         return $request->user();
+//     });
+
+// //    Route::group(['middleware' => ['jwt.auth']], function () {
+//     // 認証が必要なメソッド
+//         Route::get("tickets", "TicketController@apiIndex");
+//         Route::post("tickets", "TicketController@apiCreate");
+//         Route::put("tickets/{id}", "TicketController@apiUpdate");
+//         Route::delete("tickets/{id}", "TicketController@apiDelete");
+//     // });
+// });

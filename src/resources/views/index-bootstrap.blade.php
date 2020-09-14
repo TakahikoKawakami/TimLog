@@ -10,6 +10,7 @@
 <!--JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
 <!-- vue,.js -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
 <!-- css -->
@@ -61,26 +62,21 @@
 </head>
 <body>
 <div>
-    <div class="flex-center position-ref full-height">
+    <div class="flex-center position-ref full-height" style="z-index: 99;">
         @if (Route::has('login'))
             <div class="top-right links">
                 @auth
                     <a href="{{ url('/home') }}">Home</a>
                 @else
-                    <a href="{{ route('login') }}">Login</a>
+                    <a href="{{ url('/login') }}">Login</a>
                     @if (Route::has('register'))
-                        <a href="{{ route('register') }}">Register</a>
+                        <a href="{{ url('/register') }}">Register</a>
                     @endif
                 @endauth
             </div>
         @endif
         <div id='app'>
-            <header>
-        <!-- nav -->
-                    <nav-component></nav-component>
-        <!-- nav -->
-            </header>
-            <ticket-view-component></ticket-view-component>
+            <all-component></all-component>
         </div>
     </div>
 </div>

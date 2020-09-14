@@ -3,6 +3,309 @@
     "workbench.list.openMode": "singleClick",
     "cSpell.words": [
         "Authenticatable"
-    ]
+    ],
+    "php.validate.executablePath": "/usr/bin/php",
+    "php-cs-fixer.lastDownload": 1542007370270,
+    "php-cs-fixer.rules": "@PSR2",
+    "phpcs.standard": "PSR2",
+    "php-cs-fixer.autoFixBySemicolon": true,
+    "php-cs-fixer.allowRisky": true,
+    "[plsql]": {},
+    "window.zoomLevel": 0,
+    "html.format.wrapLineLength": 0,
+    "codic.case": "camelCase",
+    "codic.ACCESS_TOKEN": "FXjZT58o9upVwj4QtmCxiHS2YICgpD3OB6",
+    "material-icon-theme.folders.theme": "specific",
+    "workbench.iconTheme": "material-icon-theme",
+    "html.format.indentHandlebars": true,
+    "prettier.trailingComma": "es5",
+    "prettier.tabWidth": 4,
+    "prettier.printWidth": 120,
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[php]": {
+        "editor.defaultFormatter": "junstyle.php-cs-fixer"
+    },
+    "cSpell.ignoreRegExpList": [
+        "[０-９Ａ-Ｚａ-ｚぁ-んァ-ヶ亜-熙纊-黑]+"
+    ],
+    "git.autofetch": true,
+    "[markdown]": {
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    },
+    "php-cs-fixer.executablePath": "/Users/takahiko-kawakami-macbookpro/.composer/vendor/bin/php-cs-fixer",
+    "phpcs.executablePath": "/Users/nozomihosaka/.composer/vendor/bin/phpcs",
+    "peacock.favoriteColors": [
+        {
+            "name": "Angular Red",
+            "value": "#b52e31"
+        },
+        {
+            "name": "Auth0 Orange",
+            "value": "#eb5424"
+        },
+        {
+            "name": "Azure Blue",
+            "value": "#007fff"
+        },
+        {
+            "name": "C# Purple",
+            "value": "#68217A"
+        },
+        {
+            "name": "Gatsby Purple",
+            "value": "#639"
+        },
+        {
+            "name": "Go Cyan",
+            "value": "#5dc9e2"
+        },
+        {
+            "name": "Java Blue-Gray",
+            "value": "#557c9b"
+        },
+        {
+            "name": "JavaScript Yellow",
+            "value": "#f9e64f"
+        },
+        {
+            "name": "Mandalorian Blue",
+            "value": "#1857a4"
+        },
+        {
+            "name": "Node Green",
+            "value": "#215732"
+        },
+        {
+            "name": "React Blue",
+            "value": "#00b3e6"
+        },
+        {
+            "name": "Something Different",
+            "value": "#832561"
+        },
+        {
+            "name": "Vue Green",
+            "value": "#42b883"
+        }
+    ],
+    "sync.gist": "73330eef313f4a4fb4c2a71f6bd0012c",
+    "liveshare.presence": false,
+    "todo-tree.highlights.enabled": false,
+    "sql-formatter.dialect": "pl/sql",
+    "sql-formatter.uppercase": true,
+    "sql-formatter.linesBetweenQueries": 2,
+    "todo-tree.tree.showScanModeButton": false,
+    "intelephense.diagnostics.undefinedConstants": false,
+    "intelephense.diagnostics.undefinedFunctions": false,
+    "intelephense.diagnostics.undefinedMethods": false,
+    "intelephense.diagnostics.undefinedProperties": false,
+    "intelephense.diagnostics.undefinedTypes": false,
+    "intelephense.diagnostics.undefinedClassConstants": false,
+    "diffEditor.renderSideBySide": true,
+    "bookmarks.saveBookmarksInProject": true,
+    "bookmarks.navigateThroughAllFiles": true,
+    "bookmarks.sideBar.expanded": true,
+    "indentRainbow.colors": [
+        "rgba(255,127,255,0.1)",
+        "rgba(255,160,0,0.1)",
+        "rgba(255,255,64,0.1)",
+        "rgba(127,255,127,0.1)",
+        "rgba(127,255,255,0.1)",
+        "rgba(127,127,255,0.1)",
+        ],
+    "indentRainbow.ignoreLinePatterns": [
+        "/[ \t]* [*].*/g",
+        "/[ \t\t]* [/]{2}.*/g",
+    ],
+    "indentRainbow.ignoreErrorLanguages": [
+        "*"
+    ],
+    "indentRainbow.errorColor": "rgba(0,0,0,0.0)",
+    "indentRainbow.tabmixColor": "",
+    "better-comments.multilineComments": true,
+    "better-comments.highlightPlainText": false,
+    "better-comments.tags": [
+       {
+           "tag": "FIXME",
+           "color": "#FFFFFF",
+           "strikethrough": false,
+           "backgroundColor": "#FF2D00"
+       },
+        {
+            "tag": "TODO",
+            "color": "#FF8C00",
+            "strikethrough": false,
+            "backgroundColor": "transparent"
+        },
+    ],
+    "explorer.confirmDragAndDrop": false,
 
+    "todo-tree.highlights.defaultHighlight": {
+        "icon": "alert",
+        "type": "text",
+        "foreground": "red",
+        "background": "white",
+        "opacity": 50,
+        "iconColour": "green"
+    },
+    "todo-tree.highlights.customHighlight": {
+        "TODO": {
+            "forground": "white",
+            "background": "green",
+            "icon": "check",
+            "type": "line"
+        },
+        "FIXME": {
+            "foreground": "black",
+            "iconColour": "yellow",
+            "gutterIcon": true
+        }
+    },
+
+    //----------------------------Vim----------------------------//
+    // システムのクリップボードを利用する
+    "vim.useSystemClipboard": true,
+    // 検索にマッチしたテキストをハイライトする
+    "vim.hlsearch": true,
+    // easymotion を有効にする
+    "vim.easymotion": true,
+    "vim.easymotionKeys": "fjkslaureiwoqpvncm",
+    // ビジュアルモードで * や # で検索
+    "vim.visualstar": true,
+    // 検索時に大文字小文字を無視する
+    "vim.ignorecase": true,
+    // インクリメンタルサーチ
+    "vim.incsearch": true,
+    // CamelCaseMotion を有効にする
+    "vim.camelCaseMotion.enable": true,
+    // leader キーの設定
+    "vim.leader": "<space>",
+    "vim.changeWordIncludesWhitespace": true,
+    "vim.cursorStylePerMode.insert": "underline",
+    "vim.cursorStylePerMode.normal": "block-outline",
+    "vim.cursorStylePerMode.visual": "block-outline",
+    "vim.cursorStylePerMode.visualblock": "block-outline",
+    "vim.cursorStylePerMode.visualline": "block-outline",
+    "vim.statusBarColorControl": false,
+    "vim.statusBarColors.normal": ["#42b883", "#161821"],
+    "vim.statusBarColors.insert": ["#84A0C6", "#161821"],
+    "vim.statusBarColors.visual": ["#B4BE82", "#161821"],
+    "vim.statusBarColors.visualline": ["#B4BE82", "#161821"],
+    "vim.statusBarColors.visualblock": ["#B4BE82", "#161821"],
+    "vim.statusBarColors.replace": ["#E2A478", "#161821"],
+    "vim.statusBarColors.commandlineinprogress": ["#818596", "#161821"],
+    "vim.statusBarColors.searchinprogressmode": ["#818596", "#161821"],
+    "vim.statusBarColors.easymotionmode": ["#818596", "#161821"],
+    "vim.statusBarColors.easymotioninputmode": ["#818596", "#161821"],
+    "vim.statusBarColors.surroundinputmode": [
+        "#818596",
+        "#161821"
+    ],
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#42b883",
+        "statusBar.noFolderBackground": "#42b883",
+        "statusBar.debuggingBackground": "#42b883",
+        "statusBar.foreground": "#161821"
+    },
+    "workbench.editor.showTabs": true,
+    "editor.minimap.enabled": false,
+    "workbench.colorTheme": "dark",
+    "vim.searchHighlightColor": "#832561",
+    "vim.highlightedyank.enable": true,
+    "cSpell.userWords": [
+        "IFNULL",
+        "Smaregi",
+        "Takahiko",
+        "Vals",
+        "Yayoi",
+        "arrwhere",
+        "asano",
+        "autoload",
+        "bugyo",
+        "conv",
+        "disp",
+        "kawakami",
+        "laravel",
+        "maeda",
+        "maxlength",
+        "posadmin",
+        "upsert",
+        "utsunomiya",
+        "webapi"
+    ],
+    // ホバー時の表示を無効
+	"editor.hover.enabled": false,
+	// 開いたファイルのタブ文字設定を引き継がない
+	"editor.detectIndentation": false,
+	// タブ文字入力時にスペースに変換する
+    "editor.insertSpaces": true,
+    "editor.renderWhitespace": "boundary",
+
+    "intelephense.environment.phpVersion": "5.4.0",
+    "workbench.editor.enablePreview": true,
+    "vim.sneak": true,
+    "logFileHighlighter.customPatterns": [
+        {
+            "pattern": "START --------------",
+            "foreground": "",
+            "background": "Green"
+        },
+        {
+            "pattern": "ERROR",
+            "foreground": "",
+            "background": "RED"
+        }
+    ],
+    "keyboard.dispatch": "keyCode",
+    "gitHistory.showEditorTitleMenuBarIcons": false,
+    "terminal.integrated.shell.osx": "/bin/bash",
+    "vim.easymotionMarkerForegroundColorOneChar": "#ffaaaa",
+    "vim.easymotionMarkerForegroundColorTwoChar": "#aaffff",
+    "vim.easymotionMarkerHeight": 24,
+    "vim.easymotionMarkerYOffset": 14,
+    "php-docblocker.classTemplate": {
+        "message": {
+            "gapAfter": true
+        },
+        "param": {
+            "gapBefore": true
+        },
+        "author": {
+            "content": "@author ${###:Takahiko Kawakami}"
+        }
+    },
+    "php-docblocker.functionTemplate": {
+        "message": {
+            "gapAfter": true
+        },
+        "extra": {},
+        "param": {
+            "gapBefore": true
+        },
+        "return": {},
+        "throws": {
+            "content": "@throws ${###:Exception}"
+        },
+
+    },
+    "workbench.editor.limit.value": 30,
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "timeline.excludeSources": [],
+    "files.associations": {
+    
+    },
+    "diffEditor.codeLens": true,
+    "editor.fontLigatures": true,
+    "editor.fontFamily": "'Fira Code', Monaco, 'Courier New', monospace",
+
+    "vscode-mysql.resultTheme": "Dark",
+
+    "slack.teamToken": "<your team token>",
+    "slack.username": "<your username>",
+    "slack.avatarUrl": "<your avatar url>",
+    "vim.easymotionMarkerBackgroundColor": "24",
 }
