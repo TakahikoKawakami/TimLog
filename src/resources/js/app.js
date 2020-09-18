@@ -7,11 +7,13 @@
 require('./bootstrap');
 
 // import Vue from 'vue';
+import VueCookies from 'vue-cookies';
+
 import store from './store';
 import router from './router';
 
 window.state = store.state;
-
+window.env = store.env;
 
 // window.Vue = require('vue');
 

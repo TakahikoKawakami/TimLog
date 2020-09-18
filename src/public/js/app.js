@@ -1930,8 +1930,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
@@ -1953,6 +1951,9 @@ __webpack_require__.r(__webpack_exports__);
           path: '/login'
         });
       });
+    },
+    isLogin: function isLogin() {
+      return state.isLogin;
     }
   }
 });
@@ -61364,13 +61365,23 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _c(
-          "li",
-          [
-            _c("router-link", { attrs: { to: "/login" } }, [_vm._v("ログイン")])
-          ],
-          1
-        ),
+        !_vm.isLogin()
+          ? _c(
+              "li",
+              [
+                _c("router-link", { attrs: { to: "/login" } }, [
+                  _vm._v("ログイン")
+                ])
+              ],
+              1
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.isLogin()
+          ? _c("li", { on: { click: _vm.logout } }, [
+              _c("a", [_vm._v("ログアウト")])
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c(
           "li",
@@ -61386,9 +61397,7 @@ var render = function() {
             ])
           ],
           1
-        ),
-        _vm._v(" "),
-        _c("li", { on: { click: _vm.logout } }, [_vm._v("ログアウト")])
+        )
       ]),
       _vm._v(" "),
       _c("hr"),

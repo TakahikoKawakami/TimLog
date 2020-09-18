@@ -7,12 +7,10 @@
         </header>
         <ul>
             <li><router-link to="/">ホーム</router-link></li>
-            <li><router-link to="/login">ログイン</router-link></li>
+            <li v-if="!isLogin()"><router-link to="/login">ログイン</router-link></li>
+            <li v-if="isLogin()" v-on:click="logout"><a>ログアウト</a></li>
             <li><router-link to="/register">登録</router-link></li>
             <li><router-link to="/user">ユーザー情報</router-link></li>
-            <li
-                @click="logout"
-            >ログアウト</li>
         </ul>
         <hr>
         <router-view></router-view>
@@ -36,6 +34,9 @@
                     state.isLogin = false;
                     this.$router.push({path: '/login'});
                 });
+            },
+            isLogin() {
+                return state.isLogin;
             }
         }
     }
