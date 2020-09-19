@@ -28,7 +28,7 @@ export default {
         this.accessToken = window.$cookies.get("access_token") || '';
         if (this.accessToken !== '') {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.accessToken;
-            state.isLogin = true;
+            window.state.isLogin = true;
             this.isLogin = true;
             this.$router.push({path: '/'});
         }
@@ -45,11 +45,12 @@ export default {
                     this.$router.push({path: '/'});
                 }).catch(error => {
                     state.isLogin = false;
-                    this.isLogin = false;
-                    this.isError = true;
+                    self.isLogin = false;
+                    self.isError = true;
                 });
         },
         login() {
+            let self = this;
             axios.post('/api/login', {
                 email: this.email,
                 password: this.password
@@ -57,14 +58,12 @@ export default {
                 const token = res.data.access_token;
                 console.log('token : ' + token);
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-                window.$cookies.set("access_token", token, 60 * 60 * 24);
+                $cookies.set("access_token", token, 60 * 60 * 24);
                 state.isLogin = true;
-                this.isLogin = true;
-                this.$router.push({path: '/'});
+                self.$router.push({path: '/'});
             }).catch(error => {
                 state.isLogin = false;
-                this.isLogin = false;
-                this.isError = true;
+                self.isError = true;
             });
         }
     }
