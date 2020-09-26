@@ -11,18 +11,19 @@
 |
 */
 
+Route::get('/phpinfo', function () {
+    return phpinfo();
+});
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
 Route::any('{all}', function () {
-    return view('index-bootstrap');
+    return view('index');
 })->where(['all' => '.*']);
 
 Route::get('/vue', function() {
     return view('welcome');
 });
-Route::get('/', 'TicketController@index')->name('main');
-
-Route::get('/phpinfo', function () {
-    return phpinfo();
-});
-
-Route::get('/home', 'HomeController@index')->name('home');
 

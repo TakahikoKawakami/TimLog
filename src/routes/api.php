@@ -23,14 +23,18 @@ Route::group([
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
+    Route::get('me', 'AuthController@me');
 
     Route::group(['middleware' => ['jwt.auth']], function () {
     // 認証が必要なメソッド
         Route::get("tickets", "TicketController@apiIndex");
+        Route::get("tickets/{id}", "TicketController@apiGet");
         Route::post("tickets", "TicketController@apiCreate");
         Route::put("tickets/{id}", "TicketController@apiUpdate");
         Route::delete("tickets/{id}", "TicketController@apiDelete");
+
+        Route::post("ticketDisplaySequence", "TicketDisplaySequenceController@apiCreate");
+        Route::put("ticketDisplaySequence", "TicketDisplaySequenceController@apiUpdate");
     });
 
 });

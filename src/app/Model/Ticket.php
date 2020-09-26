@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\TicketDisplaySequence;
 use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
@@ -22,4 +23,9 @@ class Ticket extends Model
         'display_sequence',
         'status',
     ];
+
+    public function ticketDisplaySequence()
+    {
+        return $this->hasOne('App\Model\TicketDisplaySequence', 'id', 'ticket_id');
+    }
 }

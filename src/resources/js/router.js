@@ -10,7 +10,7 @@ import Nav from '@/components/NavComponent'
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/', component: Home, meta: { requiresAuth: true } },
+    { path: '/ticket', component: Home, meta: { requiresAuth: true } },
     { path: '/ticket/:id', name: "Ticket", component: Home, meta: {requiresAuth: true} },
     { path: '/login', component: Login },
     { path: '/register', component: Register },
@@ -24,7 +24,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (state.isLogin === false) {
+        if (state.isLogin == false) {
             next({
                 path: '/login',
                 query: { redirect: to.fullPath }

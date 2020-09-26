@@ -39,6 +39,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:60,1',
+            \App\Http\Middleware\RefreshToken::class, // JWTトークン更新 ※bindings の前に置く
             'bindings',
         ],
     ];

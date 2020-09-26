@@ -99,19 +99,19 @@ class TicketFactory implements TicketFactoryInterface
     {
         return $this->rebuild(
             $array['id'],
-            $array['userId'],
-            $array['parentId'],
+            $array['user_id'],
+            $array['parent_id'],
             $array['text'],
             $array['memo'],
-            Carbon::parse($array['startDateTime']),
-            Carbon::parse($array['stopDateTime']),
-            Carbon::parse($array['deadlineDate']),
-            $array['deadlineSecond'],
-            Carbon::parse($array['runStartDateTime']),
-            Carbon::parse($array['runStopDateTime']),
-            $array['runtimeSecond'],
+            Carbon::parse($array['start_date_time']),
+            Carbon::parse($array['stop_date_time']),
+            Carbon::parse($array['deadline_date']),
+            $array['deadline_second'],
+            Carbon::parse($array['run_start_date_time']),
+            Carbon::parse($array['run_stop_date_time']),
+            $array['runtime_second'],
             $array['status'],
-            $array['displaySequence']
+            $array['display_sequence']
         );
     }
 
