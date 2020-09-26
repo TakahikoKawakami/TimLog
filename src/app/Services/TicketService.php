@@ -3,12 +3,14 @@
 namespace App\Services;
 use Carbon\Carbon;
 use App\Entities\TicketEntity;
+use App\Entities\TicketCollection;
 use App\Factories\TicketFactoryInterface;
 use App\Http\Requests\Ticket\GetTicketRequest;
+use App\Repositories\TicketRepositoryInterface;
 use App\Http\Requests\Ticket\CreateTicketRequest;
 use App\Http\Requests\Ticket\UpdateTicketRequest;
-use App\Repositories\TicketRepositoryInterface;
 
+use Illuminate\Foundation\Application as Application; //DI利用のため
 class TicketService
 {
     protected $userRepository;
@@ -16,13 +18,18 @@ class TicketService
     protected $ticketFactory;
     protected $ticketRepository;
 
-    public function __construct(TicketFactoryInterface $ticketFactory, TicketRepositoryInterface $ticketRepository)
+    public function __construct(Application $app)
     {
-        $this->ticketFactory = $ticketFactory;
-        $this->ticketRepository = $ticketRepository;
+        $this->ticketFactory = $app->make('TicketFactory');
+        $this->ticketRepository = $app->make('TicketRepository');
     }
 
-    public function getTickets(?array $queryArray = null)
+    public function getTicketById(?array $queryArray = null)
+    {
+        return $this->ticketRepository->getTickets($queryArray);
+    }
+
+    public function getTickets(?array $queryArray = null): TicketCollection
     {
         return $this->ticketRepository->getTickets($queryArray);
     }

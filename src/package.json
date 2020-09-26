@@ -30,7 +30,12 @@
         "devtools": "^6.1.25",
         "moment": "^2.27.0",
         "moment-timezone": "^0.5.31",
+        "vue-burger-menu": "^2.0.5",
+        "vue-cookies": "^1.7.4",
+        "vue-hotel-datepicker": "^4.0.0-beta.9",
         "vue-loader": "^15.9.3",
-        "vue-router": "^3.4.3"
+        "vue-router": "^3.4.3",
+        "vuedraggable": "^2.24.1",
+        "vuejs-datepicker": "^1.6.2"
     }
 }

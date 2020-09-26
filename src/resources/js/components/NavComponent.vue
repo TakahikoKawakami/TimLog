@@ -1,134 +1,59 @@
 <template>
-    <nav id="nav-drawer">
-        <input id="nav-input" type="checkbox" class="nav-unshown">
-        <label id="nav-open" for="nav-input"><span></span></label><span class="title">TicketTimer {{ ticketNum }}</span>
-        <label id="nav-close" for="nav-input">close</label>
-        <div id="nav-content">
-            <ul class="main-nav">
-                <li><a href="/home">Home</a>
-                <li><a href="#">setting</a></li>
-                <li><a href="#">how to use</a></li>
-                <li v-on:click="login()">Login</li>
-                <li><a href="/register">Register</a></li>
-                <li><a href="#">logout</a></li>
-            </ul>
-        </div>
-    </nav>
+<div>
+  <slide right v-on:openMenu="getLoginState" :closeOnNavigation="true">
+        <router-link v-if="isLogin" class="menu-text" to="/ticket">チケット一覧</router-link>
+        <router-link v-if="!isLogin" class="menu-text" to="/login">ログイン</router-link>
+        <a v-else class="menu-text" v-on:click='logout()' style="cursor: pointer;">ログアウト</a>
+        <router-link class="menu-text" to="/register">登録</router-link>
+        <a class="menu-text" href="/">TOPへ戻る</a>
+    <!-- <a id="home" href="#">
+      <span>Home</span>
+    </a>
+    <a id="about" href="#">
+      <span>About</span>
+    </a>
+    <a id="contact" href="#">
+      <span>Contact</span>
+    </a> -->
+  </slide>
+    <!-- <div id="page-wrap"></div> -->
+</div>
 </template>
 
 <script>
     export default {
-        data() {
+        data () {
             return {
-                ticketNum: 'test'
+                isLogin: state.isLogin,
             }
         },
+        methods: {
+            logout() {
+                let self = this;
+                axios.post('/api/logout').then(res => {
+                    axios.defaults.headers.common['Authorization'] = '';
+                    state.isLogin = false;
+                    $cookies.set("access_token", '');
+                    self.$router.push({path: '/login'});
+                });
+            },
+            getLoginState() {
+                console.log("login? : " + state.isLogin);
+                this.isLogin = state.isLogin;
+            },
+        }
     }
 </script>
 <style scoped>
-        /*--ハンバーガーメニュー--*/
-        #nav-drawer  {
-            position: relative;
-        }
-        .nav-unshown {
-            display: none;
-        }
-        #nav-open {
-            display: inline-block;
-            width: 30px;
-            height: 22px;
-            vertical-align: middle;
-        }
-        #nav-open span, #nav-open span:before, #nav-open span:after {
-            position: absolute;
-            height: 3px;
-            width: 25px;
-            border-radius: 3px;
-            background: #555;
-            display: block;
-            content: '';
-            cursor: pointer;
-        }
-        #nav-open span:before {
-            bottom: -8px;
-        }
-        #nav-open span:after {
-            bottom: -16px;
-        }
-        #nav-close {
-            display: none;
-            position: fixed;
-            z-index: 99;
-            top:  0;
-            width: 30%;
-            right: 0%;
-            height: 100%;
-            background: black;
-            opacity: 0;
-            transition: .3s ease-in-out;
-        }
-        #nav-content {
-            overflow: auto;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 9999;/*最前面に*/
-            width: 70%;/*右側に隙間を作る（閉じるカバーを表示）*/
-            max-width: 330px;/*最大幅（調整してください）*/
-            height: 100%;
-            background: #fff;/*背景色*/
-            transition: .3s ease-in-out;/*滑らかに表示*/
-            -webkit-transform: translateX(-105%);
-            transform: translateX(-105%);/*左に隠しておく*/
-        }
-        /*チェックが入ったらもろもろ表示*/
-        #nav-input:checked ~ #nav-close {
-            display: block;/*カバーを表示*/
-            opacity: .5;
-        }
-        #nav-input:checked ~ #nav-content {
-            -webkit-transform: translateX(0%);
-            transform: translateX(0%);/*中身を表示（右へスライド）*/
-            box-shadow: 6px 0 25px rgba(0,0,0,.15);
-        }
-</style>
-
-<script>
-    export default {
-        methods: {
-            login() {
-                let url = location.href + "api/login/" + this.targetTicket.id;
-                console.log("storeTicket start-------");
-                let ticketDataArray = {
-                    parentId: storeTicket.parent_id,
-                    text: storeTicket.text,
-                    memo: storeTicket.memo,
-                    startDateTime: storeTicket.start_date_time,
-                    stopDateTime: storeTicket.stop_date_time,
-                    deadlineDate: storeTicket.deadline_date,
-                    deadlineSecond: storeTicket.deadline_second,
-                    status: storeTicket.status,
-                    displaySequence: storeTicket.display_sequence
-                };
-
-                axios
-                    .put(url, {
-                        parentId: storeTicket.parent_id,
-                        text: storeTicket.text,
-                        memo: storeTicket.memo,
-                        startDateTime: storeTicket.start_date_time,
-                        stopDateTime: storeTicket.stop_date_time,
-                        deadlineDate: storeTicket.deadline_date,
-                        deadlineSecond: storeTicket.deadline_second,
-                        status: storeTicket.status,
-                        displaySequence: storeTicket.display_sequence
-                    })
-                    .then(function(response) {
-                        console.log(response);
-                    })
-                console.log("storeTicket end  -------");
-                this.$emit('close-event');
-            }
-        }
+    .menu-text {
+        color: #ffffff;
     }
-</script>
+    .bm-burger-button {
+        position:unset !important;
+        display:inline-block !important;
+        width: 12% !important;
+        height: 12% !important;
+        left: 10% !important;
+        top: 0px !important;
+    }
+</style>

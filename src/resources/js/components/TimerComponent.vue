@@ -29,14 +29,15 @@ export default {
     },
     methods: {
         count: function() {
-        if (this.sec <= 0 && this.min >= 1) {
-            this.min --;
-            this.sec = 59;
-        } else if(this.sec <= 0 && this.min <= 0) {
-            this.complete();
-        } else {
-            this.sec --;
-        }
+            if (this.sec <= 0 && this.min >= 1) {
+                this.min --;
+                this.sec = 59;
+            } else if(this.sec <= 0 && this.min <= 0) {
+                // this.complete();
+                this.sec --;
+            } else {
+                this.sec --;
+            }
         },
 
         start: function() {
@@ -54,19 +55,37 @@ export default {
         clearInterval(this.timerObj)
         }
     },
+    watch: {
+        second: function(newSecond, oldSecond){
+            this.min = parseInt(this.second / 60);
+            this.sec = parseInt(this.second % 60);
+            console.log('[timer component] Change second '+oldSecond+'[s] to '+newSecond+'[s]');
+        },
+    },
     computed: {
         formatTime: function() {
-        let timeStrings = [
-            this.min.toString(),
-            this.sec.toString()
-        ].map(function(str) {
-            if (str.length < 2) {
-            return "0" + str
-            } else {
-            return str
+            let timeSignStr = '';
+            if (this.min < 0 || this.sec < 0) {
+                timeSignStr = '-';
             }
-        })
-        return timeStrings[0] + ":" + timeStrings[1]
+            let timeStrings = [
+                this.min.toString(),
+                this.sec.toString()
+            ].map(function(str) {
+                if (Math.abs(str).toString().length < 2) {
+                    return "0" + Math.abs(str)
+                } else {
+                    return Math.abs(str)
+                }
+            })
+            let signStr = '';
+            if (timeStrings[0] * timeStrings[1] < 0) {
+                signStr = '-';
+                timeStrings[0] = Math.abs(timeStrings[0]);
+                timeStrings[1] = Math.abs(timeStrings[0]);
+            }
+
+            return timeSignStr + timeStrings[0] + ":" + timeStrings[1]
         }
     }
 }

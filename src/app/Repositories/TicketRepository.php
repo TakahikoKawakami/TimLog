@@ -10,29 +10,37 @@ use App\Entities\TicketCollection;
 use App\Factories\TicketFactoryInterface;
 use App\Repositories\TicketRepositoryInterface;
 
+use Illuminate\Foundation\Application as Application; //DI利用のため
 class TicketRepository implements TicketRepositoryInterface
 {
     protected $ticketEloquent;
 
-    public function __construct(TicketFactoryInterface $ticketFactory)
+    public function __construct(Application $app)
     {
-        $this->ticketFactory = $ticketFactory;
+        $this->ticketFactory = $app->make('TicketFactory');
         $this->ticketEloquent = new Ticket();
     }
 
-    public function getTickets(?array $queryArray = null, bool $getDeleted = false): TicketCollection
+    public function getTickets(?array $queryArray = null, bool $getFinished = false, bool $getDeleted = false): TicketCollection
     {
-        $eloquent = $this->ticketEloquent;
+        $withArray = ['ticketDisplaySequence'];
+
+        $eloquent = $this->ticketEloquent->with($withArray);
         if (!is_null($queryArray)) {
             foreach ($queryArray as $key => $value) {
                 $eloquent = $eloquent->where($key,$value);
             }
         }
+        if (!$getFinished) {
+            $eloquent = $eloquent->where('status','!=', self::STATUS_FINISHED);
+        }
         if (!$getDeleted) {
             $eloquent = $eloquent->where('status','!=', self::STATUS_DELETED);
         }
 
-
+        // $records = $eloquent->orderBy('display_sequence')->get();
+        $eloquent = $eloquent->join('ticket_display_sequences', 'ticket_display_sequences.ticket_id', '=', 'tickets.id')
+            ->orderBy('ticket_display_sequences.sequence', 'asc');
         $records = $eloquent->get();
 
         $ticketCollection = collect();

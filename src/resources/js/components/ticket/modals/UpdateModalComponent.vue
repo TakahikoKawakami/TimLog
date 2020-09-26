@@ -1,9 +1,13 @@
 <template>
     <ticket-modal-component
         v-bind:target-ticket="ticket"
-        v-bind:new-create="ticket.newCreated"
         v-on:close-event="closeModal">
+        <template slot="title">チケット更新</template>
         <template slot="save-button">
+            <button class="btn btn-warn" style="display: inline-block"
+                v-on:click="finishTicket(ticket)" >
+                完了
+            </button>
             <button class="btn btn-info" style="display: inline-block"
                 v-on:click="storeTicket(ticket)" >
                 更新
@@ -26,6 +30,7 @@
         data(){
             return {
                 ticketNum: 0,
+                ticketId: this.targetTicket.id,
                 ticket: this.targetTicket,
                 edit: false,
                 results: []
@@ -39,41 +44,60 @@
                 }).catch( error => {console.log(error);});
             },
             closeModal() {
-                this.$emit('close-event');
+                this.$emit('close-event', this.ticket);
             },
             storeTicket(storeTicket) {
-                let url = location.href + "api/tickets/" + this.targetTicket.id;
+                let updateTicket = storeTicket;
+                let self = this;
+                let url = env.url + 'api/tickets/' + this.ticketId;
                 console.log("storeTicket start-------");
-                let ticketDataArray = {
-                    parentId: storeTicket.parent_id,
-                    text: storeTicket.text,
-                    memo: storeTicket.memo,
-                    startDateTime: storeTicket.start_date_time,
-                    stopDateTime: storeTicket.stop_date_time,
-                    deadlineDate: storeTicket.deadline_date,
-                    deadlineSecond: storeTicket.deadline_second,
-                    status: storeTicket.status,
-                    displaySequence: storeTicket.display_sequence
-                };
-
+                delete updateTicket.id;
+                delete updateTicket.user_id;
                 axios
-                    .put(url, ticketDataArray)
+                    .put(url, updateTicket)
                     .then(function(response) {
-                        console.log(response);
+                        self.ticket = response.data;
+                        console.log("response--");
+                        console.log(response.data)
+                        console.log("storeTicket end  -------");
+                        self.closeModal();
                     })
-                console.log("storeTicket end  -------");
-                this.closeModal();
+                    .catch(function (error) {
+                        console.log("error!!!!!!!");
+                        console.log(error.config);
+                    });
+            },
+            finishTicket(storeTicket) {
+                let updateTicket = storeTicket;
+                let self = this;
+                let url = env.url + 'api/tickets/' + this.ticketId;
+                console.log("storeTicket start-------");
+                delete updateTicket.id;
+                delete updateTicket.user_id;
+                updateTicket.status = 3;
+                axios
+                    .put(url, updateTicket)
+                    .then(function(response) {
+                        console.log("storeTicket end  -------");
+                        self.closeModal();
+                    })
+                    .catch(function (error) {
+                        console.log("error!!!!!!!");
+                        console.log(error.config);
+                    });
+                location.reload();
             },
             deleteTicket() {
-                let url = location.href + "api/tickets/" + this.targetTicket.id;
+                let url = env.url + 'api/tickets/' + this.targetTicket.id;
+                let self = this;
                 console.log("deleteTicket start-------");
                 axios
                     .delete(url)
                     .then(function(response) {
-                        console.log(response);
-                    })
-                console.log("storeTicket end  -------");
-                this.closeModal();
+                        console.log("storeTicket end  -------");
+                        self.closeModal();
+                    });
+                location.reload();
             }
 
         }

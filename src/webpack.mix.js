@@ -17,15 +17,10 @@ mix.js('resources/js/app.js', 'public/js')
 const path = require('path');
 
 mix.webpackConfig({
-
   resolve: {
-
     alias: {
-
       '@': path.resolve('./resources/js'),
-
+      'vue$': 'vue/dist/vue.esm.js',
     }
-
   }
-
 });
