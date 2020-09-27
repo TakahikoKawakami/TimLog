@@ -1,20 +1,20 @@
 <template>
   <transition name="modal" appear>
     <div class="modal modal-overlay" @click.self="closeModal()">
-      <div class="modal-window">
-        <div class="modal-header">
-            <h5 class="modal-title" id="modal">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="close" @click="closeModal()">
-                <span aria-hidden="true">&times;</span>
-            </button>
+        <div class="modal-window">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal"><slot name="title"></slot></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close" @click="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <slot name="body"> </slot>
+            </div>
+            <footer class="modal-footer">
+                <slot name="footer"> </slot>
+            </footer>
         </div>
-        <div class="modal-body">
-            <slot name="body"> </slot>
-        </div>
-        <footer class="modal-footer">
-            <slot name="footer"> </slot>
-        </footer>
-      </div>
     </div>
   </transition>
 </template>
@@ -34,11 +34,26 @@
     background: rgba(0, 0, 0, 0.5);
   }
 
-  &-window {
-    background: #fff;
-    border-radius: 4px;
-    overflow: hidden;
-  }
+    &-window {
+        margin-left: auto;
+        margin-right: auto;
+        background: #fff;
+        border-radius: 4px;
+        width: auto;
+        height: auto;
+        overflow: hidden;
+    }
+
+    &-title {
+        text-align: center;
+    }
+
+    &-body slot{
+        margin: auto;
+    }
+
+    &-footer {
+    }
 
   &-content {
     padding: 10px 20px;
@@ -63,7 +78,7 @@
 
 // ディレイを付けるとモーダルウィンドウが消えた後にオーバーレイが消える
 .modal-leave-active {
-  transition: opacity 0.6s ease 0.4s;
+  transition: opacity 0.6s ease 0.2s;
 }
 
 .modal-enter, .modal-leave-to {

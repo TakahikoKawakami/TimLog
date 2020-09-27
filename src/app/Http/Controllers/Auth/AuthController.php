@@ -17,7 +17,7 @@ class AuthController extends Controller
     public function __construct(AuthManager $authManager)
     {
         $this->authManager = $authManager;
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'refresh', 'logout']]);
     }
 
     /**
@@ -29,7 +29,8 @@ class AuthController extends Controller
     {
         $guard = $this->authManager->guard('api');
         $token = $guard->attempt([
-            'email' =>  $request->get('email'),
+            // 'email' =>  $request->get('email'),
+            'name' =>  $request->get('name'),
             'password'  =>  $request->get('password'),
         ]);
 

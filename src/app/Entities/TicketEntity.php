@@ -73,7 +73,7 @@ class TicketEntity
     public function bulkUpdateByArray(array $array): void
     {
         foreach ($array as $key => $value) {
-            if ($this->has($key)) {
+            if ($this->has(Str::camel($key))) {
                 // Str::studly 頭文字を大文字に変換する（pascal case）
                 $methodName = "update" . Str::studly($key);
                 $this->$methodName($value);

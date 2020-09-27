@@ -2,6 +2,7 @@
     <ticket-modal-component
         v-bind:target-ticket="this.ticket"
         v-on:close-event="closeModal">
+        <template slot="title">チケット作成</template>
         <template slot="save-button">
             <button class="btn btn-info" style="display: inline-block"
                 v-on:click="storeTicket(ticket)" >
@@ -19,25 +20,27 @@
 
 <script>
     import TicketModal from '@/components/ticket/modals/ModalComponent.vue'
+    import moment from 'moment-timezone'
     export default {
         components: { 'ticket-modal-component': TicketModal },
-        props: ['parentId'],
+        props: ['propsParentId', 'propsTicketNum'],
         data(){
             return {
-                ticketNum: 0,
+                ticketNum: this.propsTicketNum,
+                parentId: this.propsParentId,
                 ticket: {
-                    parentId: this.parentId,
+                    parent_id: this.propsParentId,
                     text: null,
                     memo: null,
-                    startDateTime: null,
-                    stopDateTime: null,
-                    deadlineDate: null,
-                    deadlineSecond: null,
-                    runStartDateTime: null,
-                    runStopDateTime: null,
-                    runtimeSecond: null,
-                    status: null,
-                    displaySequence: null
+                    start_date_time: moment(moment().format("YYYY-MM-DD")),
+                    stop_date_time: moment(moment().format("YYYY-MM-DD")),
+                    deadline_date: moment(moment().format("YYYY-MM-DD")),
+                    deadline_second: 0,
+                    run_start_date_time: moment(moment().format("YYYY-MM-DD")),
+                    run_stop_date_time: moment(moment().format("YYYY-MM-DD")),
+                    runtime_second: 0,
+                    status: 0,
+                    display_sequence: 0
                 }
             }
         },
@@ -50,31 +53,35 @@
                 this.$emit('close-event');
             },
             storeTicket(storeTicket) {
-                let url = location.href + "api/tickets";
+                let url = env.url + 'api/tickets';
+                let self = this;
                 console.log("storeTicket start-------");
-                let ticketDataArray = {
-                    parentId: storeTicket.parent_id,
-                    text: storeTicket.text,
-                    memo: storeTicket.memo,
-                    startDateTime: storeTicket.start_date_time,
-                    stopDateTime: storeTicket.stop_date_time,
-                    deadlineDate: storeTicket.deadline_date,
-                    deadlineSecond: storeTicket.deadline_second,
-                    runStartDateTime: storeTicket.run_start_date_time,
-                    runStopDateTime: storeTicket.run_stop_date_time,
-                    runtimeSecond: storeTicket.runtime_second,
-                    status: 0,
-                    displaySequence: storeTicket.display_sequence
-                };
-
+                if (this.parentId == null) {
+                    this.parentId = 0;
+                }
                 axios
-                    .post(url, ticketDataArray)
+                    .post(url, storeTicket)
                     .then(function(response) {
+                        self.ticket = response.data;
                         console.log(response);
-                    })
-                console.log("storeTicket end  -------");
-                this.$parent.getTickets();
-                this.closeModal();
+
+                        let displaySequence = {"ticket_id": self.ticket.id, "sequence": self.propsTicketNum}
+                        url = env.url + 'api/ticketDisplaySequence';
+                        axios
+                            .post(url, displaySequence)
+                            .then(function(response) {
+                                console.log(response);
+                                console.log("storeTicket end  -------");
+                                // self.$parent.getTickets();
+                                self.$router.push({path: '/ticket'});
+                                self.closeModal();
+                            })
+                            .catch(function (error) {
+                                console.log("error!!!!!!!");
+                                console.log(error.config);
+                                self.$router.push({path: '/ticket'});
+                            });
+                    });
             }
         }
     }

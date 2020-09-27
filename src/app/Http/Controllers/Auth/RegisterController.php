@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\AuthManager;
 
 class RegisterController extends Controller
 {
@@ -39,8 +40,9 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(AuthManager $authManager)
     {
+        $this->authManager = $authManager;
         // $this->middleware('guest');
     }
 
@@ -53,8 +55,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'name' => ['required', 'string', 'max:255', 'unique:users'],
+            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -79,11 +81,39 @@ class RegisterController extends Controller
         $validate = $this->validator($request->all());
 
         if ($validate->fails()) {
-            return new JsonResponse($validate->errors());
+            return response()->json(['error' => $validate->errors()], 401);
         }
 
         event(new Registered($user = $this->create($request->all())));
 
-        return new JsonResponse($user);
-}
+        $guard = $this->authManager->guard('api');
+        $token = $guard->attempt([
+            'name' =>  $request->get('name'),
+            // 'email' =>  $request->get('email'),
+            'password'  =>  $request->get('password'),
+        ]);
+
+        if (!$token) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->respondWithToken($token);
+        // return new JsonResponse($user);
+    }
+
+    /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60
+        ]);
+    }
 }

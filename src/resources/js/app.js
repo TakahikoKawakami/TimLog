@@ -7,11 +7,13 @@
 require('./bootstrap');
 
 // import Vue from 'vue';
+import VueCookies from 'vue-cookies';
+
 import store from './store';
 import router from './router';
 
 window.state = store.state;
-
+window.env = store.env;
 
 // window.Vue = require('vue');
 
@@ -38,6 +40,8 @@ Vue.component('all-component', require('./components/AllComponent.vue').default)
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+import { Slide } from 'vue-burger-menu';
+Vue.component('slide', Slide);
 
 const app = new Vue({
     router
